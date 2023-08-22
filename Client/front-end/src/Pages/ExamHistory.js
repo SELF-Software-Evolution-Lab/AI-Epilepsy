@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import ExamsTableComponent from "../Components/ExamTableComponent";
+import {BACKEND_URL} from "../constants";
 
 const ExamHistory = () => {
   const location = useLocation();
@@ -12,7 +13,7 @@ const ExamHistory = () => {
   
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/exams/${patient.document_id}?type=${exam}`)
+      .get(`${BACKEND_URL}/exams/${patient.document_id}?type=${exam}`)
       .then((res) => {
         setExams(res.data);
       });

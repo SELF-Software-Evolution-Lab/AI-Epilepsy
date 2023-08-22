@@ -9,7 +9,7 @@ const NotificationItem = ({ notification }) => {
         <p className="notification-message">Aún no tiene notificaciones</p>
       )}
       <div className="info-icon-container">
-        <img src="/icons/infoNotf.png" className="info-icon"></img>
+        <img src={process.env.PUBLIC_URL + "/icons/infoNotf.png"} className="info-icon"></img>
       </div>
     </div>
   );

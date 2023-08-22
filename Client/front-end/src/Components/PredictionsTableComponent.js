@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import {BACKEND_URL} from "../constants";
 
 const PredictionsTableComponent = ({rows,patient}) => {
     const headers = ['No.','ID Predicción', 'Fecha', 'Accionables']
@@ -9,7 +10,7 @@ const PredictionsTableComponent = ({rows,patient}) => {
 
     useEffect(() => {
       axios
-        .get(`http://localhost:4000/predictions/${patient.document_id}`)
+        .get(`${BACKEND_URL}/predictions/${patient.document_id}`)
         .then((res) => {
           setpredictions(res.data);
         });

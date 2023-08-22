@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import {BACKEND_URL} from "../constants";
+
 
 const PredictionDetail = () => {
   const location = useLocation();
@@ -11,7 +13,7 @@ const PredictionDetail = () => {
   const [prediction, setPrediction] = useState({});
 
   useEffect(() => {
-    axios.get(`http://localhost:4000/prediction/${id}`).then((res) => {
+    axios.get(`${BACKEND_URL}/prediction/${id}`).then((res) => {
       setPrediction(res.data[0]);
     });
   }, []);
@@ -56,7 +58,7 @@ const PredictionDetail = () => {
           <p className="prediction-result">
             Team AI-EPILEPSY,
           </p>
-          <img  className="prediction-icon"src="/icons/plogo.png"></img>
+          <img  className="prediction-icon"src={process.env.PUBLIC_URL + "/icons/plogo.png"}></img>
           <section className="prediction-detail-buttons">
             <button onClick={handleCancel} className="request-prediction-button">Listo</button>
             

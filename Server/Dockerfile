@@ -2,7 +2,8 @@ FROM node:18-alpine
 LABEL authors="coldblade2000"
 
 WORKDIR /code
-COPY ./package.json /code/package.json
+COPY ./package*.json ./
+COPY ./server.js ./
 COPY controllers /code/controllers
 COPY models /code/models
 COPY routes /code/routes
