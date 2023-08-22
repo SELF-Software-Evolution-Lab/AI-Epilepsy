@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 
 
 // use it before all route definitions
-app.use(cors({origin: 'http://localhost:3000'}));
+app.use(cors({origin: 'http://epilepsy-frontend:4000'}));
 
 
 

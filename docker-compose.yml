@@ -1,0 +1,13 @@
+version: "1"
+services:
+  epilepsy-backend:
+    build: Server/
+    ports:
+      - "4301:3000"
+
+  epilepsy-frontend:
+    build: front-end/
+    ports:
+      - "4300:4000"
+networks:
+  epilepsy-net:
