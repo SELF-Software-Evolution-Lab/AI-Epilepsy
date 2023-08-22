@@ -9,5 +9,11 @@ services:
     build: front-end/
     ports:
       - "4300:4000"
+  epilepsy-mysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Pipemerca410*
+      MYSQL_DATABASE: Ai-Epilepsy
 networks:
   epilepsy-net:
