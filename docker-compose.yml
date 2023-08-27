@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  epilepsy-backend:
+    build: Server/
+    ports:
+      - "4301:4000"
+    depends_on:
+      - epilepsy-mysql
+    networks:
+      epilepsy-net:
+  epilepsy-frontend:
+    build: Client/front-end/
+    ports:
+      - "4300:3000"
+    networks:
+      epilepsy-net:
+    environment:
+      REACT_APP_BACKEND_URL: "localhost:4301"
+  epilepsy-mysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Pipemerca410*
+      MYSQL_DATABASE: Ai-Epilepsy
+    networks:
+      epilepsy-net:
+networks:
+  epilepsy-net:

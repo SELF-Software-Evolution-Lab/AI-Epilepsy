@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import Spinner from "react-bootstrap/Spinner";
 import ModalSelectFile from '../Components/ModalAssociateFile/ModalSelectFile';
 
 const RequestPrediction = ({ patient }) => {
@@ -30,7 +28,7 @@ const RequestPrediction = ({ patient }) => {
     setUploadingState("Uploading");
     setTimeout(() => {
       /* axios
-        .post("http://localhost:4000/upload-exam", formData)
+        .post("${BACKEND_URL}/upload-exam", formData)
         .then((response) => {
           console.log("File upload  succesfully");
           setUploadingState("Success");
@@ -87,7 +85,7 @@ const RequestPrediction = ({ patient }) => {
               Se asoció exitosamente el exámen, lo podrás ver en le historial de
               exámenes del paciente
             </p>
-            <img className= "success-icon "src="/icons/checked.png"></img>
+            <img className= "success-icon "src={process.env.PUBLIC_URL + "/icons/checked.png"}></img>
             </div>
             
             <section className="request-prediction-buttons">

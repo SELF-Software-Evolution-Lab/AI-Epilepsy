@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import axios from 'axios'
 import PatientCard from "../Components/PatientCard";
 import PatientNotFoundComponent from "../Components/PatientNotFoundComponent";
+import {BACKEND_URL} from "../constants";
 
 const Patients = () => {
     const location = useLocation();
@@ -12,7 +13,7 @@ const Patients = () => {
     const numbers = [1,2,3,4,5,6,7]
   
     useEffect(() => {
-        axios.get(`http://localhost:4000/patients/${searchInput}`).then((res) =>{
+        axios.get(`${BACKEND_URL}/patients/${searchInput}`).then((res) =>{
         
             setPatient(res.data[0])
         

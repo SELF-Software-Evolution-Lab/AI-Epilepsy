@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import RequestPredictionTableComponents from "./RequestPredictionTableComponents";
 import Spinner from "react-bootstrap/Spinner";
+import {BACKEND_URL} from "../constants";
 
 const RequestPrediction = ({ patient }) => {
   const navigation = useNavigate();
@@ -23,19 +24,19 @@ const RequestPrediction = ({ patient }) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/recent-MRI/${patient.document_id}`)
+      .get(`${BACKEND_URL}/recent-MRI/${patient.document_id}`)
       .then((res) => {
         setMri(res.data);
       });
 
     axios
-      .get(`http://localhost:4000/recent-EEG/${patient.document_id}`)
+      .get(`${BACKEND_URL}/recent-EEG/${patient.document_id}`)
       .then((res) => {
         setEeg(res.data);
       });
 
     axios
-      .get(`http://localhost:4000/recent-ARN/${patient.document_id}`)
+      .get(`${BACKEND_URL}/recent-ARN/${patient.document_id}`)
       .then((res) => {
         setArn(res.data);
       });
@@ -48,7 +49,7 @@ const RequestPrediction = ({ patient }) => {
     let prediction_id = "";
 
     axios
-      .post(`http://localhost:4000/create-prediction/${patient.document_id}`)
+      .post(`${BACKEND_URL}/create-prediction/${patient.document_id}`)
       .then((res) => {
         console.log("Response:", res.data);
         prediction_id = res.data;
@@ -68,7 +69,7 @@ const RequestPrediction = ({ patient }) => {
     console.log("patient", patient.last_name);
     axios
       .post(
-        `http://localhost:4000/predict/${patient.document_id}?fname=${patient.first_name}&lname=${patient.last_name}`,
+        `${BACKEND_URL}/predict/${patient.document_id}?fname=${patient.first_name}&lname=${patient.last_name}`,
         data
       )
       .then((res) => {
@@ -131,7 +132,7 @@ const RequestPrediction = ({ patient }) => {
             La predicción fue solicitada correctamente, se le notificará
               cuando el modelo predictivo tenga una respuesa 
             </p>
-            <img className= "success-icon "src="/icons/checked.png"></img>
+            <img className= "success-icon "src={process.env.PUBLIC_URL + "/icons/checked.png"}></img>
             </div>
             <section className="request-prediction-buttons">
               <button

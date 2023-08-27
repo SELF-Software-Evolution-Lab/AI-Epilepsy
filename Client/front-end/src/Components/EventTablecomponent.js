@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import axios from 'axios';
+import {BACKEND_URL} from "../constants";
 
 const EventTableComponent = ({ patient }) => {
 
@@ -7,7 +8,7 @@ const EventTableComponent = ({ patient }) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/events/${patient.document_id}`)
+      .get(`${BACKEND_URL}/events/${patient.document_id}`)
       .then((res) => {
         setEvents(res.data);
       });
