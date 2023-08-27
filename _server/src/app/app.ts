@@ -12,8 +12,6 @@ import { request as request_mw } from "@app/middleware/requestMiddleware"
 import db from "@app/database/connection"
 
 
-
-
 class App {
 
   private app: express.Application
