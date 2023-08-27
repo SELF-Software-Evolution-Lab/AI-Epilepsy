@@ -9,7 +9,7 @@ const PredictionModel = db.define('Prediction', {
     type: DataTypes.INTEGER,
     references: {
       model: 'patients',
-      key: 'document_id'
+      key: 'id'
     }
   },
   label:{
