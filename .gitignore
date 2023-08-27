@@ -1,0 +1,4 @@
+
+_server/node_modules
+_server/src/config/env.ts
+_server/package-lock.json
