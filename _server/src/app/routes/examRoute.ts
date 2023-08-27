@@ -2,25 +2,25 @@
 import { Application } from "express"
 
 //@IMPORT: Controllers
-import { PatientController } from "@app/controllers/patient/patientController"
+import { ExamController } from "@app/controllers/exam/examController"
 
 //@IMPORT: Utils
 import { RouterUtility, IRouteParams } from "@core/routerUtility"
 
 
-class PatientRoute {
+class ExamRoute {
 
-  private className:string = 'PatientRoute'  
+  private className:string = 'ExamRoute'  
   private app: Application
   private routerUtility: RouterUtility
-  private controller: PatientController = new PatientController()
+  private controller: ExamController = new ExamController()
   
   constructor (app: Application, prefix: string) {
     this.app = app
     this.routerUtility = new RouterUtility(this.app, `${prefix}${this.prefix}`)
   }
   
-  private prefix: string = '/patients'
+  private prefix: string = '/exams'
   
   private routes: Array<IRouteParams> = [
     { method: 'post', path: '/create', handler: this.controller.create , middleware: [] },
@@ -43,7 +43,7 @@ class PatientRoute {
   }
 }
 
-export { PatientRoute }
+export { ExamRoute }
 
 
 
