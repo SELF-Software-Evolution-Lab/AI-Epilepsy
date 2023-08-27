@@ -23,6 +23,11 @@ class PatientRoute {
   private prefix: string = '/patient'
   
   private routes: Array<IRouteParams> = [
+    { method: 'post', path: '/create', handler: this.controller.create , middleware: [] },
+    { method: 'post', path: '/update/:id', handler: this.controller.update , middleware: [] },
+    { method: 'post', path: '/delete/:id', handler: this.controller.delete , middleware: [] },
+    { method: 'get', path: '/', handler: this.controller.list , middleware: [] },
+    { method: 'get', path: '/:id', handler: this.controller.get , middleware: [] },
     { method: 'post', path: '/test', handler: this.controller.test , middleware: [] }
   ] 
 

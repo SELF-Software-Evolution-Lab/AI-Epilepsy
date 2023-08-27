@@ -1,7 +1,7 @@
 import express from "express"
 import { Sequelize } from 'sequelize'
 import cors from "cors"
-import { _ as env } from "@config/env"
+import { config as env } from "@config/env"
 import morgan from 'morgan'
 import chalk from 'chalk'
 

@@ -1,7 +1,7 @@
 import ora from 'ora'
 import chalk from 'chalk'
 import fs from 'node:fs'
-import { _ as env } from "@config/env"
+import { config } from "@config/env"
 import { SeederModel } from '@client/models/seederModel'
 import db from '@app/database/connection'
 const args = require('minimist')(process.argv.slice(2))
@@ -10,9 +10,9 @@ export interface IConsole extends ora.Ora  {
   paint?: chalk.Chalk,
 }
 if(!global.env) global.env = {}
-if(env){
-  for (const _k of Object.keys(env)) {
-    global.env[_k] = env[_k]
+if(config){
+  for (const _k of Object.keys(config)) {
+    global.env[_k] = config[_k]
   }
 }
 
