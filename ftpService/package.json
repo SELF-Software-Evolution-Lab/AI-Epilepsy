@@ -30,5 +30,17 @@
   },
   "keywords": [],
   "author": "@zadiaz",
-  "license": "AFL-3.0"
+  "license": "AFL-3.0",
+  "_moduleAliases": {
+    "@app": "src/app",
+    "@client": "src/client",
+    "@config": "src/config",
+    "@core": "src/core"
+  },
+  "moduleNameMapper": {
+    "^@app/(.+)$": "<rootDir>/src/app/$1",
+    "^@client/(.+)$": "<rootDir>/src/client/$1",
+    "^@config/(.+)$": "<rootDir>/src/config/$1",
+    "^@core/(.+)$": "<rootDir>/src/core/$1"
+  }
 }
