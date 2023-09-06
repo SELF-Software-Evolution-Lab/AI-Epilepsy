@@ -1,4 +1,5 @@
 
-_server/node_modules
-_server/src/config/env.ts
-_server/package-lock.json
+bk_ai_ep/node_modules
+bk_ai_ep/src/config/env.ts
+bk_ai_ep/package-lock.json
+bk_ai_ep/node_modules
