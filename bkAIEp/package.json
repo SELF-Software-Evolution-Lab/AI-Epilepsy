@@ -9,8 +9,8 @@
     "cli": "ts-node -r tsconfig-paths/register src/client/client.ts"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "@zadiaz",
+  "license": "AFL-3.0",
   "devDependencies": {
     "@types/chalk": "^2.2.0",
     "@types/mongoose": "^5.11.97",
