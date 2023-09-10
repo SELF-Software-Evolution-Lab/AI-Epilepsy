@@ -1,0 +1,6 @@
+.notification-modal{
+    position: absolute;
+    height: 150px;
+    width: 80px;
+    background-color: red;
+}

@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "target": "ES2021",
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "baseUrl": "./src",  
+    "paths": {
+      "@app/*"       : ["app/*"],
+      "@client/*"    : ["client/*"],
+      "@config/*"    : ["config/*"],
+      "@core/*"   : ["core/*"],
+      "@resources/*" : ["resources/*"],
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
