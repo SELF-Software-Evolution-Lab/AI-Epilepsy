@@ -2,6 +2,7 @@
 
 import { responseUtility } from "@core/responseUtility"
 import { Prediction } from '@app/models'
+import { Op } from "sequelize"
 
 class PredictionService {
   
@@ -35,6 +36,12 @@ class PredictionService {
         where: {},
       }
 
+      if(_params.patient_id){
+        query.where['patient_id'] = {
+          [Op.eq]: _params.patient_id
+        }
+      }
+      
       if(page && number){
         query['limit'] = number
         query['offset'] = (page - 1) * number

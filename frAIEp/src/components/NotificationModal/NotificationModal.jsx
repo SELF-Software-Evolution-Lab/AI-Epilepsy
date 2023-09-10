@@ -1,14 +1,14 @@
 import {useState,useEffect} from 'react';
 import axios from 'axios';
 import NotificationItem from '../NotificationItem/NotificationItem';
-const BACKEND_URL = ''
+import { config } from '../../config/env';
 
 const NotificationModal = () => {
   const [notifications, setnotifications] = useState([]);
   
   useEffect(() => {
     axios
-      .get(`${BACKEND_URL}/notifications`)
+      .get(`${config.bkAPEp}/notifications`)
       .then((res) => {
         setnotifications(res.data);
       });

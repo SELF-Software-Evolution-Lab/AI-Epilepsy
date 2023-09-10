@@ -5,7 +5,7 @@ const PredictionModel = db.define('Prediction', {
   date_requested:{
     type: DataTypes.DATE,
   },
-  patient_document_id:{
+  patient_id:{
     type: DataTypes.INTEGER,
     references: {
       model: 'patients',

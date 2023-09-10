@@ -38,7 +38,7 @@ class QueueService {
 
   public onMessage (message:string){
     try{
-      console.log('-------zadiaz:llegamessage', message)
+
     } catch (error) {
       console.log('error', error)
     }

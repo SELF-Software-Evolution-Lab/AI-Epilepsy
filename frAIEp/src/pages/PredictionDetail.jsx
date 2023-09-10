@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-const BACKEND_URL = ''
+import { config } from "../config/env";
 
 
 const PredictionDetail = () => {
@@ -13,7 +13,7 @@ const PredictionDetail = () => {
   const [prediction, setPrediction] = useState({});
 
   useEffect(() => {
-    axios.get(`${BACKEND_URL}/prediction/${id}`).then((res) => {
+    axios.get(`${config.bkAPEp}/prediction/${id}`).then((res) => {
       setPrediction(res.data[0]);
     });
   }, []);

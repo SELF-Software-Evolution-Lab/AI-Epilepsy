@@ -1,5 +1,6 @@
-import { Patient } from '@app/models'
+import { Event, Exam, Patient, Prediction } from '@app/models'
 import { IConsole } from '@client/client'
+import moment from 'moment'
 
 export const run = async(_params, console:IConsole) => {
   try{
@@ -28,17 +29,77 @@ export const run = async(_params, console:IConsole) => {
       }
     ]
 
+    const events = [
+      {
+        datetime: moment.utc().toISOString(),
+        detail: "Detail del evento MRI",
+        format: "MRI",
+        file: "patientes/{{1}}/file.mri"
+      },
+      {
+        datetime: moment.utc().toISOString(),
+        detail: "Detail del evento EEG",
+        format: "EEG",
+        file: "patientes/{{1}}/file.eeg"
+      }
+    ]
+
+    const exams = [
+      {
+        datetime: moment.utc().toISOString(),
+        detail: "Detail del examen MRI",
+        format: "MRI",
+        file: "patientes/{{1}}/file.mri"
+      },
+      {
+        datetime: moment.utc().toISOString(),
+        detail: "Detail del examen EEG",
+        format: "EEG",
+        file: "patientes/{{1}}/file.eeg"
+      }
+    ]
+
+    const predictions = [
+      {
+        date_requested:moment.utc().toISOString(),
+        label:"Going"
+      },
+      {
+        date_requested:moment.utc().toISOString(),
+        label:"Stopped"
+      }
+    ]
+
     for (const patient of patients) {
       const exists = await Patient.findOne({
         where: {
           document_id: patient.document_id
         }
       })
+      let _patient = exists
       if(exists){
         await Patient.update(patient, { where: { document_id: patient.document_id }})
       } else {
-        await Patient.create(patient)
+        _patient = await Patient.create(patient)
       }
+
+      for (const event of events) {
+        event.file = event.file.replace('{{1}}', _patient['id'])
+        event['patient_id'] = _patient['id']
+        await Event.create(event)
+      }
+
+      for (const exam of exams) {
+        exam.file = exam.file.replace('{{1}}', _patient['id'])
+        exam['patient_id'] = _patient['id']
+        await Exam.create(exam)
+      }
+
+      for (const prediction of predictions) {
+        prediction['patient_id'] = _patient['id']
+        await Prediction.create(prediction)
+      }
+
     }
     
   } catch (error) {

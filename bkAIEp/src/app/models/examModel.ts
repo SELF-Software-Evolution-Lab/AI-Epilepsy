@@ -13,6 +13,13 @@ const ExamModel = db.define('Exam', {
   },
   file:{
     type: DataTypes.STRING,
+  },
+  patient_id:{
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'patients',
+      key: 'id'
+    }
   }
 }, {
   tableName: 'exams',

@@ -2,6 +2,7 @@
 
 import { responseUtility } from "@core/responseUtility"
 import { Exam } from '@app/models'
+import { Op } from "sequelize"
 
 class ExamService {
   
@@ -33,6 +34,18 @@ class ExamService {
 
       const query = {
         where: {},
+      }
+
+      if(_params.patient_id){
+        query.where['patient_id'] = {
+          [Op.eq]: _params.patient_id
+        }
+      }
+
+      if(_params.type){
+        query.where['format'] = {
+          [Op.eq]: _params.type.toUpperCase()
+        }
       }
 
       if(page && number){

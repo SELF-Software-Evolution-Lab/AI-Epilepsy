@@ -13,6 +13,13 @@ const EventModel = db.define('Event', {
   },
   file:{
     type: DataTypes.STRING,
+  },
+  patient_id:{
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'patients',
+      key: 'id'
+    }
   }
 }, {
   tableName: 'events',

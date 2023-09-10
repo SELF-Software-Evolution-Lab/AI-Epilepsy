@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from "axios";
 import ExamBucketTableComponent from '../ExamBucketTableComponent/ExamBucketTableComponent';
-const BACKEND_URL = ''
+import { config } from "../../config/env";
 
 const ModalSelectFilePrediction = ({type, patient,setExam}) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -10,7 +10,7 @@ const ModalSelectFilePrediction = ({type, patient,setExam}) => {
   
     useEffect(() => {
       axios
-        .get(`${BACKEND_URL}/exams/${patient.document_id}?type=${type}`)
+        .get(`${config.bkAPEp}/exams`, {params: {patient_id: patient.id, type: type.toLowerCase()}})
         .then((res) => {
           setExams(res.data);
         });

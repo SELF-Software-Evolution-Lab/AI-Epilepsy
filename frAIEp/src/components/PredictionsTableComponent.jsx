@@ -1,7 +1,7 @@
 import  {useEffect, useState} from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-const BACKEND_URL = ''
+import { config } from "../config/env";
 
 const PredictionsTableComponent = ({rows,patient}) => {
     const headers = ['No.','ID Predicción', 'Fecha', 'Accionables']
@@ -10,9 +10,9 @@ const PredictionsTableComponent = ({rows,patient}) => {
 
     useEffect(() => {
       axios
-        .get(`${BACKEND_URL}/predictions/${patient.document_id}`)
+        .get(`${config.bkAPEp}/predictions`, { params:{patient_id: patient.id}})
         .then((res) => {
-          setpredictions(res.data);
+          setpredictions(res.data.predictions);
         });
     }, []);
 

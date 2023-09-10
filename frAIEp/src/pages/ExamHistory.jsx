@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import ExamsTableComponent from "../Components/ExamTableComponent";
-const BACKEND_URL = ''
+import { config } from "../config/env";
 
 const ExamHistory = () => {
   const location = useLocation();
@@ -13,9 +13,9 @@ const ExamHistory = () => {
   
   useEffect(() => {
     axios
-      .get(`${BACKEND_URL}/exams/${patient.document_id}?type=${exam}`)
+      .get(`${config.bkAPEp}/exams`, {params: { patient_id: patient.id, type: exam.toLowerCase()}})
       .then((res) => {
-        setExams(res.data);
+        setExams(res.data.exams);
       });
   }, []);
 

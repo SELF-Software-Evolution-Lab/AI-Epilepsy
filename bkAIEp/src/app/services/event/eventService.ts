@@ -2,6 +2,7 @@
 
 import { responseUtility } from "@core/responseUtility"
 import { Event } from '@app/models'
+import { Op } from "sequelize"
 
 class EventService {
   
@@ -33,6 +34,12 @@ class EventService {
 
       const query = {
         where: {},
+      }
+
+      if(_params.patient_id){
+        query.where['patient_id'] = {
+          [Op.eq]: _params.patient_id
+        }
       }
 
       if(page && number){
