@@ -11,6 +11,7 @@ import './App.css'
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home"
+import HomeV2 from "./pages/HomeV2"
 import AboutUs from "./pages/AboutUs"
 import Patients from "./pages/Patients"
 import PatientDetail from "./pages/PatientDetail"
@@ -23,39 +24,43 @@ import NotFound from "./pages/NotFound"
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home/>,
+    element: <Wrapper><Home/></Wrapper>,
+  },
+  {
+    path: "/v2",
+    element: <HomeV2/>,
   },
   {
     path: "/aboutUs",
-    element: <AboutUs/>,
+    element: <Wrapper><AboutUs/></Wrapper>,
   },
   {
     path: "/patients",
-    element: <Patients/>,
+    element: <Wrapper> <Patients/></Wrapper>,
   },
   {
     path: "/patients/:id",
-    element: <PatientDetail/>,
+    element: <Wrapper> <PatientDetail/></Wrapper>,
   },
   {
     path: "/request-prediction",
-    element: <RequestPrediction/>,
+    element: <Wrapper> <RequestPrediction/></Wrapper>,
   },
   {
     path: "/exam-history",
-    element: <ExamHistory/>,
+    element: <Wrapper> <ExamHistory/></Wrapper>,
   },
   {
     path: "/asocciate-exam",
-    element: <AssociateExam/>,
+    element: <Wrapper> <AssociateExam/></Wrapper>,
   },
   {
     path: "/prediction-detail",
-    element: <PredictionDetail/>,
+    element: <Wrapper> <PredictionDetail/></Wrapper>,
   },
   {
     path: "*",
-    element: <NotFound/>,
+    element: <Wrapper> <NotFound/></Wrapper>,
   }
 ]);
 
@@ -63,15 +68,21 @@ function App() {
 
   return (
     <>
-      <NavBar/>
-      <div className="page-container">
-
         <RouterProvider router={router} />
-      </div>
-
-      <Footer />
     </>
   )
 }
 
 export default App
+
+function Wrapper (props) {
+  return (
+    <>
+      <NavBar/>
+      <div className="page-container">
+        {props?.children}
+      </div>
+      <Footer />
+    </>
+  )
+}

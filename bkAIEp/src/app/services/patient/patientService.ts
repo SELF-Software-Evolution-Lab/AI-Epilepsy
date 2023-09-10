@@ -50,7 +50,7 @@ class PatientService {
           ]
         }
       }
-
+      
       if(page && number){
         query['limit'] = number
         query['offset'] = (page - 1) * number

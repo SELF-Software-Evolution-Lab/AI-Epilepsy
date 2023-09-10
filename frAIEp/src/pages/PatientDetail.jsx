@@ -56,7 +56,7 @@ const PatientDetail = () => {
               row={1}
               exam="MRI"
               description="Imágenes de resonancia magnética"
-              img={process.env.PUBLIC_URL + "/icons/mri.png"}
+              img={"/icons/mri.png"}
               patient={patient}
             />
             <ExamComponent
@@ -64,7 +64,7 @@ const PatientDetail = () => {
               row={1}
               exam="EEG"
               description="Registros de actividad cerebral"
-              img={process.env.PUBLIC_URL + "/icons/eeg.png"}
+              img={"/icons/eeg.png"}
               patient={patient}
             />
             <ExamComponent
@@ -72,7 +72,7 @@ const PatientDetail = () => {
               row={1}
               exam="ARN"
               description="Perfiles de expresión en sangre"
-              img={process.env.PUBLIC_URL + "/icons/arn.png"}
+              img={"/icons/arn.png"}
               patient={patient}
             />
           </section>
@@ -82,7 +82,7 @@ const PatientDetail = () => {
               row={2}
               exam="Examen físico"
               description="Observación del estado físico del paciente"
-              img={process.env.PUBLIC_URL + "/icons/phisicalTest.png"}
+              img={"/icons/phisicalTest.png"}
               patient={patient}
             />
             <ExamComponent
@@ -90,7 +90,7 @@ const PatientDetail = () => {
               row={2}
               exam="Examen neuropsicológico"
               description="Test neuropsicológico para medir las habilidades motoras del paciente "
-              img={process.env.PUBLIC_URL + "/icons/psicoTest.png"}
+              img={"/icons/psicoTest.png"}
               patient={patient}
             />
             <ExamComponent
@@ -98,7 +98,7 @@ const PatientDetail = () => {
               row={2}
               exam="Medicación"
               description="Recetas médicas"
-              img={process.env.PUBLIC_URL + "/icons/drugs.png"}
+              img={"/icons/drugs.png"}
               patient={patient}
             />
           </section>

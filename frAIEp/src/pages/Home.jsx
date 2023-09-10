@@ -12,8 +12,8 @@ const Home = () => {
         if (inputString) {
           if (!inputString.trim().length) {
             setError('No es posible enviar un campo vacío.');
-          } else if (inputString.trim().length < 10) {
-            setError('No se permite ingresar texto con menos de 10 caracteres.');
+          } else if (inputString.trim().length < 6) {
+            setError('No se permite ingresar texto con menos de 6 caracteres.');
           } else {
             setError(null);
           }
@@ -35,8 +35,8 @@ const Home = () => {
             <form className='search-bar-container' onSubmit={handleSubmit} >
             <input
                 className='search-bar'
-                type="number"
-                placeholder="Buscar paciente por documento de identidad"
+                type="text"
+                placeholder="Buscar paciente"
                 onChange={handleChange}
                 value={search} />
             <button className='search-button' disabled={!!error||search===''}>Buscar</button>

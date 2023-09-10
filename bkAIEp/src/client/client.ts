@@ -141,7 +141,44 @@ const client = async() => {
       } else if(args.x) {
         await runSeeders(console)
         process.exit(0)
+      } else if(args.d) {
+        const relative = '/src/seeders/dev/'
+        const path = `${process.cwd()}${relative}`
+        const name = 'initSeeder'
+        const _name = name.replace('Seeder', '')
+        const exists = await SeederModel.findOne({
+          where: {
+            seeder: name
+          }
+        })
+        if(exists && !args.f){
+          console.info(`Seeder ${console.paint.blue(_name)} already launched`)
+          console.stop()
+          process.exit()
+        } else {
+          console.info(`Launching seeder ${console.paint.blue(_name)}`)
+          console.text = `${console.paint.blue(_name)}`
+          try{
+            const seeder = require(`${path}${name}`)
+            console.start()
+            const response = await seeder.run(args, console)
+            console.stop()
+            if(response){
+              if(!args.f && !exists){
+                await SeederModel.create({seeder: name})
+              }
+              console.succeed(`Seeder ${console.paint.green(_name)} launched`)
+            } else {
+              console.fail(`Seeder ${console.paint.red(_name)} failed`)
+            }
+          } catch (error) {
+            console.log('error', error)
+            console.warn(`Seeder ${console.paint.yellow(_name)} aborted`)
+          }
+        }
+        process.exit(0)
       }
+
     }
   }
 }

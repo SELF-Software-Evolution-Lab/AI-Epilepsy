@@ -1,37 +1,50 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import axios from 'axios'
+
 import PatientCard from "../Components/PatientCard";
 import PatientNotFoundComponent from "../Components/PatientNotFoundComponent";
-const BACKEND_URL = ''
+
+import { findPatients } from "../services/patientService";
 
 const Patients = () => {
-    const location = useLocation();
-    const searchInput = location.state;
-
-    const [patient, setPatient] = useState([]);
-    const numbers = [1,2,3,4,5,6,7]
+  const location = useLocation();
+  const searchInput = location.state;
   
-    useEffect(() => {
-        axios.get(`${BACKEND_URL}/patients/${searchInput}`).then((res) =>{
-        
-            setPatient(res.data[0])
-        
-        })
-    }, []);
-
-
+  const [patients, setPatients] = useState([]);
+  
+  
+  useEffect(() => {
+    init()
+  }, []);
+  
+  const init = async() => {
     
+    const response = await findPatients(searchInput)
     
-    return (
-        <div>
-            <h1 className="titulo-principal">Resultados de búsqueda para  {searchInput} </h1>
-            {patient ? <PatientCard patient={patient} context="listPatients" />
-            : <PatientNotFoundComponent/>}
-                  
-            
-        </div>
+    if(response.code === 200){
+      if(response.patients && Array.isArray(response.patients)){
+        setPatients(response.patients)
+      }
+  
+    }
+  }
+  
+  
+  
+  
+  return (
+    <div>
+      <h1 className="titulo-principal">Resultados de búsqueda para  {searchInput} </h1>
+      {
+        patients && patients.length ? 
+          patients.map(_p=>( <PatientCard key={_p.id} patient={_p} context="listPatients" /> ))
+        : <PatientNotFoundComponent/>
+      }
+
+      
+    
+    </div>
     );
-}
-
-export default Patients;
+  }
+  
+  export default Patients;
