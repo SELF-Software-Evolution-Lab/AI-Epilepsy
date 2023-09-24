@@ -80,7 +80,7 @@ const PatientDetail = () => {
             <ExamComponent
               type="examen"
               row={2}
-              exam="Examen físico"
+              exam="FIS"
               description="Observación del estado físico del paciente"
               img={"/icons/phisicalTest.png"}
               patient={patient}
@@ -88,7 +88,7 @@ const PatientDetail = () => {
             <ExamComponent
               type="examen"
               row={2}
-              exam="Examen neuropsicológico"
+              exam="NPS"
               description="Test neuropsicológico para medir las habilidades motoras del paciente "
               img={"/icons/psicoTest.png"}
               patient={patient}
@@ -96,7 +96,7 @@ const PatientDetail = () => {
             <ExamComponent
               type="medicamentos"
               row={2}
-              exam="Medicación"
+              exam="MED"
               description="Recetas médicas"
               img={"/icons/drugs.png"}
               patient={patient}

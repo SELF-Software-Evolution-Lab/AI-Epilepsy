@@ -12,6 +12,7 @@ const PredictionsTableComponent = ({rows,patient}) => {
       axios
         .get(`${config.bkAPEp}/predictions`, { params:{patient_id: patient.id}})
         .then((res) => {
+          console.log('-------zadiaz:res', res)
           setpredictions(res.data.predictions);
         });
     }, []);
@@ -26,20 +27,20 @@ const PredictionsTableComponent = ({rows,patient}) => {
     return (
         <div>
             <div>
-      <table class="styled-table">
+      <table className="styled-table">
         <thead>
           <tr>
             {headers.map((header) => (
-              <th>{header}</th>
+              <th key={header} >{header}</th>
             ))}
           </tr>
         </thead>
         <tbody>
           {predictions.map((prediction,i) => (
-            <tr>
+            <tr key={i}>
               <td>{i+1}</td>
-              <td>{prediction.prediction_id}</td>
-              <td>{prediction.date_requested}</td>
+              <td>{prediction.id}</td>
+              <td>{prediction.created_at}</td>
               <td>
               <button className='event-detail-button' onClick={() =>handlePredictionRequest(prediction.prediction_id)}>Ver detalle</button>
               </td>

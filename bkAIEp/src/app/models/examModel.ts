@@ -2,9 +2,6 @@ import { DataTypes } from 'sequelize';
 import  db  from "@app/database/connection";
 
 const ExamModel = db.define('Exam', {
-  datetime: {
-    type: DataTypes.DATE,
-  },
   detail: {
     type: DataTypes.STRING,
   },

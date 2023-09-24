@@ -44,7 +44,7 @@ class App {
         } catch (error) {
           console.log('error', error)
         }
-      }, 10000)
+      }, global.env.mode === 'dev' ? 100 : 3000 )
     } catch (error) {
       console.log('error', error)
     }
@@ -63,7 +63,7 @@ class App {
 
     this.routes.init()
 
-    const PORT = process.env.PORT || 5001
+    const PORT = global.env.PORT || 5001
     
     this.app.listen(PORT, console.log(chalk.blue(`Server running on port ${PORT}`)))
   }

@@ -21,17 +21,20 @@ class ExamService {
       } else {
 
         if(!_params.source) return responseUtility.error('exam.insert_update.no_source')
-        if(!_params.datetime) return responseUtility.error('exam.insert_update.no_datetime')
         if(!_params.detail) return responseUtility.error('exam.insert_update.no_detail')
         if(!_params.file) return responseUtility.error('exam.insert_update.no_file')
         if(!_params.type) return responseUtility.error('exam.insert_update.no_type')
         if(!_params.patient_id) return responseUtility.error('exam.insert_update.no_patient_id')
 
+        _params.type = _params.type.toLowerCase()
+
         const _r = randomstring.generate(7)
         const _n = _params.file.split('.')
         const new_name = `${_r}.${_n[_n.length -1]}`
         const path = `${PATH}/patient/${_params.patient_id}/${_params.type}`
+
         _params.path = `${path}/${new_name}`
+        _params.file = new_name
 
         const transfer = await finderService.transfer({from: _params.source, to: path, file: new_name})
         if(transfer.status === 'error') return transfer
@@ -64,7 +67,7 @@ class ExamService {
       }
 
       if(_params.type){
-        query.where['format'] = {
+        query.where['type'] = {
           [Op.eq]: _params.type.toUpperCase()
         }
       }

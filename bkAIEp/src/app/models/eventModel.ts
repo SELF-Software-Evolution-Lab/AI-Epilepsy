@@ -2,16 +2,13 @@ import { DataTypes } from 'sequelize';
 import  db  from "@app/database/connection";
 
 const EventModel = db.define('Event', {
-  datetime: {
-    type: DataTypes.DATE,
-  },
   detail: {
     type: DataTypes.STRING,
   },
-  format:{
+  person:{
     type: DataTypes.STRING,
   },
-  file:{
+  type:{
     type: DataTypes.STRING,
   },
   patient_id:{
