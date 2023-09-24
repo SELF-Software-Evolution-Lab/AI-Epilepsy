@@ -1,9 +1,11 @@
-
+import randomstring from 'randomstring'
 
 import { responseUtility } from "@core/responseUtility"
 import { Exam } from '@app/models'
 import { Op } from "sequelize"
+import { finderService } from "@app/services/finder/finderService"
 
+const PATH = '/home/ftpuser/public_html'
 class ExamService {
   
   constructor () {}
@@ -17,6 +19,25 @@ class ExamService {
         const exam = await Exam.findOne({ where: { id: _params.id } })
         return responseUtility.success({exam: exam})
       } else {
+
+        if(!_params.source) return responseUtility.error('exam.insert_update.no_source')
+        if(!_params.datetime) return responseUtility.error('exam.insert_update.no_datetime')
+        if(!_params.detail) return responseUtility.error('exam.insert_update.no_detail')
+        if(!_params.file) return responseUtility.error('exam.insert_update.no_file')
+        if(!_params.type) return responseUtility.error('exam.insert_update.no_type')
+        if(!_params.patient_id) return responseUtility.error('exam.insert_update.no_patient_id')
+
+        const _r = randomstring.generate(7)
+        const _n = _params.file.split('.')
+        const new_name = `${_r}.${_n[_n.length -1]}`
+        const path = `${PATH}/patient/${_params.patient_id}/${_params.type}`
+        _params.path = `${path}/${new_name}`
+
+        const transfer = await finderService.transfer({from: _params.source, to: path, file: new_name})
+        if(transfer.status === 'error') return transfer
+
+
+
         const _exam = await Exam.create(_params)
         const exam = _exam.toJSON()
         return responseUtility.success({exam})

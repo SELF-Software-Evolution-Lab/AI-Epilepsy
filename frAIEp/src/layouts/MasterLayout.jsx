@@ -1,4 +1,4 @@
-import NavBarV2 from "../components/NavBarV2";
+import NavBarV2 from "./../components/NavBarV2";
 import "./MasterLayout.css"
 
 export default function MasterLayout(props) {

@@ -56,7 +56,7 @@ const PredictionDetail = () => {
             <strong>{prediction.label}</strong>
           </p>
           <p className="prediction-result">
-            Team AI-EPILEPSY,
+            Team ai_epilepsy,
           </p>
           <img  className="prediction-icon"src={process.env.PUBLIC_URL + "/icons/plogo.png"}></img>
           <section className="prediction-detail-buttons">

@@ -8,12 +8,15 @@ const ExamModel = db.define('Exam', {
   detail: {
     type: DataTypes.STRING,
   },
-  format:{
-    type: DataTypes.STRING,
-  },
   file:{
     type: DataTypes.STRING,
   },
+  path:{
+    type: DataTypes.STRING,
+  },
+  type:{
+    type: DataTypes.STRING,
+  }, 
   patient_id:{
     type: DataTypes.INTEGER,
     references: {

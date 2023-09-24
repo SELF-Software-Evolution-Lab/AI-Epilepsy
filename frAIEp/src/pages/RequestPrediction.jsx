@@ -1,4 +1,4 @@
-import RequestPredictionComponent from '../Components/RequestPredictionComponent';
+import RequestPredictionComponent from './../components/RequestPredictionComponent';
 import { useLocation } from "react-router-dom";
 
 

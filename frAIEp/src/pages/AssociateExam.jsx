@@ -1,5 +1,5 @@
 import React from 'react';
-import UploadExamComponent from '../Components/UploadExamComponent'
+import UploadExamComponent from './../components/UploadExamComponent'
 import { useLocation } from "react-router-dom";
 
 

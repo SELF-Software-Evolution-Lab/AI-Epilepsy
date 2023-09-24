@@ -1,5 +1,5 @@
 import React from "react";
-import ExamHistory from "../Pages/ExamHistory";
+import ExamHistory from "./../pages/ExamHistory";
 
 const ExamsTableComponent = ({rows }) => {
   const headers = ['No.','ID Examen', 'Fecha', 'Accionables']

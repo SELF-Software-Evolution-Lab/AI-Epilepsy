@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ModalSelectFile from './ModalAssociateFile/ModalSelectFile';
 
-const RequestPrediction = ({ patient }) => {
+const UploadExamComponent = ({ patient }) => {
   const navigation = useNavigate();
   const [file, setFile] = useState(null);
   const [observations, setObservations] = useState("");
@@ -116,4 +116,4 @@ const RequestPrediction = ({ patient }) => {
   );
 };
 
-export default RequestPrediction;
+export default UploadExamComponent;

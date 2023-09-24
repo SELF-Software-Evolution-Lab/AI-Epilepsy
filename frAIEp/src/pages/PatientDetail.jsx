@@ -1,10 +1,10 @@
 import {  useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import PatientCard from "../Components/PatientCard";
-import ExamComponent from "../Components/ExamComponent";
-import PredictionsTableComponent from "../Components/PredictionsTableComponent";
-import EventTableComponent from "../Components/EventTablecomponent";
+import PatientCard from "./../components/PatientCard";
+import ExamComponent from "./../components/ExamComponent";
+import PredictionsTableComponent from "./../components/PredictionsTableComponent";
+import EventTableComponent from "./../components/EventTablecomponent";
 
 const PatientDetail = () => {
   const navigation = useNavigate();
