@@ -30,6 +30,7 @@ class FtpUtility {
   public disconnect = async (connection) => {
     try{
       this.connections[connection]?.close()
+      this.connections[connection] = undefined
     } catch (error) {
       console.log('error', error)
     }
