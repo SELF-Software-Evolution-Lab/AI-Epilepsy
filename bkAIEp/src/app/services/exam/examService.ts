@@ -1,9 +1,10 @@
 import randomstring from 'randomstring'
 
 import { responseUtility } from "@core/responseUtility"
-import { Exam } from '@app/models'
+import { Event, Exam } from '@app/models'
 import { Op } from "sequelize"
 import { finderService } from "@app/services/finder/finderService"
+import moment from 'moment'
 
 const PATH = '/home/ftpuser/public_html'
 class ExamService {
@@ -39,11 +40,19 @@ class ExamService {
         const transfer = await finderService.transfer({from: _params.source, to: path, file: new_name})
         if(transfer.status === 'error') return transfer
 
+        const __event =   {
+          detail: moment.utc().toISOString(),
+          person: "Zadiaz",
+          type: `Examen ${_params.type}`,
+        }
 
+        const _event = await Event.create(__event)
+        const event = _event.toJSON()
 
         const _exam = await Exam.create(_params)
         const exam = _exam.toJSON()
-        return responseUtility.success({exam})
+        
+        return responseUtility.success({exam, event})
       }
     } catch (error) {
       console.log('error', error)
