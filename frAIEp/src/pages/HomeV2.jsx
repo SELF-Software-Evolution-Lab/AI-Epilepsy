@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import MasterLayout from "../layouts/MasterLayout";
+import MasterLayout from "./../layouts/MasterLayout";
 import { Button } from "react-bootstrap";
 import { TbUserSearch} from "react-icons/tb"
 

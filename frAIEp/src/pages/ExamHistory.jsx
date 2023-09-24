@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import ExamsTableComponent from "../Components/ExamTableComponent";
+import ExamsTableComponent from "./../components/ExamTableComponent";
 import { config } from "../config/env";
 
 const ExamHistory = () => {

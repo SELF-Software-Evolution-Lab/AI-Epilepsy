@@ -1,28 +1,40 @@
 version: "3.8"
 services:
-  epilepsy-backend:
-    build: Server/
-    ports:
-      - "4301:4000"
-    depends_on:
-      - epilepsy-mysql
-    networks:
-      epilepsy-net:
-  epilepsy-frontend:
-    build: Client/front-end/
-    ports:
-      - "4300:3000"
-    networks:
-      epilepsy-net:
-    environment:
-      REACT_APP_BACKEND_URL: "localhost:4301"
-  epilepsy-mysql:
-    image: mysql
+  sql:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: Pipemerca410*
-      MYSQL_DATABASE: Ai-Epilepsy
+      MYSQL_ROOT_PASSWORD: "ai_epilepsy10*"
+    ports:
+      - "3306:3306"
     networks:
-      epilepsy-net:
+      AIEp-net:
+        ipv4_address: 172.16.238.10
+    volumes:
+      - .docker/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+      - db_data:/var/lib/mysql
+  backend:
+    build: bkAIEp/
+    ports:
+      - "5001:5001"
+    depends_on:
+      - sql
+    links:
+      - sql
+    networks:
+      AIEp-net:
+  frontend:
+    build: frAIEp/
+    ports:
+      - "5002:5173"
+    networks:
+      AIEp-net:
 networks:
-  epilepsy-net:
+  AIEp-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.238.0/16
+volumes:
+  db_data:

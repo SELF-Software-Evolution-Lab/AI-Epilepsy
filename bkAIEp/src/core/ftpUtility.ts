@@ -10,6 +10,7 @@ class FtpUtility {
   private connections: Client[]
   constructor(){
     this.connections = []
+    this.connect()
   }
 
   public connect = async () => {
@@ -41,15 +42,22 @@ class FtpUtility {
   public  async ls (connection: string) {
     try{
       const response = await this.connections[connection].list()
+      const pwd = await this.connections[connection].pwd()
       const files = []
       if(Array.isArray(response)){
         for (const file of response) {
-          files.push({
-            file: file.name,
-            type: file.type  === 1? 'file': 'directory',
-            size: file.size,
-            date: moment.utc(file.rawModifiedAt).toISOString()
-          })
+          try{
+            files.push({
+              name: file.name,
+              path: `${pwd}/${file.name}`,
+              type: file.type  === 1? 'file': 'directory',
+              size: file.size,
+              date: moment.utc(file.rawModifiedAt).toISOString()
+            })
+            
+          } catch (error) {
+            console.log('error', error)
+          }
         }
       }
       return responseUtility.success({files})
@@ -61,8 +69,9 @@ class FtpUtility {
 
   public async mov ( connection:string, from:string, to:string, file:string){
     try{
-      const response = await this.connections[connection].rename(`${from}${file}`, `${to}${file}`)
-      return responseUtility.success({ path: `${to}${file}`, response})
+      await this.connections[connection].ensureDir(to)
+      const response = await this.connections[connection].rename(`${from}`, `${to}/${file}`)
+      return responseUtility.success({ path: `${to}/${file}`, response})
     } catch (error) {
       console.log('error', error)
       return responseUtility.error('ftpUtility.mov.failed_action')
@@ -93,7 +102,7 @@ class FtpUtility {
     }
   }
 
-  public  async pwd (connection: string, dir:string) {
+  public  async pwd ( connection: string ) {
     try{
       return responseUtility.success({
         path: await this.connections[connection].pwd()

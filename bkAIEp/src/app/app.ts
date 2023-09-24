@@ -35,9 +35,16 @@ class App {
     Object.freeze(global.env)
 
     try{
-      await this.dataBase.authenticate()
-      await this.dataBase.sync(global.env.database?.sync?.force? {force: true} : {})
-      console.log(chalk.blue('MYSQL connected'))
+      setTimeout( async()=>{
+        try{
+          await this.dataBase.authenticate()
+          await this.dataBase.sync(global.env.database?.sync?.force? {force: true} : {})
+          console.log(chalk.blue('MYSQL connected'))
+          
+        } catch (error) {
+          console.log('error', error)
+        }
+      }, 10000)
     } catch (error) {
       console.log('error', error)
     }

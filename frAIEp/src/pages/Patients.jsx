@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import PatientCard from "../Components/PatientCard";
-import PatientNotFoundComponent from "../Components/PatientNotFoundComponent";
+import PatientCard from "./../components/PatientCard";
+import PatientNotFoundComponent from "./../components/PatientNotFoundComponent";
 
 import { findPatients } from "../services/patientService";
 

@@ -48,14 +48,16 @@ export const run = async(_params, console:IConsole) => {
       {
         datetime: moment.utc().toISOString(),
         detail: "Detail del examen MRI",
-        format: "MRI",
-        file: "patientes/{{1}}/file.mri"
+        type: "MRI",
+        file: "file.mri",
+        path: "patientes/{{1}}/file.eeg"
       },
       {
         datetime: moment.utc().toISOString(),
         detail: "Detail del examen EEG",
-        format: "EEG",
-        file: "patientes/{{1}}/file.eeg"
+        type: "EEG",
+        file: "patientes/{{1}}/file.eeg",
+        path: "patientes/{{1}}/file.eeg"
       }
     ]
 
