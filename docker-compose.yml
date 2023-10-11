@@ -14,14 +14,20 @@ services:
     volumes:
       - .docker/setup.sql:/docker-entrypoint-initdb.d/setup.sql
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD-SHELL", "mysql -h localhost -P 3306 -u root -p$$MYSQL_ROOT_PASSWORD -e 'SELECT 1;'" ]
+      interval: 2s
+      timeout: 5s
+      retries: 10
   backend:
     build: bkAIEp/
     ports:
       - "5001:5001"
     depends_on:
-      - sql
-    links:
-      - sql
+      sql:
+        condition: service_healthy
+      ftp:
+        condition: service_started
     networks:
       AIEp-net:
   frontend:
