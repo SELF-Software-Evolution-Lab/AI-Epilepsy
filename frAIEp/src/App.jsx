@@ -44,6 +44,10 @@ const router = createBrowserRouter([
     element: <Wrapper> <PatientDetail/></Wrapper>,
   },
   {
+    path: "/patients/:patientid/exams/mri/:examid/",
+    element: <Wrapper> <Visualizer/></Wrapper>,
+  },
+  {
     path: "/request-prediction",
     element: <Wrapper> <RequestPrediction/></Wrapper>,
   },
