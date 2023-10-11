@@ -45,6 +45,7 @@ class App {
           console.log('error', error)
         }
       }, global.env.mode === 'dev' ? 100 : 3000 )
+
     } catch (error) {
       console.log('error', error)
     }

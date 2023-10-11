@@ -11,7 +11,7 @@ const ExamsTableComponent = ({rows }) => {
 
   return (
     <div>
-      <table class="styled-table">
+      <table className="styled-table">
         <thead>
           <tr>
             {headers.map((header) => (

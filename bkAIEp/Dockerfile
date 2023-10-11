@@ -6,10 +6,11 @@ COPY package.json /code/package.json
 COPY tsconfig.json /code/tsconfig.json
 COPY .eslintrc.json /code/.eslintrc.json
 COPY src /code/src
+COPY *.env /code
 
 RUN npm install
 
 
 EXPOSE 5001
 
-cmd ["npm", "run", "dev"]
+CMD ["npm", "run", "dev"]

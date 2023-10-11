@@ -20,6 +20,7 @@ import ExamHistory from "./pages/ExamHistory"
 import AssociateExam from "./pages/AssociateExam"
 import PredictionDetail from "./pages/PredictionDetail"
 import NotFound from "./pages/NotFound"
+import Visualizer from "./pages/Visualizer";
 
 const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
   {
     path: "/prediction-detail",
     element: <Wrapper> <PredictionDetail/></Wrapper>,
+  },
+  {
+    path: "/visualizer",
+    element: <Wrapper> <Visualizer/></Wrapper>,
   },
   {
     path: "*",

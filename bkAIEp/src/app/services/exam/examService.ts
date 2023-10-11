@@ -6,6 +6,7 @@ import { Op } from "sequelize"
 import { finderService } from "@app/services/finder/finderService"
 import moment from 'moment'
 
+
 const PATH = '/home/ftpuser/public_html'
 class ExamService {
   
@@ -48,6 +49,7 @@ class ExamService {
 
         const _event = await Event.create(__event)
         const event = _event.toJSON()
+
 
         const _exam = await Exam.create(_params)
         const exam = _exam.toJSON()
@@ -119,7 +121,6 @@ class ExamService {
   public async test (_params: any) {
     try{
       
-      return responseUtility.success()
     } catch (error) {
       console.log('error', error)
     }
