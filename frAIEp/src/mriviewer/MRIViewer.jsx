@@ -7,6 +7,7 @@ import React from 'react';
 import { Main } from './ui/Main.jsx';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
+import "./MRIViewer.css"
 
 const MRIViewer = () => {
     return (
