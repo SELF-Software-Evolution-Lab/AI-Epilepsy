@@ -1,7 +1,31 @@
 version: "3.8"
 services:
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbit
+    environment:
+      - RABBITMQ_DEFAULT_USER=amqpuser
+      - RABBITMQ_DEFAULT_PASS=ai_epilepsy10*
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      AIEp-net:
+        ipv4_address: 172.16.238.13
+  ftp:
+    image: delfer/alpine-ftp-server
+    container_name: ftp
+    environment:
+      USERS: "ftpuser|ai_epilepsy10*|/home/user"
+    ports:
+      - "5021:21"
+      - "21000-21010:21000-21010"
+    networks:
+      AIEp-net:
+        ipv4_address: 172.16.238.12
   sql:
     image: mysql:8.0
+    container_name: sql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
@@ -21,6 +45,7 @@ services:
       retries: 10
   backend:
     build: bkAIEp/
+    container_name: backend
     ports:
       - "5001:5001"
     depends_on:
@@ -28,10 +53,14 @@ services:
         condition: service_healthy
       ftp:
         condition: service_started
+    links:
+      - sql
+      - ftp
     networks:
       AIEp-net:
   frontend:
     build: frAIEp/
+    container_name: frontend
     ports:
       - "5002:5173"
     networks:

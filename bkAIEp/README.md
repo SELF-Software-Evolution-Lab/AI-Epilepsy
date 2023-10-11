@@ -1,4 +1,4 @@
-# frAIEp
+# bkAIEp
 
 
 For this repo to work, you need to have installed node 18 and git
@@ -24,11 +24,9 @@ go to the directory of the repository in your system
 
 - In the same terminal
 
-- cd AI-Epilepsy/frAIEp
+- cd AI-Epilepsy/bkAIEp
 
 once there you will need to run
-
-- In the same terminal 
 
 - npm install
 

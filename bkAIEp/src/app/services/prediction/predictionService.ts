@@ -3,6 +3,7 @@
 import { responseUtility } from "@core/responseUtility"
 import { Prediction } from '@app/models'
 import { Op } from "sequelize"
+import { queueService } from "@app/services/queue/queueService"
 
 class PredictionService {
   
@@ -17,8 +18,40 @@ class PredictionService {
         const prediction = await Prediction.findOne({ where: { id: _params.id } })
         return responseUtility.success({prediction: prediction})
       } else {
-        const _prediction = await Prediction.create(_params)
+
+        if(!_params.mri && !_params.arn && !_params.eeg) return responseUtility.error('prediction.insert_update.need_at_least_a_exam')
+
+        const _data:any = {}
+
+        if(_params.mri && _params.mri.file){
+          _data.mri = _params.mri.file
+        }
+
+        if(_params.arn && _params.arn.file){
+          _data.arn = _params.arn.file
+        }
+
+        if(_params.eeg && _params.eeg.file){
+          _data.eeg = _params.eeg.file
+        }
+
+        const _p:any = {
+          patient_id:  _params.patient_id,
+          label: 'Requested',
+          result: 0,
+          prediction_data: JSON.stringify(_data)
+        }
+
+        const _prediction = await Prediction.create(_p)
         const prediction = _prediction.toJSON()
+
+        _data.patient_id = _params.patient_id,
+        _data.prediction = prediction.id
+
+        if(_prediction){
+          await queueService.sendMessage(JSON.stringify(_data))
+        }
+
         return responseUtility.success({prediction})
       }
     } catch (error) {
@@ -70,7 +103,7 @@ class PredictionService {
     try{
       const prediction = await Prediction.findOne({ where: { id: _params.id } })
       if(!prediction) return responseUtility.error('prediction.not_found')
-      return responseUtility.success({prediction})
+      return responseUtility.success({prediction: prediction.dataValues})
     } catch (error) {
       console.log('error', error)
       return responseUtility.error('prediction.get.fail_action')

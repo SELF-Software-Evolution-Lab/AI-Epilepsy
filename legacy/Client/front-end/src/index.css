@@ -1043,18 +1043,7 @@ li{
   margin: auto;
 }
 
-.folder {
-  margin-top: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 2px;
-  width: 300px;
-  
-  cursor: pointer;
-  
-  
-}
+
 
 .inputContainer{
   display: flex;
@@ -1076,25 +1065,14 @@ li{
   cursor: pointer;
 }
 
-.folder > span {
-  margin: 0 5px;
-}
 
-.folder > div > button {
-  font-size: 15px;
-  background-color: white;
-}
+
 
 .file {
   margin-top: 5px;
   padding-left: 5px;
   display: flex;
   flex-direction: column;
-}
-
-.selected-file{
-  margin-left: 25px;
-  margin-top: 15px;
 }
 
 

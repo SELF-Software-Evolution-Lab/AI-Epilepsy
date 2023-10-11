@@ -6,8 +6,8 @@ import * as process from "process";
  * @param variableName the name of the environment variable key
  * @param defaultValue the value to be returned if environment variable is not found
  */
-function getEnv(variableName: string, defaultValue: string){
-    if(!process.env[variableName]?.trim()){
+function getEnv(variableName: string, defaultValue: string) {
+    if (!process.env[variableName]?.trim()) {
         return defaultValue
     }
     return process.env[variableName]
@@ -15,20 +15,20 @@ function getEnv(variableName: string, defaultValue: string){
 
 export const config = {
     mode: 'dev',
-    database:{
-        sync:{
+    database: {
+        sync: {
             force: false
         },
         host: getEnv("DB_HOST", '172.16.238.10'),
         dialect: 'mysql',
         logging: false,
-        connection:{
-            database: getEnv("DB_NAME",'ai_epilepsy'),
+        connection: {
+            database: getEnv("DB_NAME", 'ai_epilepsy'),
             username: getEnv("DB_USERNAME", 'root'),
             password: getEnv("DB_PASSWORD", 'ai_epilepsy10*'),
         },
     },
-    rabbit:{
+    rabbit: {
         protocol: getEnv("RB_PROTOCOL", "amqp"),
         hostname: getEnv("RB_HOST", "172.16.238.13"),
         port: getEnv("RB_PORT", "5672"),
@@ -36,7 +36,7 @@ export const config = {
         password: getEnv("RB_PASSWORD", "ai_epilepsy10*"),
         vhost: "/"
     },
-    ftp:{
+    ftp: {
         logger: true,
         connections: [
             {
@@ -49,4 +49,3 @@ export const config = {
             }
         ]
     }
-}

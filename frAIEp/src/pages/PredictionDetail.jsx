@@ -47,7 +47,7 @@ const PredictionDetail = () => {
           </p>
           <p className="prediction-field">
             <strong>Fecha de la predicción: </strong>
-            {prediction.date_requested}
+            {prediction.created_at}
           </p>
           <p className="prediction-result">
             <strong>Predicción general: </strong>El modelo predictivo
@@ -58,7 +58,7 @@ const PredictionDetail = () => {
           <p className="prediction-result">
             Team ai_epilepsy,
           </p>
-          <img  className="prediction-icon"src={process.env.PUBLIC_URL + "/icons/plogo.png"}></img>
+          <img  className="prediction-icon"src={"/logo.png"}></img>
           <section className="prediction-detail-buttons">
             <button onClick={handleCancel} className="request-prediction-button">Listo</button>
             
