@@ -1,41 +1,56 @@
-import React from "react";
 import ModalSelectFilePrediction from "./ModalselectFilePrediction/ModalSelectFilePrediction";
+import moment from "moment";
 
 const RequestPredictionTableComponents = ({mri,eeg,arn,patient,setArn,setMri,setEeg}) => {
-    const headers = ['Nombre del examen','Tipo', 'Formato' ,'Fecha', 'Accionables']
+  
+  const headers = ['ID','Tipo', 'Archivo' ,'Fecha', 'Accionables']
   return (
     <div>
-      <table class="styled-table-rp">
+      <table className="styled-table-rp">
         <thead>
           <tr>
             {headers.map((header) => (
-              <th>{header}</th>
+              <th key={header}>{header}</th>
             ))}
           </tr>
         </thead>
         <tbody>
-          
-            <tr>
-              <td className="file-rp">{mri.exam_id}</td>
-              <td>MRI</td>
-              <td>.zip</td>
-              <td>{mri.date}</td> 
-              <td><ModalSelectFilePrediction type="MRI" patient={patient} setExam={setMri}/></td>       
-            </tr>
-            <tr>
-              <td className="file-rp">{eeg.exam_id}</td>
-              <td>EEG</td>
-              <td>.edf</td>
-              <td>{eeg.date}</td>   
-              <td><ModalSelectFilePrediction type="EEG" patient={patient} setExam={setEeg}/></td>
-            </tr>
-            <tr>
-              <td className="file-rp">{arn.exam_id}</td>
-              <td>Micro ARNs</td>
-              <td>.txt</td>
-              <td>{arn.date}</td>    
-              <td><ModalSelectFilePrediction type="ARN" patient={patient} setExam={setArn}/></td>        
-            </tr>
+            {
+              mri ? 
+                <tr>
+                  <td className="file-rp">{mri?.id}</td>
+                  <td>{mri?.type}</td>
+                  <td>{mri?.file}</td>
+                  <td>{moment.utc(mri?.created_at).format('hh:mm A - YY-MM-DD')}</td> 
+                  <td><ModalSelectFilePrediction type="MRI" patient={patient} setExam={setMri}/></td>       
+                </tr>
+
+              :null
+            }
+            {
+              eeg ? 
+                <tr>
+                  <td className="file-rp">{eeg?.id}</td>
+                  <td>{eeg?.type}</td>
+                  <td>{eeg?.file}</td>
+                  <td>{moment.utc(eeg?.created_at).format('hh:mm A - YY-MM-DD')}</td> 
+                  <td><ModalSelectFilePrediction type="EEG" patient={patient} setExam={setEeg}/></td>
+                </tr>
+              : null
+            }
+            {
+              arn ? 
+
+              <tr>
+                <td className="file-rp">{arn?.id}</td>
+                <td>{arn?.type}</td>
+                <td>{arn?.file}</td>
+                <td>{moment.utc(arn?.created_at).format('hh:mm A - YY-MM-DD')}</td> 
+                <td><ModalSelectFilePrediction type="ARN" patient={patient} setExam={setArn}/></td>        
+              </tr>
+
+              : null
+            }
             <tr>
               
             </tr>

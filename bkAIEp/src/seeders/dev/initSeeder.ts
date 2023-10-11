@@ -32,14 +32,14 @@ export const run = async(_params, console:IConsole) => {
     const events = [
       {
         datetime: moment.utc().toISOString(),
-        detail: "Detail del evento MRI",
-        format: "MRI",
+        person: "Zadiaz",
+        type: "Consulta General",
         file: "patientes/{{1}}/file.mri"
       },
       {
         datetime: moment.utc().toISOString(),
-        detail: "Detail del evento EEG",
-        format: "EEG",
+        person: "Zadiaz",
+        type: "Control",
         file: "patientes/{{1}}/file.eeg"
       }
     ]
@@ -101,7 +101,6 @@ export const run = async(_params, console:IConsole) => {
         prediction['patient_id'] = _patient['id']
         await Prediction.create(prediction)
       }
-
     }
     
   } catch (error) {

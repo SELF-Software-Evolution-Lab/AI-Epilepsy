@@ -1,31 +1,36 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ModalSelectFile from './ModalAssociateFile/ModalSelectFile';
+import axios from "axios";
+import { createExam } from "../services/examService";
 
-const UploadExamComponent = ({ patient }) => {
+const UploadExamComponent = ({ patient, exam }) => {
   const navigation = useNavigate();
-  const [file, setFile] = useState(null);
+  const [selected, setSelected] = useState('');
+  const [selectedName, setSelectedName] = useState('');
   const [observations, setObservations] = useState("");
-  const [uploadingState, setUploadingState] = useState("Not uploaded");
 
 
 
-  const handleFilechange = (e) => {
-    setFile(e.target.value);
-    console.log(file);
-  };
 
   const handleObservationsChange = (e) => {
     setObservations(e.target.value);
     console.log(observations);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    const response = await createExam({
+      patient_id: patient.id,
+      detail: observations,
+      file: selectedName,
+      source: selected,
+      type: exam
+    })
     /* const formData = new FormData();
     formData.append("file", file);
+    
     console.log(formData); */
-    setUploadingState("Uploading");
     setTimeout(() => {
       /* axios
         .post("${BACKEND_URL}/upload-exam", formData)
@@ -37,7 +42,6 @@ const UploadExamComponent = ({ patient }) => {
           setUploadingState("Error");
           console.log("Error uploading file", err);
         }); */
-    setUploadingState("Success");
     }, 5000);
   };
   const handleCancel = () => {
@@ -47,13 +51,22 @@ const UploadExamComponent = ({ patient }) => {
   return (
     <div>
       <section className="upload-exam-container">
-        {uploadingState === "Not uploaded" && (
+        { (
           <section>
-            <h3 className="titulo-terciario">
-              Seleccione el archivo que desea asociar al paciente{patient.first_name} {patient.last_name}
-            </h3>
-            <ModalSelectFile/>
-            <p className="selected-file">MRI_1026597845.zip</p>
+            {
+              selected ==='' ? 
+                <h3 className="titulo-terciario">
+                  Seleccione el archivo que desea asociar al paciente {patient.first_name} {patient.last_name}
+                </h3>
+              : null
+            }
+            <ModalSelectFile selected={selected} setSelected={setSelected} selectedName={selectedName} setSelectedName={setSelectedName} />
+            <div className="px-4 py-3">
+              {
+                selected !== '' && `${selectedName} - ${selected}` 
+              }
+
+            </div>
             <h3 className="titulo-terciario">Observaciones</h3>
             <textarea
               className="observations-input"
@@ -71,42 +84,6 @@ const UploadExamComponent = ({ patient }) => {
               </button>
               <button onClick={handleSubmit} className="upload-exam-button">
                 Asociar Exámen
-              </button>
-            </section>
-          </section>
-        )}
-        {uploadingState === "Uploading" && (
-          <h3 className="titulo-terciario-center">Cargando</h3>
-        )}
-        {uploadingState === "Success" && (
-          <section>
-            <div className="succes-message-container">
-            <p className="titulo-terciario-center">
-              Se asoció exitosamente el exámen, lo podrás ver en le historial de
-              exámenes del paciente
-            </p>
-            <img className= "success-icon "src={process.env.PUBLIC_URL + "/icons/checked.png"}></img>
-            </div>
-            
-            <section className="request-prediction-buttons">
-              <button
-                onClick={handleCancel}
-                className="request-prediction-button"
-              >
-                Listo
-              </button>
-            </section>
-          </section>
-        )}
-        {uploadingState === "Error" && (
-          <section>
-            <p>No se pudo cargar el exámen correctamente</p>
-            <section className="request-prediction-buttons">
-              <button
-                onClick={handleCancel}
-                className="request-prediction-button"
-              >
-                Listo
               </button>
             </section>
           </section>

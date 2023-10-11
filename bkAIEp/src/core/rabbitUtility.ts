@@ -7,11 +7,14 @@ export interface IRabbitConnection extends amqp.Connection{
 
 }
 
+
 class RabbitUtility {
 
   private static instance: RabbitUtility
   private connection: amqp.Connection
   private settings: amqp.Options.Connect
+  private channel_outbound : amqp.ChannelModel
+  private channel_inbound : amqp.ChannelModel
 
   constructor() {
     this.settings = config.rabbit
@@ -30,18 +33,36 @@ class RabbitUtility {
 
   public async connect() {
     try{
-      this.connection = await amqp.connect(this.settings);
+      this.connection = await amqp.connect(this.settings,{
+        keepAlive: true,
+        noDelay: true
+      })
+      const channel = await this.connection.createChannel()
       return this.connection
     } catch (error) {
       console.log('error', error)
     }
   }
 
-  public async channel(name: string ,options?: {}) {
+  public async get_channel_outbound() {
     try{
       if(!this.connection) await this.connect()
       const channel = await this.connection.createChannel()
-      await channel.assertQueue(name, options)
+      await channel.assertQueue(OUTBOUND_QUEUE, {})
+      this.channel_outbound = channel
+      return channel
+    } catch (error) {
+      console.log('error', error)
+    }
+  }
+
+  public async connect_channel_inbound(listener) {
+    try{
+      if(!this.connection) await this.connect()
+      const channel = await this.connection.createChannel()
+      await channel.assertQueue(INBOUND_QUEUE, {})
+      this.channel_inbound = channel
+      channel.consume(INBOUND_QUEUE, listener, { noAck: true })
       return channel
     } catch (error) {
       console.log('error', error)

@@ -1,0 +1,8 @@
+.selected-file{
+  color: blue;
+}
+.file{
+  cursor: pointer;
+  width: 100%;
+  border-bottom: 1pt grey solid;
+}

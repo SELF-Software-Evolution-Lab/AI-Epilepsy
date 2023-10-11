@@ -1,5 +1,6 @@
 import React from "react";
 import ExamHistory from "./../pages/ExamHistory";
+import moment from "moment";
 
 const ExamsTableComponent = ({rows }) => {
   const headers = ['No.','ID Examen', 'Fecha', 'Accionables']
@@ -10,7 +11,7 @@ const ExamsTableComponent = ({rows }) => {
 
   return (
     <div>
-      <table class="styled-table">
+      <table className="styled-table">
         <thead>
           <tr>
             {headers.map((header) => (
@@ -22,9 +23,9 @@ const ExamsTableComponent = ({rows }) => {
           {rows.map((row, i) => (
             <tr>
               <td>{i+1}</td>
-              <td>{row.exam_id}</td>
+              <td>{row.id}</td>
               
-              <td>{row.date}</td>
+              <td>{moment.utc(row.created_at).format('hh:mm A - YY-MM-DD')}</td>
               <td>
               <button className='event-detail-button'>Ver detalle</button>
               {/* <img className="download-icon" alt="boton-descargar" src="/icons/download.png" onClick={handleDowload}></img> */}

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable react/prop-types */
+import  { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import RequestPredictionTableComponents from "./RequestPredictionTableComponents";
@@ -26,7 +27,7 @@ const RequestPrediction = ({ patient }) => {
     axios
       .get(`${config.bkAPEp}/exams`, {params: { patient_id: patient.id, type: 'mri'}})
       .then((res) => {
-        setMri(res.data.exams);
+        setMri(res.data.exams)
       });
 
     axios
@@ -49,24 +50,18 @@ const RequestPrediction = ({ patient }) => {
     let prediction_id = "";
 
     axios
-      .post(`${config.bkAPEp}/create-prediction/${patient.document_id}`)
+      .post(`${config.bkAPEp}/predictions/create`,{
+        mri: mri[0],
+        arn: arn[0],
+        eeg: eeg[0],
+        patient_id: patient.id
+      })
       .then((res) => {
-        console.log("Response:", res.data);
-        prediction_id = res.data;
-        const data = {
-          patient_id: prediction_id,
-          mri_path: mri[0].storage_path,
-          eeg_path: eeg[0].storage_path,
-          mirna_id: arn[0].storage_path,
-        };
-        putInQueue(data);
+        handleCancel()
       });
   };
 
   const putInQueue = (data) => {
-    console.log();
-    console.log("patient", patient.first_name);
-    console.log("patient", patient.last_name);
     axios
       .post(
         `${config.bkAPEp}/predict/${patient.document_id}?fname=${patient.first_name}&lname=${patient.last_name}`,
@@ -87,7 +82,8 @@ const RequestPrediction = ({ patient }) => {
         {sendingState === "Not added" && (
           <div>
             <h3 className="titulo-terciario">Exámenes disponibles:</h3>
-            {mri.length > 0 && arn.length > 0 && eeg.length > 0 && (
+            
+            {mri.length > 0 || arn.length > 0 || eeg.length > 0 ? (
               <RequestPredictionTableComponents
                 mri={mri[0]}
                 eeg={eeg[0]}
@@ -97,7 +93,8 @@ const RequestPrediction = ({ patient }) => {
                 setEeg={changeEeg}
                 setMri={changeMri}
               />
-            )}
+              
+            ):null}
 
             <h4 className="titulo-cuaternario">
               Seguro que quieres solicitar una predicción a través de estos 3
