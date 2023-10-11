@@ -70,7 +70,7 @@ class PredictionService {
     try{
       const prediction = await Prediction.findOne({ where: { id: _params.id } })
       if(!prediction) return responseUtility.error('prediction.not_found')
-      return responseUtility.success({prediction})
+      return responseUtility.success({prediction: prediction.dataValues})
     } catch (error) {
       console.log('error', error)
       return responseUtility.error('prediction.get.fail_action')

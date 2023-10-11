@@ -14,6 +14,9 @@ const PredictionModel = db.define('Prediction', {
   },
   label:{
     type: DataTypes.STRING,
+  },
+  result:{
+    type: DataTypes.INTEGER,
   }
 }, {
   tableName: 'predictions',

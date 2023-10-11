@@ -5,6 +5,7 @@ import { Event, Exam } from '@app/models'
 import { Op } from "sequelize"
 import { finderService } from "@app/services/finder/finderService"
 import moment from 'moment'
+import { OUTBOUND_QUEUE, rabbitUtility } from '@core/rabbitUtility'
 
 const PATH = '/home/ftpuser/public_html'
 class ExamService {
@@ -119,7 +120,6 @@ class ExamService {
   public async test (_params: any) {
     try{
       
-      return responseUtility.success()
     } catch (error) {
       console.log('error', error)
     }

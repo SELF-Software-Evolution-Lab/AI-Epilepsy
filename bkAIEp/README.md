@@ -1,4 +1,4 @@
-# frAIEp
+# bkAIEp
 
 
 For this repo to work, you need to have installed node 18
@@ -13,7 +13,7 @@ Then, please don't forget to download the repository
 
 go to the directory of the repository in your system
 
-- cd */../AI-Epilepsy/frAIEp
+- cd */../AI-Epilepsy/bkAIEp
 
 once there you will need to run
 
