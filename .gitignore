@@ -1,8 +1,7 @@
 
 bkAIEp/node_modules
-bkAIEp/src/config/env.ts
+bkAIEp/.env
 bkAIEp/package-lock.json
-bkAIEp/src/config/env.ts
 ftpService/node_modules
 ftpService/src/config/env.ts
 ftpService/package-lock.json
