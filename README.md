@@ -22,6 +22,8 @@ Within the user's terminal that has access to `docker compose`, the user should 
 
 [optional] If a specific docker compose .yml file should be used instead of the existing `docker-compose.yml`, the command should instead be `docker compose -f {CUSTOM_DOCKER_COMPOSE}.yml up`
 
+[optional] If the user wants to leave the services running in the background, and not have them terminate upon closing the active terminal window, they must add a `-d` flag to the end of the command.
+
 ### Step 3: Creating fake initial data
 
 This step is **optional**. To populate the database with example data, follow these instructions:
@@ -33,3 +35,23 @@ Navigate to the backend folder using the command `cd bkAIEp/` and run the follow
 ### Step 4: accessing the AI-Epilepsy service 
 
 Using a web browser, navigate to http://localhost:5002
+
+### Step 5: turning off all services
+
+In the root folder of the project, run the following command:
+
+`docker-compose down`
+
+## Optional configuration
+
+The Docker Compose template will run the project using default local-oriented values. If the user needs to modify some of these values, they will have to create a `.env` file between Step 1 and Step 2. 
+
+Copy the existing `.env` file template:
+
+`cp .env.template .env`
+
+Edit the desired values within the `.env` file using a text editor
+
+`nano .env`, `vim .env`, etc.
+
+Finally, you can continue running the `docker-compose.yml` file as demonstrated in Step 2
