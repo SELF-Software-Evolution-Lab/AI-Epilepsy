@@ -10,30 +10,27 @@ class FtpUtility {
   private connections: Client[]
   constructor(){
     this.connections = []
-    this.connect()
   }
 
-  public connect = async () => {
+  public connect = async (key) => {
     try{
       const _config = config.ftp
-      if(_config && Array.isArray(_config.connections)){
-        for (const connection of _config.connections) {
-          this.connections[connection.key] = new Client(0) as Client
-          this.connections[connection.key].ftp.verbose = _config.logger
-          await this.connections[connection.key].access(connection)
-        }
-      }
+      const connection = _config.connections[0]
+
+      this.connections[key] = new Client(0) as Client
+      this.connections[key].ftp.verbose = false
+      await this.connections[key].access(connection)
+
       return responseUtility.success()
     } catch (error) {
       console.log('error', error)
     }
   }
 
-  public disconnect = async () => {
+  public disconnect = async (connection) => {
     try{
-      for (const connection of this.connections) {
-        await connection.close()
-      }
+      this.connections[connection]?.close()
+      this.connections[connection] = undefined
     } catch (error) {
       console.log('error', error)
     }
@@ -44,23 +41,34 @@ class FtpUtility {
       const response = await this.connections[connection].list()
       const pwd = await this.connections[connection].pwd()
       const files = []
+      const folders = []
       if(Array.isArray(response)){
         for (const file of response) {
           try{
-            files.push({
-              name: file.name,
-              path: `${pwd}/${file.name}`,
-              type: file.type  === 1? 'file': 'directory',
-              size: file.size,
-              date: moment.utc(file.rawModifiedAt).toISOString()
-            })
+            if(file.type  === 1){
+              files.push({
+                name: file.name,
+                path: `${pwd}/${file.name}`,
+                type: file.type  === 1? 'file': 'directory',
+                size: file.size,
+                date: moment.utc(file.rawModifiedAt).toISOString()
+              })
+            } else {
+              folders.push({
+                name: file.name,
+                path: `${pwd}/${file.name}`,
+                type: file.type  === 1? 'file': 'directory',
+                size: file.size,
+                date: moment.utc(file.rawModifiedAt).toISOString()
+              })
+            }
             
           } catch (error) {
             console.log('error', error)
           }
         }
       }
-      return responseUtility.success({files})
+      return responseUtility.success({files:[...folders, ...files]})
     } catch (error) {
       console.log('error', error)
       return responseUtility.error('ftpUtility.ls.failed_action')

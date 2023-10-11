@@ -1,49 +1,78 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import explorer from "./data/folderData";
-import Folder from "./Folder";
-
-const ModalSelectFile = () => {
+import Folder from "./data/folder";
+import File from "./data/file";
+import { goTo } from "./../../services/finderService";
+import { Modal, Button } from "react-bootstrap";
+const ModalSelectFile = ({selected, setSelected, selectedName, setSelectedName}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const [explorerData, setExplorerData] = useState(explorer);
 
   const openModal = () => {
     setIsOpen(true);
-    // document.body.style.overflow = 'hidden'; // prevent scrolling on background
   };
+
+
+  const handleGet = async (path =undefined) => {
+    try{
+      const response = goTo(path)
+      return response
+    } catch (error) {
+      console.log('error', error)
+    }
+  }
+
+  useEffect(()=>{
+    init()
+  },[])
+
+  const init = async() =>{
+    const get = await handleGet()
+    if(get?.code === 200){
+      if(get?.ftp?.files){
+        setExplorerData(get?.ftp?.files)
+      }
+    }
+  }
 
   const closeModal = () => {
     setIsOpen(false);
-    // document.body.style.overflow = 'auto'; // enable scrolling on background
   };
 
   return (
     <div>
       <button className="select-exam-button" onClick={openModal}>
-        Seleccionar archivos
+        {selected !== '' ? 'Cambiar archivo':'Seleccionar archivos'}
       </button>
       {isOpen && (
-        <div className="modal-page-container">
-          <div className="modal-container">
-            <h2 className="titulo-terciario-center_p">
-              Exámenes disponibles en el contenedor del hospital
-            </h2>
+        <Modal centered size="lg" show={isOpen} onHide={closeModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>{selected !==  ''? `Archivo seleccionado: ${selected}` : 'Selecciona un archivo'}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {
+            explorerData && Array.isArray(explorerData) ?
+              explorerData.map(_f=>{
+                if(_f.type === 'directory'){
+                  return (<Folder data={_f} handleGet={handleGet} setSelected={setSelected} selected={selected} setSelectedName={setSelectedName} selectedName={selectedName}/>)
+                } else {
+                  return (<File data={_f} setSelected={setSelected} selected={selected} setSelectedName={setSelectedName}/>)
+                }
+              })
+            : null
+          }
 
-            <div className="modal-content">
-              <span className="close" onClick={closeModal}>
-                &times;
-              </span>
-              <Folder explorer={explorerData} />
-            </div>
-            <section className="upload-exam-buttons">
-              <div className="button-fb-container">
-                <button className="select-exam-button_fb">
-                  Seleccionar Exámen
-                </button>
-              </div>
-            </section>
-          </div>
-        </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeModal}>
+            Cerrar
+          </Button>
+          <Button variant="primary" onClick={closeModal}>
+            Seleccionar
+          </Button>
+        </Modal.Footer>
+      </Modal>
       )}
     </div>
   );

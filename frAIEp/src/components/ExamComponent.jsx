@@ -32,6 +32,14 @@ const ExamComponent = (props) => {
         title = 'Electro-encefalograma'
     }else if(props.exam === 'ARN') {
         title = 'Micro ARNs'
+    }else if(props.exam === 'FIS') {
+        title = 'Examen Fisico'
+    }else if(props.exam === 'NPS') {
+        title = 'Examen Neurosicologico'
+    }else if(props.exam === 'MED') {
+        title = 'Medicamentos'
+    }else if(props.exam === 'MRI') {
+        title = 'MRI'
     }else{
         title = props.exam
     }

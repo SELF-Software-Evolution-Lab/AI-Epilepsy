@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import moment from 'moment'
 import axios from 'axios';
 import { config } from "../config/env";
 
@@ -25,21 +26,21 @@ const EventTableComponent = ({ patient }) => {
   return (
     <div>
       <div>
-        <table class="styled-table">
+        <table className="styled-table">
           <thead>
             <tr>
               {headers.map((header) => (
-                <th>{header}</th>
+                <th key={header}>{header}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {events.map((event,i) => (
-              <tr>
-                <td>{i}</td>
-                <td>{event.date_created}</td>
+              <tr key={i}>
+                <td>{i+1}</td>
+                <td>{ moment.utc(event.created_at).format('hh:mm A - YY-MM-DD') }</td>
                 <td>{event.type}</td>
-                <td>{event.health_provider}</td>
+                <td>{event.person}</td>
                 <td>
                   <button className="event-detail-button">Ver detalle</button>
                 </td>
