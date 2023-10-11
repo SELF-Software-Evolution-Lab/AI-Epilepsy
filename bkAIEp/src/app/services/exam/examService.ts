@@ -5,7 +5,7 @@ import { Event, Exam } from '@app/models'
 import { Op } from "sequelize"
 import { finderService } from "@app/services/finder/finderService"
 import moment from 'moment'
-import { OUTBOUND_QUEUE, rabbitUtility } from '@core/rabbitUtility'
+
 
 const PATH = '/home/ftpuser/public_html'
 class ExamService {
@@ -49,6 +49,7 @@ class ExamService {
 
         const _event = await Event.create(__event)
         const event = _event.toJSON()
+
 
         const _exam = await Exam.create(_params)
         const exam = _exam.toJSON()
