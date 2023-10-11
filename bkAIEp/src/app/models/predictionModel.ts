@@ -2,9 +2,6 @@ import { DataTypes } from 'sequelize';
 import  db  from "@app/database/connection";
 
 const PredictionModel = db.define('Prediction', {
-  date_requested:{
-    type: DataTypes.DATE,
-  },
   patient_id:{
     type: DataTypes.INTEGER,
     references: {
@@ -17,6 +14,9 @@ const PredictionModel = db.define('Prediction', {
   },
   result:{
     type: DataTypes.INTEGER,
+  },
+  prediction_data:{
+    type: DataTypes.STRING,
   }
 }, {
   tableName: 'predictions',

@@ -33,7 +33,10 @@ class RabbitUtility {
 
   public async connect() {
     try{
-      this.connection = await amqp.connect(this.settings)
+      this.connection = await amqp.connect(this.settings,{
+        keepAlive: true,
+        noDelay: true
+      })
       const channel = await this.connection.createChannel()
       return this.connection
     } catch (error) {
