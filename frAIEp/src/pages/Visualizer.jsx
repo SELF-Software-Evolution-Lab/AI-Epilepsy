@@ -2,6 +2,7 @@ import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {config} from "../config/env.js";
+import MRIViewer from "../mriviewer/MRIViewer.jsx";
 
 function MockImageLister({examid, seriesId}){
     const [images, setImages] = useState([]);
@@ -57,6 +58,7 @@ export default function Visualizer() {
                             {series.map(s => <option value={s}>{s}</option>)}
                         </select>
                     </label>
+                    <MRIViewer/>
                     <MockImageLister
                         examid={examid}
                         seriesId={selectedSeries}
