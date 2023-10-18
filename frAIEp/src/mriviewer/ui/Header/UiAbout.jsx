@@ -5,7 +5,7 @@
 
 import React, {useState} from 'react';
 
-import packageJson from '../../../../../../slice-drop-prototype/mriviewer/package.json';
+import packageJson from '../../../../package.json';
 import UiSkelAni from '../UiSkelAni.jsx';
 import {UIButton} from '../Button/Button.jsx';
 import {Modal, ModalBody, ModalFooter, ModalHeader} from '../Modals/ModalBase.jsx';
