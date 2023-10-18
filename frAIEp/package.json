@@ -1,7 +1,10 @@
 {
   "name": "fraiep",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "description": "Frontend for Ai-Epilepsy project",
+  "author": "David Diaz <ed.diaz11@uniandes.edu.co>, Diego Granada <d.granadam@uniandes.edu.co",
+  "year": "2023",
   "type": "module",
   "scripts": {
     "dev": "vite --host",
