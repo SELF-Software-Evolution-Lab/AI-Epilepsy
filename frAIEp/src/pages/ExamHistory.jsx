@@ -29,7 +29,7 @@ const ExamHistory = () => {
         <ExamsTableComponent rows={exams}/>
       ) : (
         <p>
-          No se encontraron exámenes MRI para el paciente {patient.first_name}{" "}
+          No se encontraron exámenes {exam} para el paciente {patient.first_name}{" "}
           {patient.last_name}
         </p>
       )}
