@@ -3,6 +3,8 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {config} from "../config/env.js";
 import MRIViewer from "../mriviewer/MRIViewer.jsx";
+import {useDispatch, useSelector} from "react-redux";
+import StoreActionType from "../mriviewer/store/ActionTypes.js";
 
 function MockImageLister({examid, seriesId}){
     const [images, setImages] = useState([]);
@@ -25,11 +27,15 @@ function MockImageLister({examid, seriesId}){
         </table>
     )
 }
+const selectDicomURL = (state) => state.dicomURL;
+
 
 export default function Visualizer() {
     let {examid} = useParams();
     const [series, setSeries] = useState([]);
     const [selectedSeries, setSelectedSeries] = useState(null)
+    const dispatch = useDispatch();
+    const dicomURL = useSelector(selectDicomURL);
 
     useEffect(() => {
         axios
@@ -53,7 +59,14 @@ export default function Visualizer() {
                         <select
                             name="selectedScan"
                             value={selectedSeries}
-                            onChange={e => setSelectedSeries(e.target.value)}
+                            onChange={e => {
+                                let seriesID = e.target.value;
+                                dispatch({
+                                    type: StoreActionType.SET_DICOM_URL,
+                                    dicomURL: `${config.mockMRIServer}/scans/user123/${examid}/${seriesID}/file_list.dcm`,
+                                })
+                                setSelectedSeries(seriesID)
+                            }}
                         >
                             {series.map(s => <option value={s}>{s}</option>)}
                         </select>
