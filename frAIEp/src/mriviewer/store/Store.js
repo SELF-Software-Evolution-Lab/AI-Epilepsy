@@ -47,6 +47,7 @@ export const initialState = {
     dicomSeries: [],
     loaderDicom: null,
     spinner: false, //true when mock data is loading
+    dicomURL: null
 };
 //
 // App reducer
@@ -125,6 +126,8 @@ const medReducer = (state = initialState, action) => {
             return Object.assign({}, state, {showModalAlert: action.showModalAlert});
         case StoreActionType.SET_SPINNER:
             return Object.assign({}, state, {spinner: action.spinner});
+        case StoreActionType.SET_DICOM_URL:
+            return Object.assign({}, state, {dicomURL: action.dicomURL});
         default:
             return state;
     }
