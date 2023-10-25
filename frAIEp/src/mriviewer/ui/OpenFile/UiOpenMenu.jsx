@@ -25,6 +25,8 @@ import VolumeSet from '../../engine/VolumeSet.jsx';
 import Volume from '../../engine/Volume.jsx';
 import LoaderDcmUrlDaikon from '../../engine/loaders/LoadDcmUrlDiakon.js';
 import LoadResult from '../../engine/LoadResult.js';
+import ViewMode from "../../store/ViewMode.js";
+import Modes3d from "../../store/Modes3d.js";
 
 /** Need to have demo menu */
 const NEED_DEMO_MENU = true;
