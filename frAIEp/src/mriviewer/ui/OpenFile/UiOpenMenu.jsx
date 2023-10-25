@@ -20,6 +20,11 @@ import { Container } from '../Layout/Container.jsx';
 import FileReader from '../../engine/loaders/FileReader.js';
 import StoreActionType from '../../store/ActionTypes.js';
 import zlib from 'node:zlib';
+import FileTools from '../../engine/loaders/FileTools.js';
+import VolumeSet from '../../engine/VolumeSet.jsx';
+import Volume from '../../engine/Volume.jsx';
+import LoaderDcmUrlDaikon from '../../engine/loaders/LoadDcmUrlDiakon.js';
+import LoadResult from '../../engine/LoadResult.js';
 
 /** Need to have demo menu */
 const NEED_DEMO_MENU = true;
