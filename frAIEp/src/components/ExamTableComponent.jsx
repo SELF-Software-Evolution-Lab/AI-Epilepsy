@@ -21,7 +21,7 @@ const ExamsTableComponent = ({rows }) => {
         </thead>
         <tbody>
           {rows.map((row, i) => (
-            <tr>
+            <tr key={row.id}>
               <td>{i+1}</td>
               <td>{row.id}</td>
               
