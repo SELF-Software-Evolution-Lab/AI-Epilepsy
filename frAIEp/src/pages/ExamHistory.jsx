@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
 import axios from "axios";
 import ExamsTableComponent from "./../components/ExamTableComponent";
-import { config } from "../config/env";
+import {config} from "../config/env";
 
 const ExamHistory = () => {
   const location = useLocation();
   const patient = location.state.patient;
   const exam = location.state.exam;
   const [exams, setExams] = useState([]);
+  const navigation = useNavigate()
 
   
   useEffect(() => {
@@ -19,6 +20,14 @@ const ExamHistory = () => {
       });
   }, []);
 
+  const handleClick = (examId) => {
+    return (e) => {
+      if (exam === "MRI") {
+        navigation(`/patients/${patient.document_id}/exams/mri/${examId}`)
+      }
+    }
+  }
+
   return (
     <div>
       <h1 className="titulo-principal">
@@ -26,7 +35,7 @@ const ExamHistory = () => {
         {patient.last_name}
       </h1>
       {exams.length > 0 ? (
-        <ExamsTableComponent rows={exams}/>
+        <ExamsTableComponent rows={exams} handleClick={handleClick}/>
       ) : (
         <p>
           No se encontraron exámenes {exam} para el paciente {patient.first_name}{" "}
