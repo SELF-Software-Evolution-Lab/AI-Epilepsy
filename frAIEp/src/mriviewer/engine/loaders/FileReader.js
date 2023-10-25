@@ -902,6 +902,14 @@ class FileReader extends React.Component {
             setTimeout(this.loadFromUrl(fileNameOnLoad), TIMEOUT_MS);
         }
     }
+
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        // Loads images from dicomURL (found in Redux state)
+        if(this.props.dicomURL && prevProps.dicomURL !== this.props.dicomURL){
+            this.loadFromUrl(this.props.dicomURL)
+        }
+    }
 }
 
 export default FileReader;
