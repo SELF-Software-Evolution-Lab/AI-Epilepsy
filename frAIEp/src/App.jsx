@@ -21,6 +21,8 @@ import AssociateExam from "./pages/AssociateExam"
 import PredictionDetail from "./pages/PredictionDetail"
 import NotFound from "./pages/NotFound"
 import Visualizer from "./pages/Visualizer";
+import PatientsV2 from "./pages/PatientsV2";
+import Patient from "./pages/Patient";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +32,14 @@ const router = createBrowserRouter([
   {
     path: "/v2",
     element: <HomeV2/>,
+  },
+  {
+    path: "/patients-v2",
+    element: <PatientsV2/>,
+  },
+  {
+    path: "/patient-v2",
+    element: <Patient/>,
   },
   {
     path: "/aboutUs",

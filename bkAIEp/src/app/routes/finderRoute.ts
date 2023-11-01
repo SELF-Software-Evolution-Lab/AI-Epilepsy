@@ -24,6 +24,7 @@ class FinderRoute {
   
   private routes: Array<IRouteParams> = [
     { method: 'post', path: '/test', handler: this.controller.test , middleware: [] },
+    { method: 'post', path: '/tree', handler: this.controller.tree , middleware: [] },
     { method: 'post', path: '/go-to', handler: this.controller.goTo , middleware: [] },
     { method: 'post', path: '/transfer', handler: this.controller.transfer , middleware: [] }
   ] 

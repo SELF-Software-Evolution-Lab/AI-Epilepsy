@@ -16,7 +16,7 @@ export default function Folder({ data, handleGet, selected, setSelected, selecte
   }, [])
 
   const init = async () => {
-    if(!required) {
+    if(!required && !data.files) {
       setLoading(true)
       const get = await handleGet(data.path)
       if(get?.code === 200){
@@ -25,6 +25,8 @@ export default function Folder({ data, handleGet, selected, setSelected, selecte
         }
       }
       setLoading(false)
+    } else {
+      setItems(data.files)
     }
     setRequired(true)
   }
@@ -42,9 +44,9 @@ export default function Folder({ data, handleGet, selected, setSelected, selecte
               items && items.length ?
                 items.map(_f=>{
                   if(_f.type === 'directory'){
-                    return (<Folder data={_f} handleGet={handleGet} setSelected={setSelected} selected={selected}  setSelectedName={setSelectedName} selectedName={selectedName}/>)
+                    return (<Folder key={_f.path} data={_f} handleGet={handleGet} setSelected={setSelected} selected={selected}  setSelectedName={setSelectedName} selectedName={selectedName}/>)
                   } else {
-                    return (<File data={_f} setSelected={setSelected} selected={selected}  setSelectedName={setSelectedName}/>)
+                    return (<File key={_f.path} data={_f} setSelected={setSelected} selected={selected}  setSelectedName={setSelectedName}/>)
                   }
                 })
               

@@ -1,4 +1,5 @@
-import { Client } from 'basic-ftp'
+import { Client } from 'basic-ftp';
+import { v4 as unique } from 'uuid';
 import moment from 'moment';
 
 import { config } from '@config/env';
@@ -8,8 +9,18 @@ import { responseUtility } from '@core/responseUtility';
 class FtpUtility {
   private static instance: FtpUtility;
   private connections: Client[]
+  private cache: any[]
   constructor(){
     this.connections = []
+    setInterval(async()=>{
+      try{
+        const connection =  unique()
+        await this.connect(connection)
+        this.cache = await this.getTree(connection)
+      } catch (error) {
+        console.log('error', error)
+      }
+    }, 20000)
   }
 
   public connect = async (key) => {
@@ -51,7 +62,7 @@ class FtpUtility {
                 path: `${pwd}/${file.name}`,
                 type: file.type  === 1? 'file': 'directory',
                 size: file.size,
-                date: moment.utc(file.rawModifiedAt).toISOString()
+                date: file.rawModifiedAt && moment.utc(file.rawModifiedAt).toISOString()
               })
             } else {
               folders.push({
@@ -59,7 +70,7 @@ class FtpUtility {
                 path: `${pwd}/${file.name}`,
                 type: file.type  === 1? 'file': 'directory',
                 size: file.size,
-                date: moment.utc(file.rawModifiedAt).toISOString()
+                date: file.rawModifiedAt && moment.utc(file.rawModifiedAt).toISOString()
               })
             }
             
@@ -118,6 +129,89 @@ class FtpUtility {
     } catch (error) {
       console.log('error', error)
       return responseUtility.error('ftpUtility.cd.failed_action')
+    }
+  }
+
+  public async getTree ( connection: string ) {
+    try{
+      const pwd = await this.connections[connection].pwd()
+
+      const tree = []
+
+      const content = await this.connections[connection].list()
+      const getContent = async (folder) => {
+        if(!folder.files) folder.files = []
+        const response = await this.connections[connection].cd(folder.path)
+        const content = await this.connections[connection].list()
+        if(Array.isArray(content)){
+          for (const file of content) {
+            if(file.type  === 1){
+              folder.files.push({
+                name: file.name,
+                path: `${folder.path}/${file.name}`,
+                type: file.type  === 1? 'file': 'directory',
+                size: file.size,
+                date: file.rawModifiedAt && moment.utc(file.rawModifiedAt).toISOString()
+              })
+            } else {
+              const _folder = {
+                name: file.name,
+                path: `${folder.path}/${file.name}`,
+                type: file.type  === 1? 'file': 'directory',
+                size: file.size,
+                date: file.rawModifiedAt && moment.utc(file.rawModifiedAt).toISOString(),
+                files: []
+              }
+              await getContent(_folder)
+              folder.files.push(_folder)
+            }
+          }
+        }
+      }
+
+      if(Array.isArray(content)){
+        for (const file of content) {
+          if(file.type  === 1){
+            tree.push({
+              name: file.name,
+              path: `${pwd}/${file.name}`,
+              type: file.type  === 1? 'file': 'directory',
+              size: file.size,
+              date: file.rawModifiedAt && moment.utc(file.rawModifiedAt).toISOString()
+            })
+          } else {
+            const _folder = {
+              name: file.name,
+              path: `${pwd}/${file.name}`,
+              type: file.type  === 1? 'file': 'directory',
+              size: file.size,
+              date: file.rawModifiedAt && moment.utc(file.rawModifiedAt).toISOString(),
+              files: []
+            }
+            await getContent(_folder)
+            tree.push(_folder)
+          }
+        }
+      }
+      
+      this.disconnect(connection)
+
+      return responseUtility.success({
+        tree
+      })
+
+    } catch (error) {
+      console.log('error', error)
+    }
+  }
+
+  public async getTreeCached ( connection: string ) {
+    try{
+      if(this.cache) return this.cache
+
+      return await this.getTree(connection)
+    } catch (error) {
+      console.log('error', error)
     }
   }
 
