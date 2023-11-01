@@ -1,5 +1,5 @@
-import { Event, Exam, Patient, Prediction } from '@app/models'
-import { IConsole } from '@client/client'
+import {Event, Exam, Patient, Prediction} from '@app/models'
+import {IConsole} from '@client/client'
 import moment from 'moment'
 
 export const run = async(_params, console:IConsole) => {
@@ -49,8 +49,8 @@ export const run = async(_params, console:IConsole) => {
         datetime: moment.utc().toISOString(),
         detail: "Detail del examen MRI",
         type: "MRI",
-        file: "file.mri",
-        path: "patientes/{{1}}/file.eeg"
+        file: "mri-exams/user-{{1}}-exam-{{EXAMID}}.zip",
+        path: "exams/{{1}}/{{EXAMID}}"
       },
       {
         datetime: moment.utc().toISOString(),
@@ -93,6 +93,7 @@ export const run = async(_params, console:IConsole) => {
 
       for (const exam of exams) {
         exam.file = exam.file.replace('{{1}}', _patient['id'])
+        exam.path = exam.path.replace('{{1}}', _patient['id'])
         exam['patient_id'] = _patient['id']
         await Exam.create(exam)
       }
