@@ -1,7 +1,22 @@
-import { DataTypes } from 'sequelize';
-import  db  from "@app/database/connection";
+import {CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model} from 'sequelize';
+import db from "@app/database/connection";
 
-const ExamModel = db.define('Exam', {
+interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttributes<UserModel>> {
+  // Some fields are optional when calling UserModel.create() or UserModel.build()
+  id: CreationOptional<number>;
+  detail: string;
+  file: string;
+  path: string;
+  type: string;
+  patient_id: string;
+}
+
+const ExamModel = db.define<UserModel>('Exam', {
+  id: {
+    primaryKey: true,
+    autoIncrement: true,
+    type: DataTypes.INTEGER.UNSIGNED,
+  },
   detail: {
     type: DataTypes.STRING,
   },
