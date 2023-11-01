@@ -1,10 +1,14 @@
 import randomstring from 'randomstring'
 
-import { responseUtility } from "@core/responseUtility"
-import { Event, Exam } from '@app/models'
-import { Op } from "sequelize"
-import { finderService } from "@app/services/finder/finderService"
+import {responseUtility} from "@core/responseUtility"
+import {Event, Exam} from '@app/models'
+import {Op} from "sequelize"
+import {finderService} from "@app/services/finder/finderService"
 import moment from 'moment'
+import fs from "node:fs";
+import {ExamModel} from "@app/models/examModel";
+import {ftpUtility} from "@core/ftpUtility";
+import {v4 as unique} from 'uuid'
 
 
 const PATH = '/home/ftpuser/public_html'
@@ -126,6 +130,31 @@ class ExamService {
     }
   }
 
+  /**
+   * Will check if the MRI test exists in cache folder. If so, will return a file_list.txt URL with a 200 OK response.
+   * Otherwise, it will return a 202 Accepted response and commence the .zip retrieval
+   * @param _params
+   */
+  async requestMRITest(_params: any) {
+    try {
+      const exam = await ExamModel.findOne({where: {id: _params.id}})
+      if (!exam) return responseUtility.error('exam.not_found')
+
+      const tempPath = exam.path.replace("{{EXAMID}}", exam.id.toString())
+      const directory_exists = fs.existsSync(`temp/mri/${tempPath}`)
+      if (directory_exists) {
+        return responseUtility.success(tempPath, 200)
+      } else {
+        const connection = _params.connection || unique()
+        await ftpUtility.cd(connection, "/home/user/mri-exams")
+        await ftpUtility.ls(connection)
+        //TODO finish implementing the read and transfer of files
+      }
+    } catch (error) {
+      console.log('error', error)
+      return responseUtility.error('exam.get.fail_action')
+    }
+  }
 }
 
 export const examService = new ExamService()
