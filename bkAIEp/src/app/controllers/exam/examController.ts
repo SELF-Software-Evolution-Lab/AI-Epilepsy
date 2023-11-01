@@ -1,6 +1,6 @@
-import { Request, Response } from 'express'
-import { responseUtility } from '@core/responseUtility'
-import { ExamService } from '@app/services/exam/examService'
+import {Request, Response} from 'express'
+import {responseUtility} from '@core/responseUtility'
+import {ExamService} from '@app/services/exam/examService'
 
 class ExamController {
   
@@ -19,6 +19,12 @@ class ExamController {
   public update = async(req: Request, res: Response) => {
     const _params = req._data()
     const response = await this.service.insertOrUpdate(_params)
+    return responseUtility.build(res, response)
+  }
+
+  public requestMRITest = async (req: Request, res: Response) => {
+    const _params = req._data()
+    const response = await this.service.requestMRITest(_params)
     return responseUtility.build(res, response)
   }
 
