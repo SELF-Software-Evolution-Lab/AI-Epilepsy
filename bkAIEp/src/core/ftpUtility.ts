@@ -1,9 +1,9 @@
-import { Client } from 'basic-ftp'
+import {Client} from 'basic-ftp'
 import moment from 'moment';
 
-import { config } from '@config/env';
+import {config} from '@config/env';
 
-import { responseUtility } from '@core/responseUtility';
+import {responseUtility} from '@core/responseUtility';
 
 class FtpUtility {
   private static instance: FtpUtility;
@@ -111,6 +111,28 @@ class FtpUtility {
     } catch (error) {
       console.log('error', error)
       return responseUtility.error('ftpUtility.cd.failed_action')
+    }
+  }
+
+
+  /**
+   * Will download a file from the FTP server onto the local machine
+   *
+   * @param connection unique user connection UUID
+   * @param localDest the path on the local machine (this node server) where the file will be downloaded to.
+   * @param remotePath the path on the remote ftp server that the file is located at
+   */
+  public async downloadTo(connection: string, localDest: string, remotePath: string) {
+    try {
+      await this.connections[connection].ensureDir(localDest)
+      this.connections[connection].trackProgress((info) => {
+        console.log(`File: ${info.name}. Progress: ${info.bytes} / ${info.bytesOverall}`)
+      })
+      const response = await this.connections[connection].downloadTo(localDest, remotePath)
+      return responseUtility.success()
+    } catch (error) {
+      console.log('error', error)
+      return responseUtility.error('ftpUtility.downloadTo.failed_action')
     }
   }
 
