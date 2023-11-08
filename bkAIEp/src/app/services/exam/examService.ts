@@ -143,18 +143,23 @@ class ExamService {
       const tempPath = exam.path.replace("{{EXAMID}}", exam.id.toString())
       const directory_exists = fs.existsSync(`temp/mri/${tempPath}`)
       if (directory_exists) {
-        return responseUtility.success(tempPath, 200)
+        return responseUtility.success({tempPath}, 200)
       } else {
         const connection = _params.connection || unique()
         await ftpUtility.connect(connection)
         await ftpUtility.cd(connection, "/home/user/mri-exams", true)
         const lsResponse = await ftpUtility.ls(connection)
         const files = lsResponse.files
-        if (files.find(e=>e.name === `user-${exam.patient_id}-exam-${exam.id}.zip`)){
-
-          console.log("Found zip")
+        let zipFileName = `user-${exam.patient_id}-exam-${exam.id}.zip`;
+        if (files.find(e => e.name === zipFileName)) {
+          if (!fs.existsSync(`temp/mri-download/${tempPath}`)) {
+            fs.mkdirSync(`temp/mri-download/${tempPath}`, {recursive: true})
+          }
+          ftpUtility.downloadTo(connection, `temp/mri-download/${tempPath}/${zipFileName}`, `/home/user/mri-exams/${zipFileName}`)
+          return responseUtility.success({tempPath}, 202)
+        } else {
+          return responseUtility.error('exam.mri.get.not_found')
         }
-        //TODO finish implementing the read and transfer of files
       }
     } catch (error) {
       console.log('error', error)
