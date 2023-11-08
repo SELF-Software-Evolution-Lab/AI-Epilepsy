@@ -4,18 +4,18 @@ export const config = {
     sync:{
       force: false
     },
-    host: '172.16.238.10',
+    host: 'localhost',
     dialect: 'mysql',
     logging: false,
     connection:{
       database: 'ai_epilepsy',
       username: 'root',
-      password: 'ai_epilepsy10*',
+      password: '',
     },
   },
   rabbit:{
     protocol: "amqp",
-    hostname: "172.16.238.13",
+    hostname: "localhost",
     port: "5672",
     username: "amqpuser",
     password: "ai_epilepsy10*",
@@ -26,9 +26,9 @@ export const config = {
     connections: [
       {
         key: "homi",
-        host: "172.16.238.12",
+        host: "52.40.236.165",
         user: "ftpuser",
-        password: "ai_epilepsy10*",
+        password: "123456",
         port: 21,
         secure: false
       }

@@ -45,8 +45,26 @@ class FinderService {
 
   public async test (_params: any) {
     try{
+      const connection = _params.connection || unique()
+      await ftpUtility.connect(connection)
       
-     
+      const tree = await ftpUtility.getTreeCached(connection)
+      return responseUtility.success({
+        ...tree
+      })
+    } catch (error) {
+      console.log('error', error)
+    }
+  }
+  public async tree (_params: any) {
+    try{
+      const connection = _params.connection || unique()
+      await ftpUtility.connect(connection)
+      
+      const tree = await ftpUtility.getTreeCached(connection)
+      return responseUtility.success({
+        ...tree
+      })
     } catch (error) {
       console.log('error', error)
     }

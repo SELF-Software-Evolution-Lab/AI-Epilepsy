@@ -11,6 +11,12 @@ export default function HomeV2() {
     if(search==='') return 
     navigation('/patients-v2',{ state:search})
   }
+
+  function handleKey(e) {
+    if(e.key === 'Enter'){
+      handleSubmit()
+    }
+  }
   return (
     <>
       <MasterLayout>
@@ -23,7 +29,7 @@ export default function HomeV2() {
         <br /><br />
         <div className="row justify-content-center">
           <div className="col-8">
-            <input type="text" onChange={(e)=> setSearch(e.target.value)} placeholder="Buscar pacientes" className="form-control text-white bg-dark shadow" />
+            <input type="text" onKeyDown={handleKey} onChange={(e)=> setSearch(e.target.value)} placeholder="Buscar pacientes" className="form-control text-white bg-dark shadow" />
           </div>
           <div className="col-1">
             <Button onClick={handleSubmit} variant="outline-info"><TbUserSearch /></Button>

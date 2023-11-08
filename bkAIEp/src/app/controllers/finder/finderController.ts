@@ -15,6 +15,11 @@ class FinderController {
     const response = await this.service.test(_params)
     return responseUtility.build(res, response)
   }
+  public tree = async(req: Request, res: Response) => {
+    const _params = req._data()
+    const response = await this.service.tree(_params)
+    return responseUtility.build(res, response)
+  }
 
   public goTo = async(req: Request, res: Response) => {
     const _params = req._data()

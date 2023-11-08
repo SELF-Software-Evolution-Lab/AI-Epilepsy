@@ -6,5 +6,5 @@ const app = new App()
 app.init()
 
 setTimeout(()=>{
-  queueService.connect_inbound()
+  //queueService.connect_inbound()
 }, 1000)

@@ -10,3 +10,9 @@ export const  goTo = async(path) => {
 
   return response?.data
 }
+
+
+export const  treeCached = async() => {
+  const response = await axios.post(`${config.bkAPEp}/finder/tree`)
+  return response?.data
+}
