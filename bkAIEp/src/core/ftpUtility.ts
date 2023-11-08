@@ -97,9 +97,13 @@ class FtpUtility {
     }
   }
   
-  public  async cd (connection: string, dir:string) {
+  public  async cd (connection: string, dir:string, createDirectories: boolean = false) {
     try{
-      const response = await this.connections[connection].cd(dir)
+      let response = null
+      if (createDirectories)
+        response = await this.connections[connection].ensureDir(dir)
+      else
+        response = await this.connections[connection].cd(dir)
       return responseUtility.success({
         path: await this.connections[connection].pwd(),
         response
