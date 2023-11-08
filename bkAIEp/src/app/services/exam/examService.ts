@@ -13,7 +13,7 @@ import {v4 as unique} from 'uuid'
 
 const PATH = '/home/ftpuser/public_html'
 class ExamService {
-  
+
   constructor () {}
 
   public async insertOrUpdate (_params: any) {
@@ -57,7 +57,7 @@ class ExamService {
 
         const _exam = await Exam.create(_params)
         const exam = _exam.toJSON()
-        
+
         return responseUtility.success({exam, event})
       }
     } catch (error) {
@@ -124,7 +124,7 @@ class ExamService {
 
   public async test (_params: any) {
     try{
-      
+
     } catch (error) {
       console.log('error', error)
     }
@@ -146,8 +146,14 @@ class ExamService {
         return responseUtility.success(tempPath, 200)
       } else {
         const connection = _params.connection || unique()
-        await ftpUtility.cd(connection, "/home/user/mri-exams")
-        await ftpUtility.ls(connection)
+        await ftpUtility.connect(connection)
+        await ftpUtility.cd(connection, "/home/user/mri-exams", true)
+        const lsResponse = await ftpUtility.ls(connection)
+        const files = lsResponse.files
+        if (files.find(e=>e.name === `user-${exam.patient_id}-exam-${exam.id}.zip`)){
+
+          console.log("Found zip")
+        }
         //TODO finish implementing the read and transfer of files
       }
     } catch (error) {
