@@ -29,7 +29,6 @@ export const run = async(_params, console:IConsole) => {
         "emergency_contact_phone": "4128548536",
       }
     ]
-
     const events = [
       {
         datetime: moment.utc().toISOString(),
@@ -51,7 +50,7 @@ export const run = async(_params, console:IConsole) => {
         detail: "Detail del examen MRI",
         type: "MRI",
         file: "mri-exams/user-{{1}}-exam-{{EXAMID}}.zip",
-        path: "exams/{{1}}/{{EXAMID}}"
+        path: "mri/{{1}}/{{EXAMID}}"
       },
       {
         datetime: moment.utc().toISOString(),
@@ -61,6 +60,8 @@ export const run = async(_params, console:IConsole) => {
         path: "patientes/{{1}}/file.eeg"
       }
     ]
+    const examsCopy = exams.map(obj => ({...obj}));
+
 
     const predictions = [
       {
@@ -91,12 +92,23 @@ export const run = async(_params, console:IConsole) => {
         event['patient_id'] = _patient['id']
         await Event.create(event)
       }
-
-      for (const exam of exams) {
+      for (const exam of examsCopy) {
         exam.file = exam.file.replace('{{1}}', _patient['id'])
         exam.path = exam.path.replace('{{1}}', _patient['id'])
         exam['patient_id'] = _patient['id']
-        await Exam.create(exam)
+        // await Exam.create(exam)
+        await Exam.create(
+
+            {
+                // @ts-ignore
+                "datetime": moment.utc().toISOString(),
+                detail: "Detail del examen MRI",
+                type: "MRI",
+                file: "user-{{1}}-exam-{{EXAMID}}.zip".replace('{{1}}', _patient['id']),
+                path: "mri/{{1}}/{{EXAMID}}".replace('{{1}}', _patient['id']),
+                patient_id: _patient['id']
+            }
+        )
       }
 
       for (const prediction of predictions) {
