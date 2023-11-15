@@ -171,7 +171,7 @@ class ExamService {
     }
   }
     /**
-     * Will check if the MRI test exists in cache folder. If so, will return an array of file_list URLs with a 200 OK response.
+     * Will check if the MRI test exists in cache folder. If so, will return an array of Series folders names 200 OK response.
      * Otherwise, it will retrieve and unzip the exam file, and return the list once done
      * @param _params
      */
@@ -188,7 +188,7 @@ class ExamService {
             const directory_exists = fs.existsSync(`temp/${tempPath}`)
             if (directory_exists) {
                 // get a list of all folders in the directory
-                const files = fs.readdirSync(`temp/mri/${tempPath}`)
+                const files = fs.readdirSync(`temp/${tempPath}`)
                 return responseUtility.success({"files": files, "status": "returned list of files"}, 200)
             } else {
                 // Get zip from FTP
@@ -251,19 +251,35 @@ class ExamService {
     }
 
     /**
-     * Will check if the filelist exists for a given user and exam id.
-     * If not, it will check if the given .zip exists. Will start decompressing it and return the filelist once its done
-     * If the .zip doesn't exist, it will return a 404 error.
+     * Will attempt to retrieve a list of images in the series folder given the following URL
+     * /exams/mri/{examID}/{seriesID}/file_list.dcm
      * @param _params
      */
-    async getMRIExamContent(_params: any){
+    async requestMRIFileList(_params){
         try{
-            const exam = await ExamModel.findOne({where: {id: _params.id}})
+            const exam = await ExamModel.findOne({where: {id: _params['examID']}})
             if (!exam) return responseUtility.error('exam.not_found')
 
-            // Check if the folder mri-exams/{patientID}/{examID} exists
+            const patientID = exam.patient_id
+            const examID = exam.id
+            const seriesID = _params['seriesID'];
 
+            const tempPath = exam.path.replace("{{EXAMID}}", exam.id.toString()) // mri/{patientID}/{examID} with values filled out
+            const directory_exists = fs.existsSync(`temp/${tempPath}`)
+            if (directory_exists) {
+                if (!fs.existsSync(`temp/${tempPath}/${seriesID}`)) {
+                    console.log(`the series folder ${seriesID} was not found`)
+                    return responseUtility.error('exam.mri.series_folder_not_found')
+                }
 
+                // get a list of all folders in the directory
+                const files = fs.readdirSync(`temp/${tempPath}/${seriesID}/`)
+
+                return responseUtility.success({"files": files, "deliver_list": true}, 200)
+            } else {
+                console.log(`the folder ${tempPath} was not found`)
+                return responseUtility.error('exam.mri.exam_folder_not_found')
+            }
         } catch (error) {
             console.log('error', error)
             return responseUtility.error('exam.get.fail_action')
