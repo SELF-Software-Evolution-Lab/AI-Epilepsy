@@ -33,5 +33,6 @@ export const config = {
         secure: false
       }
     ]
-  }
+  },
+  jwt: 'secret'
 }

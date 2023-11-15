@@ -11,6 +11,9 @@ import Folder from "../components/ModalAssociateFile/data/folder";
 import File from "../components/ModalAssociateFile/data/file";
 import  Swal from 'sweetalert2'
 
+import {GiMagicPortal} from "react-icons/gi"
+
+
 import './Patient.css'
 
 const Toast = Swal.mixin({
@@ -29,8 +32,10 @@ export default function Patient() {
   const [exam, setExam] = useState('mri')
   const [result, setResult] = useState(null)
 
+
   const [eventSelected, setEventSelected] = useState(null)
   const [examSelected, setExamSelected] = useState(null)
+  
   const [loading, setLoading] = useState(false)
   
   const [modalExamCreate, setModalExamCreate] = useState(false)
@@ -39,6 +44,9 @@ export default function Patient() {
   const [modalResult, setModalResult] = useState(false)
   const [modalDetailExam, setModalDetailExam] = useState(false)
   const [modalDetailEvent, setModalDetailEvent] = useState(false)
+
+  const [detailExam, setDetailExam] = useState(null)
+
   
   const [tree, setTree] = useState(null)
 
@@ -135,7 +143,6 @@ export default function Patient() {
   },[])
 
   const getExams = async() =>{
-    console.log('-------zadiaz:llegaexams')
     const response_exams = await listExamsByPatient()
     if(response_exams.code === 200){
       response_exams.exams.sort((a,b)=> moment.utc(b.created_at).diff(moment.utc(b)))
@@ -334,7 +341,7 @@ export default function Patient() {
                                   <td>{_e.id}</td>
                                   <td>{moment.utc(_e.created_at).format('hh:mm A - YY-MM-DD')}</td>
                                   <td>
-                                    <Button variant="outline-info" size="sm">Ver</Button>
+                                    <Button onClick={()=>{setDetailExam(_e);setModalDetailExam(true)}} variant="outline-info" size="sm">Ver</Button>
                                   </td>
                                 </tr>
                               )
@@ -372,9 +379,33 @@ export default function Patient() {
             <Modal.Title>Examen</Modal.Title>
           </Modal.Header>
           <Modal.Body className="bg-dark text-white">
+
+            <div className="col">
+              <div className="row">
+                <div className="col-sm-6">
+                  <p>
+                    <span>Detalle:</span> <span className="fw-bold">{detailExam?.detail}</span><br/>
+                    <span>Archivo:</span> <span className="fw-bold">{detailExam?.file}</span><br/>
+                    <span>Fecha:</span> <span className="fw-bold">{moment.utc(detailExam?.created_at).format('hh:mm A - YY-MM-DD')}</span><br/>
+                    <span>Detalle:</span> <span className="fw-bold">{detailExam?.detail}</span><br/>
+                  </p>
+                </div>
+                <div className="col-sm-6 text-center">
+                </div>
+              </div>
+
+            </div>
+            
             
           </Modal.Body>
           <Modal.Footer className="bg-dark text-white">
+            {
+              ["MRI", "EEG"].includes(detailExam?.type) ?
+                <>
+                  <Button variant="info"  onClick={()=>{navigation('/visualizer')}}>Visualizador <GiMagicPortal></GiMagicPortal></Button>
+                </>
+              : null
+            }
             <Button variant="info"  onClick={()=> setModalDetailExam(false)}>
               Ok
             </Button>
