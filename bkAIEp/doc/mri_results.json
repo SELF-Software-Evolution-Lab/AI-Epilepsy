@@ -1,18 +1,16 @@
 {
   "prediction_id": "id of the prediction to update",
-  "mri_data":{
-    "results": [ 
-      {
-        "path": "Path to the image",
-        "hem": {
-          "class": "",
-          "result": ""
-        },
-        "lob": {
-          "class": "",
-          "result": ""
-        }
-      }
-    ]
+  "mri_data": [ 
+  {
+    "path": "Path to the image",
+    "hem": {
+      "class": "",
+      "result": ""
+    },
+    "lob": {
+      "class": "",
+      "result": ""
+    }
   }
+]
 }
