@@ -385,7 +385,7 @@ export default function Patient() {
                 <div className="col-sm-6">
                   <p>
                     <span>Detalle:</span> <span className="fw-bold">{detailExam?.detail}</span><br/>
-                    <span>Archivo:</span> <span className="fw-bold">{detailExam?.file}</span><br/>
+                    <span>Archivo:</span> <span className="fw-bold">{detailExam?.file.replace("{{EXAMID}}", detailExam?.id)}</span><br/>
                     <span>Fecha:</span> <span className="fw-bold">{moment.utc(detailExam?.created_at).format('hh:mm A - YY-MM-DD')}</span><br/>
                     <span>Detalle:</span> <span className="fw-bold">{detailExam?.detail}</span><br/>
                   </p>
@@ -402,7 +402,7 @@ export default function Patient() {
             {
               ["MRI", "EEG"].includes(detailExam?.type) ?
                 <>
-                  <Button variant="info"  onClick={()=>{navigation('/visualizer')}}>Visualizador <GiMagicPortal></GiMagicPortal></Button>
+                  <Button variant="info"  onClick={()=>{navigation(`/patients/${detailExam?.patient_id}/exams/mri/${detailExam?.id}/`)}}>Visualizador <GiMagicPortal></GiMagicPortal></Button>
                 </>
               : null
             }
