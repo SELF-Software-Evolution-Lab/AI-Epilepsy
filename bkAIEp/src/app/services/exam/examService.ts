@@ -5,6 +5,10 @@ import { Event, Exam } from '@app/models'
 import { Op } from "sequelize"
 import { finderService } from "@app/services/finder/finderService"
 import moment from 'moment'
+import {ftpUtility} from "@core/ftpUtility";
+import fs from "node:fs";
+import {ExamModel} from "@app/models/examModel";
+import {v4 as unique} from 'uuid'
 
 
 const PATH = '/home/ftpuser/public_html'
