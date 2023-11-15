@@ -10,7 +10,7 @@ function MockImageLister({examid, seriesId}){
     const [images, setImages] = useState([]);
     useEffect(() => {
         axios
-            .get(`${config.mockMRIServer}/scans/user123/${examid}/${seriesId}/file_list.txt`)
+            .get(`${config.bkAPEp}/exams/mri/${examid}/${seriesId}/file_list.dcm`)
             .then((res) => {
                 const imageNames = res.data.split("\n")
                 setImages(imageNames);
@@ -31,7 +31,7 @@ const selectDicomURL = (state) => state.dicomURL;
 
 
 export default function Visualizer() {
-    let {examid} = useParams();
+    let {examid, patientid} = useParams();
     const [series, setSeries] = useState([]);
     const [selectedSeries, setSelectedSeries] = useState(null)
     const dispatch = useDispatch();
@@ -39,11 +39,11 @@ export default function Visualizer() {
 
     useEffect(() => {
         axios
-            .get(`${config.mockMRIServer}/scan/user123/${examid}`)
+            .get(`${config.bkAPEp}/exams/request-mri/${examid}`)
             .then((res) => {
-                if (res.data.length > 0)
-                    setSelectedSeries(res.data[0])
-                setSeries(res.data);
+                if (res.data.files.length > 0)
+                    setSelectedSeries(res.data.files[0])
+                setSeries(res.data.files);
             });
     }, []);
     return (
@@ -63,7 +63,7 @@ export default function Visualizer() {
                                 let seriesID = e.target.value;
                                 dispatch({
                                     type: StoreActionType.SET_DICOM_URL,
-                                    dicomURL: `${config.mockMRIServer}/scans/user123/${examid}/${seriesID}/file_list.dcm`,
+                                    dicomURL: `${config.bkAPEp}/exams/mri/${examid}/${seriesID}/file_list.dcm`,
                                 })
                                 setSelectedSeries(seriesID)
                             }}
