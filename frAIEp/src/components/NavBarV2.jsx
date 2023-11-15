@@ -16,7 +16,8 @@ export default function NavBarV2() {
             </div>
             <div className="col text-center">
               <a href="#" onClick={()=> handleClick('v2')} className="btn btn-link text-info text-decoration-none mx-2 fs-5">Inicio</a>
-              <a href="#" onClick={()=> handleClick('about-us')} className="btn btn-link text-info text-decoration-none mx-2 fs-5">Nosotros</a>
+              <a href="#" onClick={()=> handleClick('about')} className="btn btn-link text-info text-decoration-none mx-2 fs-5">Nosotros</a>
+              <a href="#" onClick={()=> handleClick('auth')} className="btn btn-link text-info text-decoration-none mx-2 fs-5">Login</a>
             </div>
             <div className="col text-end">
               {/* <Button variant="outline-info">

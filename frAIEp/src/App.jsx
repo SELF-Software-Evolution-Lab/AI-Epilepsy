@@ -23,6 +23,8 @@ import NotFound from "./pages/NotFound"
 import Visualizer from "./pages/Visualizer";
 import PatientsV2 from "./pages/PatientsV2";
 import Patient from "./pages/Patient";
+import Auth from "./pages/Login";
+import About from "./pages/About";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +46,10 @@ const router = createBrowserRouter([
   {
     path: "/aboutUs",
     element: <Wrapper><AboutUs/></Wrapper>,
+  },
+  {
+    path: "/about",
+    element: <About/>,
   },
   {
     path: "/patients",
@@ -72,6 +78,10 @@ const router = createBrowserRouter([
   {
     path: "/visualizer",
     element: <Wrapper> <Visualizer/></Wrapper>,
+  },
+  {
+    path: "/auth",
+    element:  <Auth/>,
   },
   {
     path: "*",

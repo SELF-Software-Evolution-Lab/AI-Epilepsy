@@ -17,6 +17,15 @@ const PredictionModel = db.define('Prediction', {
   },
   prediction_data:{
     type: DataTypes.STRING,
+  },
+  eeg_data:{
+    type: DataTypes.JSON,
+  },
+  mri_data:{
+    type: DataTypes.JSON,
+  },
+  arn_data:{
+    type: DataTypes.JSON,
   }
 }, {
   tableName: 'predictions',
