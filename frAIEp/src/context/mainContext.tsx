@@ -19,6 +19,7 @@ export interface MainContextState {
 export interface IMainContext {
   setState: (_params: unknown)  => void
   getState: ()  => MainContextState
+  userCan: ()  => boolean
 }
 
 
