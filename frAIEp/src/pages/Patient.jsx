@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import MasterLayout from "./../layouts/MasterLayout";
 import { useLocation, useNavigate } from "react-router-dom";
 import { createExam, listExamsByPatient } from "../services/examService";
@@ -10,6 +10,7 @@ import { treeCached } from "../services/finderService";
 import Folder from "../components/ModalAssociateFile/data/folder";
 import File from "../components/ModalAssociateFile/data/file";
 import  Swal from 'sweetalert2'
+import { BaseContext } from "../context/baseContext";
 
 import {GiMagicPortal} from "react-icons/gi"
 
@@ -27,14 +28,12 @@ const Toast = Swal.mixin({
 
 export default function Patient() {
   const location = useLocation();
-  const patient = location.state;
+  const patient = location.state
+  const context = useContext(BaseContext)
   const navigation = useNavigate()
   const [exam, setExam] = useState('mri')
   const [result, setResult] = useState(null)
 
-
-  const [eventSelected, setEventSelected] = useState(null)
-  const [examSelected, setExamSelected] = useState(null)
   
   const [loading, setLoading] = useState(false)
   
@@ -197,151 +196,41 @@ export default function Patient() {
               </div>
             </div>
           </div>
-          <div className="row text-white">
-            <div className="col">
-              <h4>
-                Predicciones
-                <Button className="mx-2" variant="info" onClick={()=> setModalPredictionCreate(!modalPredictionCreate)} size="sm">+</Button>
-              </h4>
-              {
-                predictions.length ? 
-
-                  <table className="table table-dark table-striped">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Fecha</th>
-                        <th scope="col">Estado</th>
-                        <th className="text-end" scope="col">Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {
-                        predictions.map(_p=>{
-                          return (
-                            <tr key={_p.id}>
-                              <td>{_p.id}</td>
-                              <td>{moment.utc(_p.created_at).format('hh:mm A - YY-MM-DD')}</td>
-                              <td>{_p.label}</td>
-                              <td className="text-end">
-                                {
-                                  _p.label === 'Stopped' ? 
-                                    <Button onClick={()=>{setResult(_p); setModalResult(true)}} variant="outline-info" size="sm">Ver</Button>
-                                  : null
-                                }
-                              </td>
-                            </tr>
-                          )
-                        })
-                      }
-                    </tbody>
-                  </table>
-
-                : <div className="text-center text-info"> No hay eventos para mostrar </div>
-              }
-            </div>
-          </div>
-          <div className="row text-white">
-            <div className="col">
-              <h4>Historia clínica</h4>
-              {
-                events.length ? 
-
-                  <table className="table table-dark table-striped">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Fecha</th>
-                        <th scope="col">Tipo de evento</th>
-                        <th scope="col">Personal</th>
-                        <th className="text-end" scope="col">Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {
-                        events.map(_e=>{
-                          return (
-                            <tr key={_e.id}>
-                              <td>{_e.id}</td>
-                              <td>{moment.utc(_e.created_at).format('hh:mm A - YY-MM-DD')}</td>
-                              <td>{_e.type}</td>
-                              <td>{_e.person}</td>
-                              <td className="text-end">
-                                <Button variant="outline-info" size="sm">Ver</Button>
-                              </td>
-                            </tr>
-                          )
-                        })
-                      }
-                    </tbody>
-                  </table>
-
-                : <div className="text-center text-info"> No hay eventos para mostrar </div>
-              }
-            </div>
-          </div>
-          
-          </div>
-          <div className="col-sm-5">
-            <div className="row">
-              <div className="col">
-                <ul className="nav  justify-content-center">
-                  <li className="nav-item">
-                    <a onClick={()=> handleExam('mri')} className={`btn mx-2 btn${exam === 'mri' ?'-outline' : ''}-info btn-sm`} >MRI</a>
-                  </li>
-                  <li className="nav-item">
-                    <a onClick={()=> handleExam('eeg')} className={`btn mx-2 btn${exam === 'eeg' ?'-outline' : ''}-info btn-sm`} >EEG</a>
-                  </li>
-                  <li className="nav-item">
-                    <a onClick={()=> handleExam('arn')} className={`btn mx-2 btn${exam === 'arn' ?'-outline' : ''}-info btn-sm`} >ARN</a>
-                  </li>
-                  <li className="nav-item">
-                    <a onClick={()=> handleExam('nes')} className={`btn mx-2 btn${exam === 'nes' ?'-outline' : ''}-info btn-sm`} >Neurosicologico</a>
-                  </li>
-                  <li className="nav-item">
-                    <a onClick={()=> handleExam('fis')} className={`btn mx-2 btn${exam === 'fis' ?'-outline' : ''}-info btn-sm`} >Fisico</a>
-                  </li>
-                  <li className="nav-item">
-                    <a onClick={()=> handleExam('med')} className={`btn mx-2 btn${exam === 'med' ?'-outline' : ''}-info btn-sm`} >Medicamentos</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col text-white">
-                <div className="text-end">
+          {
+            
+            context.userCan('predictions', 'predictions:info') ? 
+              <div className="row text-white">
+                <div className="col">
                   <h4>
-                    { getDataExam().name} 
-                    <Button className="mx-2" variant="info" onClick={()=> setModalExamCreate(!modalExamCreate)} size="sm">+</Button>
+                    Predicciones
+                    <Button className="mx-2" variant="info" onClick={()=> setModalPredictionCreate(!modalPredictionCreate)} size="sm">+</Button>
                   </h4>
-                  <p>
-                    { getDataExam().description}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col text-white text-end">
-                {
-                  exams.filter(_e=> _e.type.toLowerCase() === exam).length ? 
-                    <>
+                  {
+                    predictions.length ? 
+
                       <table className="table table-dark table-striped">
                         <thead>
                           <tr>
-                            <th scope="col">ID</th>
+                            <th scope="col">#</th>
                             <th scope="col">Fecha</th>
+                            <th scope="col">Estado</th>
                             <th className="text-end" scope="col">Acciones</th>
                           </tr>
                         </thead>
                         <tbody>
                           {
-                            exams.filter(_e=> _e.type.toLowerCase() === exam).map(_e=>{
-                              return(
-                                <tr key={_e.id}>
-                                  <td>{_e.id}</td>
-                                  <td>{moment.utc(_e.created_at).format('hh:mm A - YY-MM-DD')}</td>
-                                  <td>
-                                    <Button onClick={()=>{setDetailExam(_e);setModalDetailExam(true)}} variant="outline-info" size="sm">Ver</Button>
+                            predictions.map(_p=>{
+                              return (
+                                <tr key={_p.id}>
+                                  <td>{_p.id}</td>
+                                  <td>{moment.utc(_p.created_at).format('hh:mm A - YY-MM-DD')}</td>
+                                  <td>{_p.label}</td>
+                                  <td className="text-end">
+                                    {
+                                      _p.label === 'Stopped' ? 
+                                        <Button onClick={()=>{setResult(_p); setModalResult(true)}} variant="outline-info" size="sm">Ver</Button>
+                                      : null
+                                    }
                                   </td>
                                 </tr>
                               )
@@ -349,13 +238,169 @@ export default function Patient() {
                           }
                         </tbody>
                       </table>
-                    </>
-                  : 
-                    <div className="text-center text-info"> No hay examenes para mostrar </div>
-                }
 
+                    : <div className="text-center text-info"> No hay eventos para mostrar </div>
+                  }
+                </div>
               </div>
-            </div>
+
+            :null
+          }
+          {
+            context.userCan('events', 'events:info') ?
+              <div className="row text-white">
+                <div className="col">
+                  <h4>Historia clínica</h4>
+                  {
+                    events.length ? 
+
+                      <table className="table table-dark table-striped">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Tipo de evento</th>
+                            <th scope="col">Personal</th>
+                            <th className="text-end" scope="col">Acciones</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {
+                            events.map(_e=>{
+                              return (
+                                <tr key={_e.id}>
+                                  <td>{_e.id}</td>
+                                  <td>{moment.utc(_e.created_at).format('hh:mm A - YY-MM-DD')}</td>
+                                  <td>{_e.type}</td>
+                                  <td>{_e.person}</td>
+                                  <td className="text-end">
+                                    <Button variant="outline-info" size="sm">Ver</Button>
+                                  </td>
+                                </tr>
+                              )
+                            })
+                          }
+                        </tbody>
+                      </table>
+
+                    : <div className="text-center text-info"> No hay eventos para mostrar </div>
+                  }
+                </div>
+              </div>
+            : null
+          }
+          
+          </div>
+          <div className="col-sm-5">
+          {
+            context.userCan('exams', 'exams:info') ?
+              <>
+                <div className="row">
+                  <div className="col">
+                    <ul className="nav  justify-content-center">
+                      {
+                        context.userCan('exams', 'exams:mri') ? 
+                          <li className="nav-item">
+                            <a onClick={()=> handleExam('mri')} className={`btn mx-2 btn${exam === 'mri' ?'-outline' : ''}-info btn-sm`} >MRI</a>
+                          </li>
+
+                        : null
+                      }
+                      {
+                        context.userCan('exams', 'exams:eeg') ? 
+                          
+                          <li className="nav-item">
+                            <a onClick={()=> handleExam('eeg')} className={`btn mx-2 btn${exam === 'eeg' ?'-outline' : ''}-info btn-sm`} >EEG</a>
+                          </li>
+                        : null
+                      }
+                      {
+                        context.userCan('exams', 'exams:arn') ? 
+                          
+                          <li className="nav-item">
+                            <a onClick={()=> handleExam('arn')} className={`btn mx-2 btn${exam === 'arn' ?'-outline' : ''}-info btn-sm`} >ARN</a>
+                          </li>
+                        : null
+                      }
+                      {
+                        context.userCan('exams', 'exams:nes') ? 
+                          
+                          <li className="nav-item">
+                            <a onClick={()=> handleExam('nes')} className={`btn mx-2 btn${exam === 'nes' ?'-outline' : ''}-info btn-sm`} >Neurosicologico</a>
+                          </li>
+                        : null
+                      }
+                      {
+                        context.userCan('exams', 'exams:fis') ? 
+                          
+                          <li className="nav-item">
+                            <a onClick={()=> handleExam('fis')} className={`btn mx-2 btn${exam === 'fis' ?'-outline' : ''}-info btn-sm`} >Fisico</a>
+                          </li>
+                        : null
+                      }
+                      {
+                        context.userCan('exams', 'exams:med') ? 
+                          <li className="nav-item">
+                            <a onClick={()=> handleExam('med')} className={`btn mx-2 btn${exam === 'med' ?'-outline' : ''}-info btn-sm`} >Medicamentos</a>
+                          </li>
+                          
+                        : null
+                      }
+                    </ul>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col text-white">
+                    <div className="text-end">
+                      <h4>
+                        { getDataExam().name} 
+                        <Button className="mx-2" variant="info" onClick={()=> setModalExamCreate(!modalExamCreate)} size="sm">+</Button>
+                      </h4>
+                      <p>
+                        { getDataExam().description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col text-white text-end">
+                    {
+                      exams.filter(_e=> _e.type.toLowerCase() === exam).length ? 
+                        <>
+                          <table className="table table-dark table-striped">
+                            <thead>
+                              <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Fecha</th>
+                                <th className="text-end" scope="col">Acciones</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {
+                                exams.filter(_e=> _e.type.toLowerCase() === exam).map(_e=>{
+                                  return(
+                                    <tr key={_e.id}>
+                                      <td>{_e.id}</td>
+                                      <td>{moment.utc(_e.created_at).format('hh:mm A - YY-MM-DD')}</td>
+                                      <td>
+                                        <Button onClick={()=>{setDetailExam(_e);setModalDetailExam(true)}} variant="outline-info" size="sm">Ver</Button>
+                                      </td>
+                                    </tr>
+                                  )
+                                })
+                              }
+                            </tbody>
+                          </table>
+                        </>
+                      : 
+                        <div className="text-center text-info"> No hay examenes para mostrar </div>
+                    }
+
+                  </div>
+                </div>
+              </>
+            : null
+          }
           </div>
         </div>
 
