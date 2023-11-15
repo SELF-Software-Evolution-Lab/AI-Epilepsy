@@ -12,7 +12,7 @@ services:
     networks:
       AIEp-net:
         ipv4_address: 172.16.238.13
-  ftp:
+  ftp: 
     image: delfer/alpine-ftp-server
     container_name: ftp
     environment:

@@ -1,0 +1,7 @@
+.modal-content{
+  height: fit-content;
+}
+.btn-close{
+  color: white !important;
+  fill: white !important;
+}

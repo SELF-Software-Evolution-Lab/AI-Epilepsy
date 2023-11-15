@@ -12,7 +12,6 @@ const PredictionsTableComponent = ({rows,patient}) => {
       axios
         .get(`${config.bkAPEp}/predictions`, { params:{patient_id: patient.id}})
         .then((res) => {
-          console.log('-------zadiaz:res', res)
           setpredictions(res.data.predictions);
         });
     }, []);

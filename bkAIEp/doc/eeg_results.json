@@ -1,0 +1,12 @@
+{
+  "prediction_id": "id of the prediction to update",
+  "eeg_data":{
+    "results": [
+      {
+        "qualification": "<Percent of the interval>"
+      }
+    ],
+    "interval": "<Time in seconds representing the length of the periods of the results>",
+    "duration": "<Total time in seconds of the exam>"
+  }
+}

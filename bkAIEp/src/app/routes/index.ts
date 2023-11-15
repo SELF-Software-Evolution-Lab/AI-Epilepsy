@@ -5,6 +5,7 @@ import { ExamRoute } from '@app/routes/examRoute'
 import { NotificationRoute } from '@app/routes/notificationRoute'
 import { PredictionRoute } from '@app/routes/predictionRoute'
 import { FinderRoute } from '@app/routes/finderRoute'
+import { AuthRoute } from '@app/routes/authRoute'
 
 
 class Routes {
@@ -17,6 +18,7 @@ class Routes {
   private notificationRoute: NotificationRoute
   private predictionRoute: PredictionRoute
   private finderRoute: FinderRoute
+  private authRoute: AuthRoute
   
 
   constructor(app: Application) {
@@ -27,7 +29,7 @@ class Routes {
     this.notificationRoute = new NotificationRoute(this.app, this.prefix)
     this.predictionRoute = new PredictionRoute(this.app, this.prefix)
     this.finderRoute = new FinderRoute(this.app, this.prefix)
-
+    this.authRoute = new AuthRoute(this.app, this.prefix)
   }
 
   public init() {
@@ -39,6 +41,7 @@ class Routes {
       this.notificationRoute.init()
       this.predictionRoute.init()
       this.finderRoute.init()
+      this.authRoute.init()
 
       
     } catch (error) {

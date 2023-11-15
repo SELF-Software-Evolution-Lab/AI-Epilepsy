@@ -21,6 +21,10 @@ import AssociateExam from "./pages/AssociateExam"
 import PredictionDetail from "./pages/PredictionDetail"
 import NotFound from "./pages/NotFound"
 import Visualizer from "./pages/Visualizer";
+import PatientsV2 from "./pages/PatientsV2";
+import Patient from "./pages/Patient";
+import Auth from "./pages/Login";
+import About from "./pages/About";
 
 const router = createBrowserRouter([
   {
@@ -32,8 +36,20 @@ const router = createBrowserRouter([
     element: <HomeV2/>,
   },
   {
+    path: "/patients-v2",
+    element: <PatientsV2/>,
+  },
+  {
+    path: "/patient-v2",
+    element: <Patient/>,
+  },
+  {
     path: "/aboutUs",
     element: <Wrapper><AboutUs/></Wrapper>,
+  },
+  {
+    path: "/about",
+    element: <About/>,
   },
   {
     path: "/patients",
@@ -66,6 +82,10 @@ const router = createBrowserRouter([
   {
     path: "/visualizer",
     element: <Wrapper> <Visualizer/></Wrapper>,
+  },
+  {
+    path: "/auth",
+    element:  <Auth/>,
   },
   {
     path: "*",
