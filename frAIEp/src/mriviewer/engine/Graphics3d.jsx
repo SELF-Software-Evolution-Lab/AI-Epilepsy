@@ -288,6 +288,24 @@ class Graphics3d extends React.Component {
         }
     }
 
+    //https://stackoverflow.com/questions/55508836/prevent-page-scrolling-when-mouse-is-over-one-particular-div
+    enableScroll = () => {
+        document.removeEventListener('wheel', this.preventDefault, false)
+    }
+    disableScroll = () => {
+        document.addEventListener('wheel', this.preventDefault, {
+            passive: false,
+        })
+    }
+
+    preventDefault(e) {
+        e = e || window.event
+        if (e.preventDefault) {
+            e.preventDefault()
+        }
+        e.returnValue = false
+    }
+
     /**
      * Main component render func callback
      */
@@ -381,6 +399,8 @@ class Graphics3d extends React.Component {
                 onKeyDown={(evt) => this.onKeyDown(evt)}
                 onKeyUp={(evt) => this.onKeyUp(evt)}
                 onWheel={this._onWheel.bind(this)}
+                onMouseEnter={this.disableScroll}
+                onMouseLeave={this.enableScroll}
             />
         );
     }
