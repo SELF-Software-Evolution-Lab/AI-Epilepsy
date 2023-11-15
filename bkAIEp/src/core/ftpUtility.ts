@@ -110,6 +110,14 @@ class FtpUtility {
         // Iterate through each file or directory in the response
         for (const file of response) {
           try {
+            // Modified date will fall back to the current time if an error occurred during parsing
+            let fileModifiedAtDate: string;
+            try{
+              fileModifiedAtDate = moment.utc(file.rawModifiedAt).toISOString();
+            }catch (e) {
+              console.log(`An error ocurred in ftpUtility:ls() while parsing the following date: ${file.raw}`)
+              fileModifiedAtDate = moment.utc().toISOString();
+            }
             if (file.type === 1) {
               // If it's a file, add it to the files array
               files.push({
@@ -117,7 +125,7 @@ class FtpUtility {
                 path: `${pwd}/${file.name}`,
                 type: file.type === 1 ? 'file' : 'directory',
                 size: file.size,
-                date: file.rawModifiedAt && moment.utc(file.rawModifiedAt).toISOString(),
+                date: file.rawModifiedAt && fileModifiedAtDate,
               })
             } else {
               // If it's a directory, add it to the folders array
@@ -126,7 +134,7 @@ class FtpUtility {
                 path: `${pwd}/${file.name}`,
                 type: file.type === 1 ? 'file' : 'directory',
                 size: file.size,
-                date: file.rawModifiedAt && moment.utc(file.rawModifiedAt).toISOString(),
+                date: file.rawModifiedAt && fileModifiedAtDate,
               })
             }
           } catch (error) {
