@@ -10,6 +10,10 @@ import fs from "node:fs";
 import {ExamModel} from "@app/models/examModel";
 import {v4 as unique} from 'uuid'
 
+import zlib from 'node:zlib'
+import { pipeline } from "node:stream";
+import AdmZip from "adm-zip";
+
 
 const PATH = '/home/ftpuser/public_html'
 class ExamService {
@@ -167,8 +171,8 @@ class ExamService {
     }
   }
     /**
-     * Will check if the MRI test exists in cache folder. If so, will return a file_list.txt URL with a 200 OK response.
-     * Otherwise, it will return a 202 Accepted response and commence the .zip retrieval
+     * Will check if the MRI test exists in cache folder. If so, will return an array of file_list URLs with a 200 OK response.
+     * Otherwise, it will retrieve and unzip the exam file, and return the list once done
      * @param _params
      */
     async requestMRITest(_params: any) {
@@ -176,31 +180,95 @@ class ExamService {
             const exam = await ExamModel.findOne({where: {id: _params.id}})
             if (!exam) return responseUtility.error('exam.not_found')
 
-            const tempPath = exam.path.replace("{{EXAMID}}", exam.id.toString())
-            const directory_exists = fs.existsSync(`temp/mri/${tempPath}`)
+            const patientID = exam.patient_id
+            const examID = exam.id
+
+
+            const tempPath = exam.path.replace("{{EXAMID}}", exam.id.toString()) // mri/{patientID}/{examID} with values filled out
+            const directory_exists = fs.existsSync(`temp/${tempPath}`)
             if (directory_exists) {
-                return responseUtility.success({tempPath}, 200)
+                // get a list of all folders in the directory
+                const files = fs.readdirSync(`temp/mri/${tempPath}`)
+                return responseUtility.success({"files": files, "status": "returned list of files"}, 200)
             } else {
-                const connection = _params.connection || unique()
-                await ftpUtility.connect(connection)
-                await ftpUtility.cd(connection, "/home/user/mri-exams", true)
-                const lsResponse = await ftpUtility.ls(connection)
-                const files = lsResponse.files
-                let zipFileName = `user-${exam.patient_id}-exam-${exam.id}.zip`;
-                if (files.find(e => e.name === zipFileName)) {
-                    if (!fs.existsSync(`temp/mri-download/${tempPath}`)) {
-                        fs.mkdirSync(`temp/mri-download/${tempPath}`, {recursive: true})
+                // Get zip from FTP
+                let zipFileName = `user-${patientID}-exam-${examID}.zip`;
+                if (!fs.existsSync(`temp/mri-download/${zipFileName}`)) {
+                    // If the zip file doesn't exist, download it from the FTP server
+                    const connection = _params.connection || unique()
+                    try {
+                        // Search for the zip file in the FTP server
+                        await ftpUtility.connect(connection)
+                        await ftpUtility.cd(connection, "/home/user/mri-exams", true)
+                        const lsResponse = await ftpUtility.ls(connection)
+                        const files = lsResponse.files
+
+                        if (!files.find(e => e.name === zipFileName)) {
+                            // Return error if zip file is not found
+                            return responseUtility.error('exam.mri.get.not_found')
+                        } else {
+                            // Download the zip file if the desired zip file is found
+                            if (!fs.existsSync(`temp/mri-download`)) {
+                                fs.mkdirSync(`temp/mri-download`, {recursive: true})
+                            }
+                            await ftpUtility.downloadTo(connection, `temp/mri-download/${zipFileName}`, `/home/user/mri-exams/${zipFileName}`)
+                        }
+                    } catch (e) {
+                        console.log('error while connecting to FTP and downloading zip file', e)
+                        return responseUtility.error('exam.mri.ftp_failure')
                     }
-                    ftpUtility.downloadTo(connection, `temp/mri-download/${tempPath}/${zipFileName}`, `/home/user/mri-exams/${zipFileName}`)
-                    return responseUtility.success({tempPath}, 202)
-                } else {
-                    return responseUtility.error('exam.mri.get.not_found')
                 }
+                // Once we know the zip is in our server, we unzip it
+                const zipPath = `temp/mri-download/${zipFileName}`
+                let zipfile = new AdmZip(zipPath)
+
+                try {
+                    zipfile.extractAllTo(`temp/mri/`, true)
+                } catch (e) {
+                    console.log('error while unzipping', e)
+                    return responseUtility.error('exam.mri.unzip_failure')
+                }
+                const directory_exists = fs.existsSync(`temp/${tempPath}`)
+                if (directory_exists) {
+                    // get a list of all folders in the directory
+                    const files = fs.readdirSync(`temp/${tempPath}`)
+                    return responseUtility.success({
+                        "files": files,
+                        "status": "returned list of series",
+                        "path": `temp/${tempPath}`
+                    }, 200)
+                } else {
+                    console.log(`error while unzipping, the completed folder ${tempPath} was not found`)
+                    return responseUtility.error('exam.mri.unzip_failure')
+                }
+
+
             }
         } catch (error) {
             console.log('error', error)
             return responseUtility.error('exam.get.fail_action')
         }
+    }
+
+    /**
+     * Will check if the filelist exists for a given user and exam id.
+     * If not, it will check if the given .zip exists. Will start decompressing it and return the filelist once its done
+     * If the .zip doesn't exist, it will return a 404 error.
+     * @param _params
+     */
+    async getMRIExamContent(_params: any){
+        try{
+            const exam = await ExamModel.findOne({where: {id: _params.id}})
+            if (!exam) return responseUtility.error('exam.not_found')
+
+            // Check if the folder mri-exams/{patientID}/{examID} exists
+
+
+        } catch (error) {
+            console.log('error', error)
+            return responseUtility.error('exam.get.fail_action')
+        }
+
     }
 
 }
