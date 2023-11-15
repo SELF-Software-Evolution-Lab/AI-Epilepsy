@@ -52,6 +52,16 @@ class ExamController {
     return responseUtility.build(res, response)
   }
 
+  public requestMRIFileList = async (req: Request, res: Response) => {
+      const _params = req._data()
+      const response = await this.service.requestMRIFileList(_params)
+      if (response.deliver_list){
+        res.set({"Content-Disposition": "attachment; filename=\"file_list.txt\""});
+        res.send(response.files.join('\n'));
+      }else{
+        return responseUtility.build(res, response)
+      }
+    }
 }
 
 
