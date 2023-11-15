@@ -93,6 +93,9 @@ class App {
     
     // Enable CORS middleware
     this.app.use(cors())
+
+    // Set /temp/mri as the static directory for serving MRI files
+    this.app.use('/temp/mri', express.static('temp/mri'))
     
     // Enable custom request middleware
     this.app.use(request_mw())
