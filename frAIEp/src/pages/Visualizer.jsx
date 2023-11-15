@@ -6,7 +6,7 @@ import MRIViewer from "../mriviewer/MRIViewer.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import StoreActionType from "../mriviewer/store/ActionTypes.js";
 
-function MockImageLister({examid, seriesId}){
+function MockImageLister({examid, seriesId}) {
     const [images, setImages] = useState([]);
     useEffect(() => {
         axios
@@ -19,14 +19,19 @@ function MockImageLister({examid, seriesId}){
     return (
         <table className="styled-table">
             <thead>
-            <tr><td>Image name</td></tr>
+            <tr>
+                <td>Image name</td>
+            </tr>
             </thead>
             <tbody>
-            {images.map(i => <tr key={i}><td>{i}</td></tr>)}
+            {images.map(i => <tr key={i}>
+                <td>{i}</td>
+            </tr>)}
             </tbody>
         </table>
     )
 }
+
 const selectDicomURL = (state) => state.dicomURL;
 
 
@@ -68,14 +73,14 @@ export default function Visualizer() {
                                 setSelectedSeries(seriesID)
                             }}
                         >
-                            {series.map(s => <option value={s}>{s}</option>)}
+                            {series.map(s => <option key={s} value={s}>{s}</option>)}
                         </select>
                     </label>
                     <MRIViewer/>
                     <MockImageLister
                         examid={examid}
                         seriesId={selectedSeries}
-                        />
+                    />
                 </>
             }
         </>
