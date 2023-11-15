@@ -154,7 +154,7 @@ export const Main = () => {
 
     return (
         <AppContextProvider>
-            <div id="mriviewer-root" ref={appRef} style={{height: '100%'}}>
+            <div id="mriviewer-root" ref={appRef} style={{minHeight: '100%'}}>
                 <div ref={drop} style={{height: '100%'}}>
                     {progress > 0 ? <UIProgressBar/> : null}
                     {spinner ? <Spinner/> : null}
