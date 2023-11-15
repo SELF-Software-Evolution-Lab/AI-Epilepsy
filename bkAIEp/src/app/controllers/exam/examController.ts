@@ -3,7 +3,7 @@ import {responseUtility} from '@core/responseUtility'
 import {ExamService} from '@app/services/exam/examService'
 
 class ExamController {
-  
+
 
   private service = new ExamService()
 
@@ -61,6 +61,16 @@ class ExamController {
       }else{
         return responseUtility.build(res, response)
       }
+    }
+
+    public requestMRIFile = async (req: Request, res: Response) => {
+        const _params = req._data()
+        const response = await this.service.requestMRIFile(_params)
+        if (response.deliver_file) {
+            res.setHeader('content-type', 'application/dicom');
+            return res.sendFile(response.file, {root: './'});
+        }
+        return responseUtility.build(res, response)
     }
 }
 

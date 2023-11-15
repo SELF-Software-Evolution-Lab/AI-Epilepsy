@@ -28,6 +28,7 @@ class ExamRoute {
     { method: 'post', path: '/delete/:id', handler: this.controller.delete , middleware: [] },
     { method: 'get', path: '/request-mri/:id', handler: this.controller.requestMRITest, middleware: []},
     { method: 'get', path: '/mri/:examID/:seriesID/file_list.*', handler: this.controller.requestMRIFileList, middleware: []},
+    { method: 'get', path: '/mri/:examID/:seriesID/:filename', handler: this.controller.requestMRIFile, middleware: []},
     { method: 'get', path: '/', handler: this.controller.list , middleware: [] },
     { method: 'get', path: '/:id', handler: this.controller.get , middleware: [] },
     { method: 'post', path: '/test', handler: this.controller.test , middleware: [] }

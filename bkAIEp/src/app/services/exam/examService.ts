@@ -287,6 +287,36 @@ class ExamService {
 
     }
 
+    /**
+     * Will attempt to retrieve the path of an image given the following URL
+     * @param _params
+     */
+    async requestMRIFile(_params: any) {
+        try{
+            const exam = await ExamModel.findOne({where: {id: _params['examID']}})
+            if (!exam) return responseUtility.error('exam.not_found')
+
+            const patientID = exam.patient_id
+            const examID = exam.id
+            const seriesID = _params['seriesID'];
+            const filename = _params['filename'];
+
+            const tempPath = exam.path.replace("{{EXAMID}}", exam.id.toString()) // mri/{patientID}/{examID} with values filled out
+            const fullImagePath = `temp/${tempPath}/${seriesID}/${filename}`;
+            const directory_exists = fs.existsSync(fullImagePath)
+            if (directory_exists) {
+                return responseUtility.success({"file": `temp/${tempPath}/${seriesID}/${filename}`, "deliver_file": true}, 200)
+            } else {
+                console.log(`the image ${fullImagePath} was not found`)
+                return responseUtility.error('exam.mri.mri_file_not_found')
+            }
+        } catch (error) {
+            console.log('error', error)
+            return responseUtility.error('exam.get.fail_action')
+        }
+
+    }
+
 }
 
 export const examService = new ExamService()
