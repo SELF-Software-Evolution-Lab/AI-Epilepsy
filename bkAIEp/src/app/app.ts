@@ -94,20 +94,20 @@ class App {
     // Enable CORS middleware
     this.app.use(cors())
 
-    // Set /temp/mri as the static directory for serving MRI files
-    this.app.use('/temp/mri', express.static('temp/mri'))
-    
     // Enable custom request middleware
     this.app.use(request_mw())
-    
+
     // Define a simple route to indicate that the API is running
     this.app.get('/', (req, res) => {
       res.send('API is running')
     })
-    
+
     // Initialize application routes
     this.routes.init()
-    
+
+    // Set /temp/mri as the static directory for serving MRI files
+    this.app.use('/temp/mri', express.static('temp/mri'))
+
     // Obtain the port number from the environment or use a default value (5001)
     const PORT = global.env.PORT || 5001
     
