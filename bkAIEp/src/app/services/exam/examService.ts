@@ -86,7 +86,6 @@ class ExamService {
     try{
       
       const { page, number } = _params
-      
       // Construct the query based on provided parameters
       const query:any = {
         where: {},    

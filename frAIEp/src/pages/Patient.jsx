@@ -10,7 +10,9 @@ import { treeCached } from "../services/finderService";
 import Folder from "../components/ModalAssociateFile/data/folder";
 import File from "../components/ModalAssociateFile/data/file";
 import  Swal from 'sweetalert2'
+
 import {GiMagicPortal} from "react-icons/gi"
+
 
 import './Patient.css'
 
@@ -31,6 +33,9 @@ export default function Patient() {
   const [result, setResult] = useState(null)
 
 
+  const [eventSelected, setEventSelected] = useState(null)
+  const [examSelected, setExamSelected] = useState(null)
+  
   const [loading, setLoading] = useState(false)
   
   const [modalExamCreate, setModalExamCreate] = useState(false)
@@ -41,6 +46,7 @@ export default function Patient() {
   const [modalDetailEvent, setModalDetailEvent] = useState(false)
 
   const [detailExam, setDetailExam] = useState(null)
+
   
   const [tree, setTree] = useState(null)
 
@@ -373,6 +379,7 @@ export default function Patient() {
             <Modal.Title>Examen</Modal.Title>
           </Modal.Header>
           <Modal.Body className="bg-dark text-white">
+
             <div className="col">
               <div className="row">
                 <div className="col-sm-6">
