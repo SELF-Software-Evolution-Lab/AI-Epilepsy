@@ -5,6 +5,7 @@ import {config} from "../config/env.js";
 import MRIViewer from "../mriviewer/MRIViewer.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import StoreActionType from "../mriviewer/store/ActionTypes.js";
+import MasterLayout from "../layouts/MasterLayout.jsx";
 
 function MockImageLister({examid, seriesId}) {
     const [images, setImages] = useState([]);
@@ -52,7 +53,7 @@ export default function Visualizer() {
             });
     }, []);
     return (
-        <>
+        <MasterLayout>
             <h1>Series</h1>
             {series.length <= 0 &&
                 <p>Loading scans...</p>
@@ -71,8 +72,7 @@ export default function Visualizer() {
                                     dicomURL: `${config.bkAPEp}/exams/mri/${examid}/${seriesID}/file_list.dcm`,
                                 })
                                 setSelectedSeries(seriesID)
-                            }}
-                        >
+                            }}>
                             {series.map(s => <option key={s} value={s}>{s}</option>)}
                         </select>
                     </label>
@@ -83,6 +83,6 @@ export default function Visualizer() {
                     />
                 </>
             }
-        </>
+        </MasterLayout>
     )
 }

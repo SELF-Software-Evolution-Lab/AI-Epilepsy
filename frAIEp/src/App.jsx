@@ -61,7 +61,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/patients/:patientid/exams/mri/:examid/",
-    element: <Wrapper> <Visualizer/></Wrapper>,
+    element: <Visualizer/>,
   },
   {
     path: "/request-prediction",
@@ -78,10 +78,6 @@ const router = createBrowserRouter([
   {
     path: "/prediction-detail",
     element: <Wrapper> <PredictionDetail/></Wrapper>,
-  },
-  {
-    path: "/visualizer",
-    element: <Wrapper> <Visualizer/></Wrapper>,
   },
   {
     path: "/auth",
