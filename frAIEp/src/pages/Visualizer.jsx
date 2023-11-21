@@ -54,35 +54,37 @@ export default function Visualizer() {
     }, []);
     return (
         <MasterLayout useContainer={false}>
-            <h1>Series</h1>
-            {series.length <= 0 &&
-                <p>Loading scans...</p>
-            }
-            {series.length > 0 &&
-                <>
-                    <label>
-                        Selected series:
-                        <select
-                            name="selectedScan"
-                            value={selectedSeries}
-                            onChange={e => {
-                                let seriesID = e.target.value;
-                                dispatch({
-                                    type: StoreActionType.SET_DICOM_URL,
-                                    dicomURL: `${config.bkAPEp}/exams/mri/${examid}/${seriesID}/file_list.dcm`,
-                                })
-                                setSelectedSeries(seriesID)
-                            }}>
-                            {series.map(s => <option key={s} value={s}>{s}</option>)}
-                        </select>
-                    </label>
-                    <MRIViewer/>
-                    <MockImageLister
-                        examid={examid}
-                        seriesId={selectedSeries}
-                    />
-                </>
-            }
+            <div className="text-white">
+                <h1>Series</h1>
+                {series.length <= 0 &&
+                    <p>Loading scans...</p>
+                }
+                {series.length > 0 &&
+                    <>
+                        <label>
+                            Selected series:
+                            <select
+                                name="selectedScan"
+                                value={selectedSeries}
+                                onChange={e => {
+                                    let seriesID = e.target.value;
+                                    dispatch({
+                                        type: StoreActionType.SET_DICOM_URL,
+                                        dicomURL: `${config.bkAPEp}/exams/mri/${examid}/${seriesID}/file_list.dcm`,
+                                    })
+                                    setSelectedSeries(seriesID)
+                                }}>
+                                {series.map(s => <option key={s} value={s}>{s}</option>)}
+                            </select>
+                        </label>
+                        <MRIViewer/>
+                        <MockImageLister
+                            examid={examid}
+                            seriesId={selectedSeries}
+                        />
+                    </>
+                }
+            </div>
         </MasterLayout>
     )
 }
