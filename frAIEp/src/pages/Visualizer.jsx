@@ -53,7 +53,7 @@ export default function Visualizer() {
             });
     }, []);
     return (
-        <MasterLayout>
+        <MasterLayout useContainer={false}>
             <h1>Series</h1>
             {series.length <= 0 &&
                 <p>Loading scans...</p>

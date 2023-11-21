@@ -1,14 +1,15 @@
 import NavBarV2 from "./../components/NavBarV2";
 import "./MasterLayout.css"
+import * as React from "react";
 
-export default function MasterLayout(props) {
+export default function MasterLayout({children, useContainer = true}) {
   return (
     <>
       <NavBarV2 />
       <div className="bg-dark">
-        <div className="container main-container bg-dark h-100">
+        <div className={`${useContainer? "container": ""} main-container bg-dark h-100`}>
           {
-            props?.children
+            children
           }
         </div>
       </div>
