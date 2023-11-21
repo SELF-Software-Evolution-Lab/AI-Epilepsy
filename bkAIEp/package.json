@@ -28,6 +28,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "adm-zip": "^0.5.10",
     "amqplib": "^0.10.3",
     "axios": "^1.4.0",
     "basic-ftp": "^5.0.3",
