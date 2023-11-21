@@ -1,3 +1,4 @@
+# A docker compose that only contains supporting services: MySQL, FTP and RabbitMQ
 version: "3.8"
 services:
   rabbitmq:
