@@ -192,6 +192,7 @@ class ExamService {
                 return responseUtility.success({"files": files, "status": "returned list of files"}, 200)
             } else {
                 // Get zip from FTP
+                console.log("zip file not found, downloading from FTP")
                 let zipFileName = `user-${patientID}-exam-${examID}.zip`;
                 if (!fs.existsSync(`temp/mri-download/${zipFileName}`)) {
                     // If the zip file doesn't exist, download it from the FTP server
@@ -223,6 +224,7 @@ class ExamService {
                 let zipfile = new AdmZip(zipPath)
 
                 try {
+                    console.log("unzipping file at ", zipPath)
                     zipfile.extractAllTo(`temp/mri/`, true)
                 } catch (e) {
                     console.log('error while unzipping', e)
