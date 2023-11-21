@@ -125,6 +125,11 @@ export const run = async(_params, console:IConsole) => {
       },
       {
         module: 'exams',
+        access: 'exams:info',
+        roles: ['admin', 'nurse', 'doctor']
+      },
+      {
+        module: 'exams',
         access: 'exams:arn',
         roles: ['admin', 'nurse', 'doctor']
       },
@@ -145,7 +150,7 @@ export const run = async(_params, console:IConsole) => {
       },
       {
         module: 'exams',
-        access: 'exams:neu',
+        access: 'exams:nes',
         roles: ['admin', 'nurse', 'doctor']
       },
       {
