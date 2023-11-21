@@ -25,6 +25,7 @@ import PatientsV2 from "./pages/PatientsV2";
 import Patient from "./pages/Patient";
 import Auth from "./pages/Login";
 import About from "./pages/About";
+import {createTheme, ThemeProvider} from "@mui/material";
 
 const router = createBrowserRouter([
   {
@@ -92,11 +93,17 @@ const router = createBrowserRouter([
 function App() {
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
         <RouterProvider router={router} />
-    </>
+    </ThemeProvider>
   )
 }
+
+const theme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+})
 
 export default App
 
