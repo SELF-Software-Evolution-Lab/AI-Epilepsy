@@ -14,7 +14,6 @@ const MRIViewer = () => {
     return (
         <DndProvider backend={HTML5Backend}>
             <Main />
-            <DebugControls/>
         </DndProvider>
     );
 };
