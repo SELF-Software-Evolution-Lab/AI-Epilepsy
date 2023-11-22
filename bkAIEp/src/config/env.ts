@@ -4,7 +4,7 @@ export const config = {
     sync:{
       force: false
     },
-    host: 'localhost',
+    host: '172.24.100.64',
     dialect: 'mysql',
     logging: false,
     connection:{

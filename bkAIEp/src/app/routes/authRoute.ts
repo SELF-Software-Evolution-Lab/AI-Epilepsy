@@ -6,7 +6,7 @@ import { AuthController } from "@app/controllers/auth/authController"
 
 //@IMPORT: Utils
 import { RouterUtility, IRouteParams } from "@core/routerUtility"
-
+import { request as auth } from "@app/middleware/requestMiddleware"
 
 class AuthRoute {
   
@@ -26,7 +26,8 @@ class AuthRoute {
   // Array of route parameters for authentication routes
   private routes: Array<IRouteParams> = [
     { method: 'post', path: '/login', handler: this.controller.login , middleware: [] },
-    { method: 'post', path: '/sign-up', handler: this.controller.signUp , middleware: [] }
+    { method: 'post', path: '/sign-up', handler: this.controller.signUp , middleware: [] },
+    { method: 'post', path: '/test', handler: this.controller.test , middleware: [auth] }
   ] 
   
   /**
