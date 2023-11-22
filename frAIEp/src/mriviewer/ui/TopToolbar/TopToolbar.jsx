@@ -16,7 +16,7 @@ export const TopToolbar = () => {
     return (
         <>
             {viewMode === ModeView.VIEW_2D && <ExploreTools/>}
-            {viewMode === ModeView.VIEW_2D && <FilterTools/>}
+            {/*viewMode === ModeView.VIEW_2D && <FilterTools/>*/}
         </>
     );
 };
