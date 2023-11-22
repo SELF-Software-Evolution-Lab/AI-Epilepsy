@@ -84,6 +84,7 @@ export default function Visualizer() {
     let {examid, patientid} = useParams();
     const [series, setSeries] = useState([]);
     const [selectedSeries, setSelectedSeries] = useState(null)
+    const [error, setError] = useState();
     const dispatch = useDispatch();
     const dicomURL = useSelector(selectDicomURL);
 
@@ -105,16 +106,30 @@ export default function Visualizer() {
                 if (res.data.files.length > 0) {
                     changeSeries(res.data.files[0])
                 }
-            });
+            }).catch(err => {
+                setError(err)
+            }
+        );
     }, []);
+
+    const renderError = (error) => {
+        if (!error.response.data || !error.response.data.message) return <p>There was an error loading the exam</p>
+
+        switch(error.response.data.message){
+            case "exam.mri.get.not_found":
+                return <p>Exam not found!</p>
+            default:
+                return<p>There was an error loading the exam</p>
+        }
+    }
     return (
         <MasterLayout useContainer={false}>
             <div className="text-white">
                 <h1>MRI exam visualizer</h1>
-                {series.length <= 0 &&
+                {!error && series.length <= 0 &&
                     <p>Loading scans...</p>
                 }
-                {series.length > 0 &&
+                {!error && series.length > 0 &&
                     <>
                         <ScanSelection
                             selectedSeries={selectedSeries}
@@ -129,6 +144,7 @@ export default function Visualizer() {
                         />
                     </>
                 }
+                {error && renderError(error)}
             </div>
         </MasterLayout>
     )
