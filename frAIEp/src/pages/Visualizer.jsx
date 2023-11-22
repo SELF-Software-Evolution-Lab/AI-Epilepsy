@@ -5,8 +5,16 @@ import {config} from "../config/env.js";
 import MRIViewer from "../mriviewer/MRIViewer.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import StoreActionType from "../mriviewer/store/ActionTypes.js";
+import MasterLayout from "../layouts/MasterLayout.jsx";
+import {Button, ToggleButton, ToggleButtonGroup} from "@mui/material";
+import {BiLeftArrow, BiRightArrow} from "react-icons/bi";
+import "./Visualizer.css";
+
 
 function MockImageLister({examid, seriesId}) {
+    /*
+    Show a list of images for the selected series
+     */
     const [images, setImages] = useState([]);
     useEffect(() => {
         axios
@@ -34,55 +42,110 @@ function MockImageLister({examid, seriesId}) {
 
 const selectDicomURL = (state) => state.dicomURL;
 
+function ScanSelection({series, selectedSeries, changeSeries, enableSelection = true}) {
+    const handleSelect = (event, newSelection) => {
+        changeSeries(newSelection);
+    }
+
+    return (
+        <div className="scan-select-container text-white">
+            <Button
+                startIcon={<BiLeftArrow/>}
+                variant="outlined"
+                onClick={() =>{
+                    if (series.indexOf(selectedSeries) > 0)
+                        changeSeries(series[series.indexOf(selectedSeries) - 1])
+                }}
+            />
+            <ToggleButtonGroup
+                value={selectedSeries}
+                exclusive
+                onChange={handleSelect}
+                aria-label="Series selection"
+                color="primary"
+            >
+                {series.map(s =>
+                    <ToggleButton key={s} value={s} disabled={!enableSelection}>{s}</ToggleButton>
+                )}
+            </ToggleButtonGroup>
+            <Button
+                endIcon={<BiRightArrow/>}
+                variant="outlined"
+                onClick={() =>{
+                    if (series.indexOf(selectedSeries) < series.length - 1)
+                        changeSeries(series[series.indexOf(selectedSeries) + 1])
+                }}
+            />
+        </div>
+    )
+}
 
 export default function Visualizer() {
     let {examid, patientid} = useParams();
     const [series, setSeries] = useState([]);
     const [selectedSeries, setSelectedSeries] = useState(null)
+    const [error, setError] = useState();
     const dispatch = useDispatch();
     const dicomURL = useSelector(selectDicomURL);
 
+    const changeSeries = (newSeries) => {
+        setSelectedSeries(newSeries);
+        dispatch({
+            type: StoreActionType.SET_DICOM_URL,
+            dicomURL: `${config.bkAPEp}/exams/mri/${examid}/${newSeries}/file_list.dcm`,
+        })
+
+    }
+
     useEffect(() => {
+        // Get the list of series for this exam and select the first series if it exists
         axios
             .get(`${config.bkAPEp}/exams/request-mri/${examid}`)
             .then((res) => {
-                if (res.data.files.length > 0)
-                    setSelectedSeries(res.data.files[0])
                 setSeries(res.data.files);
-            });
+                if (res.data.files.length > 0) {
+                    changeSeries(res.data.files[0])
+                }
+            }).catch(err => {
+                setError(err)
+            }
+        );
     }, []);
+
+    const renderError = (error) => {
+        if (!error.response.data || !error.response.data.message) return <p>There was an error loading the exam</p>
+
+        switch(error.response.data.message){
+            case "exam.mri.get.not_found":
+                return <p>Exam not found!</p>
+            default:
+                return<p>There was an error loading the exam</p>
+        }
+    }
     return (
-        <>
-            <h1>Series</h1>
-            {series.length <= 0 &&
-                <p>Loading scans...</p>
-            }
-            {series.length > 0 &&
-                <>
-                    <label>
-                        Selected series:
-                        <select
-                            name="selectedScan"
-                            value={selectedSeries}
-                            onChange={e => {
-                                let seriesID = e.target.value;
-                                dispatch({
-                                    type: StoreActionType.SET_DICOM_URL,
-                                    dicomURL: `${config.bkAPEp}/exams/mri/${examid}/${seriesID}/file_list.dcm`,
-                                })
-                                setSelectedSeries(seriesID)
-                            }}
-                        >
-                            {series.map(s => <option key={s} value={s}>{s}</option>)}
-                        </select>
-                    </label>
-                    <MRIViewer/>
-                    <MockImageLister
-                        examid={examid}
-                        seriesId={selectedSeries}
-                    />
-                </>
-            }
-        </>
+        <MasterLayout useContainer={false}>
+            <div className="text-white">
+                <h1>MRI exam visualizer</h1>
+                {!error && series.length <= 0 &&
+                    <p>Loading scans...</p>
+                }
+                {!error && series.length > 0 &&
+                    <>
+                        <ScanSelection
+                            selectedSeries={selectedSeries}
+                            changeSeries={changeSeries}
+                            series={series}
+                            enableSelection={true}
+                        />
+                        <MRIViewer/>
+                        <MockImageLister
+                            examid={examid}
+                            seriesId={selectedSeries}
+                        />
+                    </>
+                }
+                {error && renderError(error)}
+            </div>
+        </MasterLayout>
     )
 }

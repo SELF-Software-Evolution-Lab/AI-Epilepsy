@@ -12,6 +12,11 @@ services:
     networks:
       AIEp-net:
         ipv4_address: 172.16.238.13
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
   ftp: 
     image: delfer/alpine-ftp-server
     container_name: ftp

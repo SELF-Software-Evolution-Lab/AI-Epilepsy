@@ -15,6 +15,7 @@ function getEnv(variableName: string, defaultValue: string) {
 
 export const config = {
     mode: 'dev',
+    jwt: getEnv("JWT_SECRET", "secret"),
     database: {
         sync: {
             force: false

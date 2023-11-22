@@ -11,6 +11,7 @@ const UIProgressBar = () => {
     const {progress, titleProgressBar} = useSelector((state) => state);
     const progressWidth = `${progress < 1 ? progress * 100 : progress}%`;
 
+
     return (
         <>
             <div className={css.progress}>

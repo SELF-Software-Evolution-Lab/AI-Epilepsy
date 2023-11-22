@@ -25,6 +25,7 @@ import PatientsV2 from "./pages/PatientsV2";
 import Patient from "./pages/Patient";
 import Auth from "./pages/Login";
 import About from "./pages/About";
+import {createTheme, ThemeProvider} from "@mui/material";
 
 const router = createBrowserRouter([
   {
@@ -61,7 +62,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/patients/:patientid/exams/mri/:examid/",
-    element: <Wrapper> <Visualizer/></Wrapper>,
+    element: <Visualizer/>,
   },
   {
     path: "/request-prediction",
@@ -80,10 +81,6 @@ const router = createBrowserRouter([
     element: <Wrapper> <PredictionDetail/></Wrapper>,
   },
   {
-    path: "/visualizer",
-    element: <Wrapper> <Visualizer/></Wrapper>,
-  },
-  {
     path: "/auth",
     element:  <Auth/>,
   },
@@ -96,11 +93,17 @@ const router = createBrowserRouter([
 function App() {
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
         <RouterProvider router={router} />
-    </>
+    </ThemeProvider>
   )
 }
+
+const theme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+})
 
 export default App
 

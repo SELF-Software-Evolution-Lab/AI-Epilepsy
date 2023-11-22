@@ -16,9 +16,8 @@ export const Mode2dSettingsPanel = () => {
 
     return (
         <>
-            <SliderCaption caption="Slider"/>
+            <SliderCaption caption="Slide along the series' images"/>
             <TransverseProperty/>
-            <SegmentationProperty/>
             {m_volumes.length > 1 && <SelectVolumeProperty/>}
         </>
     );
