@@ -1,5 +1,9 @@
 
 bkAIEp/node_modules
 bkAIEp/package-lock.json
+BKaiEp/temp
+bkAIEp/.env
 frAIEp/node_modules
 frAIEp/package-lock.json
+*/node_modules
+/bkAIEp/temp/

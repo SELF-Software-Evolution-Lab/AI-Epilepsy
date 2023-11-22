@@ -53,6 +53,7 @@ main {
   padding: 0 1.5rem;
   position: fixed;
   top: 0px;
+  z-index: 5000;
   
 }
   

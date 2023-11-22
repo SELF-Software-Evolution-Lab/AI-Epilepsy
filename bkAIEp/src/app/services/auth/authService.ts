@@ -3,6 +3,7 @@ import { responseUtility } from "@core/responseUtility"
 import moment from 'moment'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import {config} from "@config/env";
 
 
 
@@ -124,7 +125,7 @@ class AuthService {
   */
   private async token (user) {
     try{
-      return jwt.sign({ user: user._id }, global.env.jwt, {
+      return jwt.sign({ user: user.id }, config.jwt, {
         expiresIn: '30d'
       })
     } catch (error) {
