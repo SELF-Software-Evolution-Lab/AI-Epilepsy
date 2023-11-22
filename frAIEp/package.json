@@ -41,7 +41,7 @@
     "react-redux": "7.2.9",
     "redux": "4.1.0",
     "seedrandom": "^2.4.4",
-    "three": "0.156.1",
+    "three": "0.101.1",
     "vite": "^4.4.9",
     "vite-plugin-svgr": "^4.0.0",
     "vite-tsconfig-paths": "^4.2.1",
