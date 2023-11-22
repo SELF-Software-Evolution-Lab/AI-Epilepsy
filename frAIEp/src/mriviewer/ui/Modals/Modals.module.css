@@ -27,6 +27,21 @@
     transition: 1s ease-out;
     display: flex;
     flex-direction: column;
+    /* Primary colors */
+    --red: #dc5e47;
+    --green: #438f56;
+    --black: #18191b;
+
+    /* Additional colors */
+    --gray: #636666;
+    --dark-gray: #282a2d;
+    --dark-gray2: #46494e;
+    --dark-gray3: #858585;
+    --dark-gray4: #737982;
+    --light: #cbd2d2;
+    --white: #fff;
+    --light-orange: #e7675191;
+    --extreme-black: #000000;
 }
 
 .header,
