@@ -1,7 +1,10 @@
-import { Event, Exam, Patient, Permission, Prediction, Role, User } from '@app/models'
-import { IConsole } from '@client/client'
+import {Event, Exam, Patient, Permission, Prediction, Role, User} from '@app/models'
+import {IConsole} from '@client/client'
 import bcrypt from 'bcryptjs'
 import moment from 'moment'
+import {ftpUtility} from "@core/ftpUtility";
+import fs from "node:fs";
+import {v4 as unique} from 'uuid';
 
 export const run = async(_params, console:IConsole) => {
   try{
@@ -292,5 +295,24 @@ export const run = async(_params, console:IConsole) => {
     console.log('error', error)
     return false
   }
+    try {
+        await seedFTP(console)
+    } catch (e) {
+        console.log('error while uploading zips to FTP', e)
+        return false
+    }
   return true
+}
+
+const seedFTP = async (console: IConsole) => {
+    const relative = '/seed_data/'
+    const path = `${process.cwd()}${relative}`
+
+    const connection = unique()
+    // Connect to the FTP server using the generated connection identifier
+    await ftpUtility.connect(connection)
+    const files = fs.readdirSync(path, {encoding: "utf-8"})
+    for (const file of files) {
+        await ftpUtility.uploadTo(connection, file, `/home/user/mri-exams/${file}`)
+    }
 }

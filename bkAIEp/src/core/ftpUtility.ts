@@ -1,10 +1,10 @@
-import { Client } from 'basic-ftp'
-import { v4 as unique } from 'uuid'
+import {Client} from 'basic-ftp'
+import {v4 as unique} from 'uuid'
 import moment from 'moment'
 
-import { config } from '@config/env'
+import {config} from '@config/env'
 
-import { responseUtility } from '@core/responseUtility'
+import {responseUtility} from '@core/responseUtility'
 
 
 /**
@@ -225,7 +225,7 @@ class FtpUtility {
      */
     public async downloadTo(connection: string, localDest: string, remotePath: string) {
         try {
-            await this.connections[connection].ensureDir(localDest)
+          await this.connections[connection].ensureDir(remotePath)
             this.connections[connection].trackProgress((info) => {
                 console.log(`File: ${info.name}. Progress: ${info.bytes} / ${info.bytesOverall}`)
             })
@@ -236,6 +236,25 @@ class FtpUtility {
             return responseUtility.error('ftpUtility.downloadTo.failed_action')
         }
     }
+
+  /**
+   * Will upload a file from the local machine onto the FTP server
+   * @param connection unique user connection UUID
+   * @param localPath the path on the local machine (this node server) where the file is located at
+   * @param remoteDest the path on the remote ftp server that the file will be uploaded to
+   */
+  public async uploadTo(connection: string, localPath: string, remoteDest: string) {
+    try {
+      this.connections[connection].trackProgress((info) => {
+        console.log(`File: ${info.name}. Progress: ${info.bytes} / ${info.bytesOverall}`)
+      })
+      const response = await this.connections[connection].uploadFrom(localPath, remoteDest)
+      return responseUtility.success()
+    } catch (error) {
+      console.log('error', error)
+      return responseUtility.error('ftpUtility.uploadTo.failed_action')
+    }
+  }
 
   /**
   * Get the current working directory in the FTP server.
