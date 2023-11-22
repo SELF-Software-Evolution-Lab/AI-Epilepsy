@@ -44,6 +44,7 @@ const selectDicomURL = (state) => state.dicomURL;
 
 function ScanSelection({series, selectedSeries, changeSeries, enableSelection = true}) {
     const handleSelect = (event, newSelection) => {
+        if (newSelection === null) changeSeries(selectedSeries);
         changeSeries(newSelection);
     }
 
@@ -89,6 +90,7 @@ export default function Visualizer() {
     const dicomURL = useSelector(selectDicomURL);
 
     const changeSeries = (newSeries) => {
+        console.log("Changing series to: ", newSeries)
         setSelectedSeries(newSeries);
         dispatch({
             type: StoreActionType.SET_DICOM_URL,
@@ -98,13 +100,17 @@ export default function Visualizer() {
     }
 
     useEffect(() => {
+        console.log("Loading exam: ", `${config.bkAPEp}/exams/request-mri/${examid}`)
         // Get the list of series for this exam and select the first series if it exists
         axios
             .get(`${config.bkAPEp}/exams/request-mri/${examid}`)
             .then((res) => {
                 setSeries(res.data.files);
                 if (res.data.files.length > 0) {
-                    changeSeries(res.data.files[0])
+                    const delay = t => new Promise(resolve => setTimeout(resolve, t));
+                    delay(1000).then(() => { //TODO improve method to avoid asking for the first series to load before the visualizer is loaded
+                        changeSeries(res.data.files[0])
+                    })
                 }
             }).catch(err => {
                 setError(err)
