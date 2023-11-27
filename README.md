@@ -41,9 +41,9 @@ Within the user's terminal that has access to `docker compose`, the user should 
 
 This step is **optional**. To populate the database with example data, follow these instructions:
 
-Navigate to the backend folder using the command `cd bkAIEp/` and run the following terminal command:
-
-- `npm run cli -- --seeder -d`
+1) Install Node.js on your machine. LTS versions are recommended (20.10.0 at the time of writing). [Download links can be found here](https://nodejs.org/en/download).
+2) Navigate to the backend folder using the command `cd bkAIEp/` and run the following terminal command: `npm i` to install all required dependencies.
+3) Run the following command: `npm run cli -- --seeder -d`
 
 ### Step 5: accessing the AI-Epilepsy service
 
