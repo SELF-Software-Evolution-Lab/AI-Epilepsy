@@ -20,13 +20,13 @@ export const config = {
         sync: {
             force: false
         },
-        host: getEnv("DB_HOST", '172.16.238.10'),
+        host: getEnv("DB_HOST", 'localhost'),
         dialect: 'mysql',
         logging: false,
         connection: {
             database: getEnv("DB_NAME", 'ai_epilepsy'),
             username: getEnv("DB_USERNAME", 'root'),
-            password: getEnv("DB_PASSWORD", 'ai_epilepsy10*'),
+            password: getEnv("DB_PASSWORD", ''),
         },
     },
     rabbit: {
