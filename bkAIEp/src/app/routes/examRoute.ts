@@ -6,7 +6,7 @@ import {ExamController} from "@app/controllers/exam/examController"
 
 //@IMPORT: Utils
 import {IRouteParams, RouterUtility} from "@core/routerUtility"
-
+import { request as auth } from "@app/middleware/authMiddleware"
 
 class ExamRoute {
 
@@ -23,15 +23,15 @@ class ExamRoute {
   private prefix: string = '/exams'
   
   private routes: Array<IRouteParams> = [
-    { method: 'post', path: '/create', handler: this.controller.create , middleware: [] },
-    { method: 'post', path: '/update/:id', handler: this.controller.update , middleware: [] },
-    { method: 'post', path: '/delete/:id', handler: this.controller.delete , middleware: [] },
-    { method: 'get', path: '/request-mri/:id', handler: this.controller.requestMRITest, middleware: []},
-    { method: 'get', path: '/mri/:examID/:seriesID/file_list.*', handler: this.controller.requestMRIFileList, middleware: []},
-    { method: 'get', path: '/mri/:examID/:seriesID/:filename', handler: this.controller.requestMRIFile, middleware: []},
-    { method: 'get', path: '/', handler: this.controller.list , middleware: [] },
-    { method: 'get', path: '/:id', handler: this.controller.get , middleware: [] },
-    { method: 'post', path: '/test', handler: this.controller.test , middleware: [] }
+    { method: 'post', path: '/create', handler: this.controller.create , middleware: [auth]  },
+    { method: 'post', path: '/update/:id', handler: this.controller.update , middleware: [auth]  },
+    { method: 'post', path: '/delete/:id', handler: this.controller.delete , middleware: [auth]  },
+    { method: 'get', path: '/request-mri/:id', handler: this.controller.requestMRITest, middleware: [auth] },
+    { method: 'get', path: '/mri/:examID/:seriesID/file_list.*', handler: this.controller.requestMRIFileList, middleware: [auth] },
+    { method: 'get', path: '/mri/:examID/:seriesID/:filename', handler: this.controller.requestMRIFile, middleware: [auth] },
+    { method: 'get', path: '/', handler: this.controller.list , middleware: [auth]  },
+    { method: 'get', path: '/:id', handler: this.controller.get , middleware: [auth]  },
+    { method: 'post', path: '/test', handler: this.controller.test , middleware: [auth]  }
   ] 
 
   public init () {

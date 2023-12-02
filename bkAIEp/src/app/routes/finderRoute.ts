@@ -6,7 +6,7 @@ import { FinderController } from "@app/controllers/finder/finderController"
 
 //@IMPORT: Utils
 import { RouterUtility, IRouteParams } from "@core/routerUtility"
-
+import { request as auth } from "@app/middleware/authMiddleware"
 
 class FinderRoute {
 
@@ -23,10 +23,10 @@ class FinderRoute {
   private prefix: string = '/finder'
   
   private routes: Array<IRouteParams> = [
-    { method: 'post', path: '/test', handler: this.controller.test , middleware: [] },
-    { method: 'post', path: '/tree', handler: this.controller.tree , middleware: [] },
-    { method: 'post', path: '/go-to', handler: this.controller.goTo , middleware: [] },
-    { method: 'post', path: '/transfer', handler: this.controller.transfer , middleware: [] }
+    { method: 'post', path: '/test', handler: this.controller.test , middleware: [auth] },
+    { method: 'post', path: '/tree', handler: this.controller.tree , middleware: [auth] },
+    { method: 'post', path: '/go-to', handler: this.controller.goTo , middleware: [auth] },
+    { method: 'post', path: '/transfer', handler: this.controller.transfer , middleware: [auth] }
   ] 
 
   public init () {
