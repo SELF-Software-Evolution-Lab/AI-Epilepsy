@@ -20,13 +20,13 @@ export const config = {
         sync: {
             force: false
         },
-        host: getEnv("DB_HOST", 'localhost'),
+        host: getEnv("DB_HOST", '172.24.100.64'),
         dialect: 'mysql',
         logging: false,
         connection: {
             database: getEnv("DB_NAME", 'ai_epilepsy'),
-            username: getEnv("DB_USERNAME", 'root'),
-            password: getEnv("DB_PASSWORD", ''),
+            username: getEnv("DB_USERNAME", 'ai_epilepsy'),
+            password: getEnv("DB_PASSWORD", '$&Ad!@2c^'),
         },
     },
     rabbit: {
@@ -42,9 +42,9 @@ export const config = {
         connections: [
             {
                 key: getEnv("FTP_KEY", "homi"),
-                host: getEnv("FTP_HOST", "172.16.238.12"),
+                host: getEnv("FTP_HOST", "172.24.100.64"),
                 user: getEnv("FTP_USERNAME", "ftpuser"),
-                password: getEnv("FTP_PASSWORD", "ai_epilepsy10*"),
+                password: getEnv("FTP_PASSWORD", "$&Ad!@2c^"),
                 port: Number(getEnv("FTP_PORT", "21")),
                 secure: false
             }
