@@ -24,7 +24,7 @@ const request = async (req, res, next) => {
             verify = jsonwebtoken_1.default.verify(headers['authorization'].replace('Bearer ', ''), env_1.config.jwt);
         }
         catch (error) { }
-        if (!verify.user) {
+        if (!verify?.user) {
             const error = responseUtility_1.responseUtility.error('unauthorize', null, { code: 401 });
             return responseUtility_1.responseUtility.build(res, error);
         }
