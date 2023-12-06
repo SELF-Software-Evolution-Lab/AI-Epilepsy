@@ -1,0 +1,24 @@
+// @import_dependencies
+import { Request, Response } from 'express'
+
+// @import_services
+
+// @import_models
+import {  } from "@app/models"
+
+// @import_utilities
+import { responseUtility } from "@core/responseUtility"
+
+// @import_types
+
+class <Controller>Controller {
+  
+
+  
+  constructor () {}
+  
+}
+
+
+export const <controller>Controller = new <Controller>Controller()
+export { <Controller>Controller }

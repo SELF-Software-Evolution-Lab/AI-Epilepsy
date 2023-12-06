@@ -1,4 +1,6 @@
 import {Application} from 'express'
+
+// @import_routes
 import { PatientRoute } from '@app/routes/patientRoute'
 import { EventRoute } from '@app/routes/eventRoute'
 import { ExamRoute } from '@app/routes/examRoute'
@@ -12,6 +14,8 @@ class Routes {
   
   private app: Application
   private prefix: string = '/api'
+  
+  // @declare_routes
   private patientRoute: PatientRoute
   private eventRoute: EventRoute
   private examRoute: ExamRoute
@@ -20,9 +24,11 @@ class Routes {
   private finderRoute: FinderRoute
   private authRoute: AuthRoute
   
-
+  
   constructor(app: Application) {
     this.app = app
+    
+    // @assign_routes
     this.patientRoute = new PatientRoute(this.app, this.prefix)
     this.eventRoute = new EventRoute(this.app, this.prefix)
     this.examRoute = new ExamRoute(this.app, this.prefix)
@@ -31,10 +37,10 @@ class Routes {
     this.finderRoute = new FinderRoute(this.app, this.prefix)
     this.authRoute = new AuthRoute(this.app, this.prefix)
   }
-
+  
   public init() {
     try{
-
+      // @init_routes
       this.patientRoute.init()
       this.eventRoute.init()
       this.examRoute.init()
@@ -42,7 +48,7 @@ class Routes {
       this.predictionRoute.init()
       this.finderRoute.init()
       this.authRoute.init()
-
+      
       
     } catch (error) {
       console.log('error', error)

@@ -24,9 +24,15 @@ export default function Auth() {
 
   useEffect(()=>{
     if(context.getState().auth?.token){
-      navigation('/v2')
+      navigation('/')
     }
   }, [])
+
+  function handleKey(e) {
+    if(e.key === 'Enter'){
+      handleLogin()
+    }
+  }
 
   const handleLogin = async () =>{
     if(!username || username === '' || !password || password === ''){
@@ -51,7 +57,7 @@ export default function Auth() {
           token: response.token
         }
       })
-      navigation('/v2')
+      navigation('/')
     }
   }
   
@@ -64,7 +70,7 @@ export default function Auth() {
             <img src="/banner.png" className="w-100 my-4"></img>
             <br/><br/><br/>
             <input placeholder="Usuario" autoFocus type="text" onChange={(e)=> {setUsername(e.target.value)}} className="form-control mb-2"/>
-            <input placeholder="Contraseña" type="password" onChange={(e)=> {setPassword(e.target.value)}} className="form-control mb-4"/>
+            <input placeholder="Contraseña" onKeyDown={handleKey} type="password" onChange={(e)=> {setPassword(e.target.value)}} className="form-control mb-4"/>
             <button className="btn btn-lg btn-outline-light" onClick={handleLogin}>Acceder</button>
           </div>
         </div>

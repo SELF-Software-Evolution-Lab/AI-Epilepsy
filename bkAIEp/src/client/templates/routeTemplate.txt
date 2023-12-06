@@ -1,0 +1,49 @@
+// @import_dependencies
+import { Application } from "express"
+
+// @import_controllers
+
+
+// @import_utilities
+import { RouterUtility, IRouteParams } from "@core/routerUtility"
+
+
+class <Route>Route {
+
+  private className:string = '<Route>Route'  
+  private app: Application
+  private routerUtility: RouterUtility
+  
+  // @declare_controller
+  
+  constructor (app: Application, prefix: string) {
+    this.app = app
+    this.routerUtility = new RouterUtility(this.app, `${prefix}${this.prefix}`)
+  }
+  
+  private prefix: string = '/<route>'
+  
+  private routes: Array<IRouteParams> = [
+    // @routes
+  ] 
+
+  public init () {
+    for (const path of this.routes) {
+      this.routerUtility.route({
+        method: path.method,
+        path: path.path,
+        handler: path.handler,
+        middleware: path.middleware
+      })
+    }
+  }
+}
+
+export { <Route>Route }
+
+
+
+
+
+
+

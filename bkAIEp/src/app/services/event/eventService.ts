@@ -114,7 +114,6 @@ class EventService {
   */
   public async test (_params: any) {
     try{
-      console.log('-------zadiaz:_params', _params)
       return responseUtility.success()
     } catch (error) {
       console.log('error', error)

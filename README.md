@@ -70,3 +70,98 @@ Edit the desired values within the `.env` file using a text editor
 `nano .env`, `vim .env`, etc.
 
 Finally, you can continue running the `docker-compose.yml` file as demonstrated in Step 3
+
+
+
+
+## Technologies 
+
+### JWT - Middleware
+
+JWT, which stands for JSON Web Token, is a security pattern commonly used for authentication and authorization in web development. It is a compact, URL-safe means of representing claims between two parties. JWTs are often used to secure the transmission of information between parties in a way that can be verified and trusted.
+
+JWTs allow for stateless authentication, meaning that the server does not need to store the user's session information. Instead, the necessary information is contained within the JWT itself. This aligns well with the nature of middleware in Express, where each request can be independently processed.
+
+Therefore, it was implemented via authMiddleware, where you would see its validation and management
+
+it is important to include JWT_SECRET on your .env file to change the default secret
+
+### sequelize
+
+Sequelize is a popular Object-Relational Mapping (ORM) library for Node.js, designed to work with relational databases such as PostgreSQL, MySQL, SQLite, and MSSQL. ORM libraries provide a higher-level abstraction over databases, allowing developers to interact with databases using JavaScript or TypeScript code instead of raw SQL queries. Sequelize facilitates database operations by providing an easy-to-use API and a set of features for defining models, relationships, and performing CRUD (Create, Read, Update, Delete) operations.
+
+As part of the actualization it was opted to use a ORM and due to its popularity and maintainability sequelize was the go to
+
+as for the .env
+
+DB_HOST for host
+DB_NAME for name of the db
+DB_USERNAME for the user
+DB_PASSWORD for the user
+
+### bcryptjs
+
+As for the storing of passwords it was decided to go with bcryptjs to hash the password and storing it 
+
+### chalk
+
+It is use to gif color to some consoles, mainly on cli script
+
+### cors
+
+To avoid CORS error
+
+### dotenv
+
+To load environment variables
+
+### moment
+
+for extended date management
+
+## ora
+
+For interactive consoles
+
+
+## Scripts
+
+### cli - backend
+
+#### --factory
+
+It is for creating the files following file system
+
+npm run cli -- --factory -d? -r? -c? -s? -m? --seeder? -n <name>
+
+-n <name> it is the name of the files to be created
+
+-d is the same than sending  -r? -c? -s? it would create the files for route, controller and service for the -n (name) given
+
+-r it would create a route for the -n (name) given and change the index.ts for routes import
+-c it would create a controller for the -n (name) given
+-s it would create a service for the -n (name) given 
+-m it would create a model for the -n (name) given and change the index.ts for models import
+--seeder it would create a seeder on bkAIEp/src/seeders
+
+Example
+
+npm run cli -- --factory -d -m -n message
+
+this would create route, controller, service and model call messages
+
+#### --seeder
+
+--seeder <name>? -x? -d? -f?
+
+<name> Name of the seeder to be run
+-x if you want to run them all
+-d for running development seeders
+-f to force the running (use it under you own responsibility)
+
+Example
+
+npm run cli -- --seeder initSeeder -f
+
+this would run the seeder name initSeeder located in bkAIEp/src/seeders/initSeeder.ts and it is going to run forced, therefor, even if this was run before it would be rerun
+
