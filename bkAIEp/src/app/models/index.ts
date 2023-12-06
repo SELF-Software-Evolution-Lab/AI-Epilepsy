@@ -1,3 +1,4 @@
+// @import_models
 import { PatientModel } from "@app/models/patientModel"
 import { EventModel } from "@app/models/eventModel"
 import { ExamModel } from "@app/models/examModel"
@@ -7,7 +8,7 @@ import { UserModel } from "@app/models/userModel"
 import { PermissionModel } from "@app/models/permissionModel"
 import { RoleModel } from "@app/models/roleModel"
 
-
+// @export_models
 export {
   RoleModel as Role,
   PermissionModel as Permission,
