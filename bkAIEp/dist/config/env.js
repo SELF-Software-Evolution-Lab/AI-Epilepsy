@@ -44,13 +44,13 @@ exports.config = {
         sync: {
             force: false
         },
-        host: getEnv("DB_HOST", '172.24.100.64'),
+        host: getEnv("DB_HOST", 'localhost'),
         dialect: 'mysql',
         logging: false,
         connection: {
             database: getEnv("DB_NAME", 'ai_epilepsy'),
-            username: getEnv("DB_USERNAME", 'ai_epilepsy'),
-            password: getEnv("DB_PASSWORD", '$&Ad!@2c^'),
+            username: getEnv("DB_USERNAME", 'root'),
+            password: getEnv("DB_PASSWORD", ''),
         },
     },
     rabbit: {

@@ -134,7 +134,7 @@ export default function Patient() {
   }
 
   useEffect(()=>{
-    if(!patient) navigation('v2')
+    if(!patient) navigation('/')
     getExams()
     getEvents()
     getPredictions()

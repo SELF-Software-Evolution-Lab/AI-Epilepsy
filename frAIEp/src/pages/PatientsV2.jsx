@@ -37,7 +37,7 @@ export default function PatientsV2  ()  {
   
   
   useEffect(() => {
-    if(searchInput === '') navigation('v2')
+    if(searchInput === '') navigation('/')
     init()
   }, []);
   

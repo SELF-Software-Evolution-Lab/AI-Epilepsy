@@ -30,11 +30,11 @@ import {createTheme, ThemeProvider} from "@mui/material";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Wrapper><Home/></Wrapper>,
+    element:<HomeV2/> ,
   },
   {
-    path: "/v2",
-    element: <HomeV2/>,
+    path: "/v1",
+    element: <Wrapper><Home/></Wrapper>,
   },
   {
     path: "/patients-v2",
