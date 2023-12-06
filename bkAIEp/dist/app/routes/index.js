@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Routes = void 0;
+// @import_routes
 const patientRoute_1 = require("../routes/patientRoute");
 const eventRoute_1 = require("../routes/eventRoute");
 const examRoute_1 = require("../routes/examRoute");
@@ -12,6 +13,7 @@ class Routes {
     constructor(app) {
         this.prefix = '/api';
         this.app = app;
+        // @assign_routes
         this.patientRoute = new patientRoute_1.PatientRoute(this.app, this.prefix);
         this.eventRoute = new eventRoute_1.EventRoute(this.app, this.prefix);
         this.examRoute = new examRoute_1.ExamRoute(this.app, this.prefix);
@@ -22,6 +24,7 @@ class Routes {
     }
     init() {
         try {
+            // @init_routes
             this.patientRoute.init();
             this.eventRoute.init();
             this.examRoute.init();

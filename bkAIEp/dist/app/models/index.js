@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Prediction = exports.Notification = exports.Exam = exports.Event = exports.Patient = exports.User = exports.Permission = exports.Role = void 0;
+// @import_models
 const patientModel_1 = require("../models/patientModel");
 Object.defineProperty(exports, "Patient", { enumerable: true, get: function () { return patientModel_1.PatientModel; } });
 const eventModel_1 = require("../models/eventModel");

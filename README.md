@@ -120,3 +120,46 @@ for extended date management
 
 For interactive consoles
 
+
+## Scripts
+
+### cli - backend
+
+#### --factory
+
+It is for creating the files following file system
+
+npm run cli -- --factory -d? -r? -c? -s? -m? --seeder? -n <name>
+
+-n <name> it is the name of the files to be created
+
+-d is the same than sending  -r? -c? -s? it would create the files for route, controller and service for the -n (name) given
+
+-r it would create a route for the -n (name) given and change the index.ts for routes import
+-c it would create a controller for the -n (name) given
+-s it would create a service for the -n (name) given 
+-m it would create a model for the -n (name) given and change the index.ts for models import
+--seeder it would create a seeder on bkAIEp/src/seeders
+
+Example
+
+npm run cli -- --factory -d -m -n message
+
+this would create route, controller, service and model call messages
+
+#### --seeder
+
+--seeder <name>? -x? -d? -f?
+
+<name> Name of the seeder to be run
+-x if you want to run them all
+-d for running development seeders
+-f to force the running (use it under you own responsibility)
+
+Example
+
+npm run cli -- --seeder initSeeder -f
+
+this would run the seeder name initSeeder located in bkAIEp/src/seeders/initSeeder.ts and it is going to run forced, therefor, even if this was run before it would be rerun
+
+
