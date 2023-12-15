@@ -218,6 +218,7 @@ class FtpUtility {
 
     /**
      * Will download a file from the FTP server onto the local machine
+     * Assumes caller has already ensured the directory exists
      *
      * @param connection unique user connection UUID
      * @param localDest the path on the local machine (this node server) where the file will be downloaded to.
@@ -225,12 +226,12 @@ class FtpUtility {
      */
     public async downloadTo(connection: string, localDest: string, remotePath: string) {
         try {
-          await this.connections[connection].ensureDir(remotePath)
-            this.connections[connection].trackProgress((info) => {
-                console.log(`File: ${info.name}. Progress: ${info.bytes} / ${info.bytesOverall}`)
-            })
-            const response = await this.connections[connection].downloadTo(localDest, remotePath)
-            return responseUtility.success()
+          //await this.connections[connection].ensureDir(remotePath)
+          this.connections[connection].trackProgress((info) => {
+              console.log(`File: ${info.name}. Progress: ${info.bytes} / ${info.bytesOverall}`)
+          })
+          const response = await this.connections[connection].downloadTo(localDest, remotePath)
+          return responseUtility.success()
         } catch (error) {
             console.log('error', error)
             return responseUtility.error('ftpUtility.downloadTo.failed_action')
