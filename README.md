@@ -72,7 +72,205 @@ Edit the desired values within the `.env` file using a text editor
 Finally, you can continue running the `docker-compose.yml` file as demonstrated in Step 3
 
 
+## Entities and CRUD
 
+To be able of creating new Entities for Users or roles you can either insert them via Seeder or POST request.
+
+For create them via seeder you need to follow the next steps:
+
+Run the command 
+
+npm run cli -- --factory --seeder <name-for-the-seeder>
+
+This would create a file named <name-for-the-seeder> on the 
+AI-Epilepsy/bkAIEp/src/seeders folder.
+
+Edit the run function containing something like this:
+
+const users = [
+  {
+    username: 'admin',
+    password: 'admin',
+    first_name: 'admin',
+    position: 'admin',
+    role_id: null,
+    role: 'admin'
+  },
+  {
+    username: 'doctor',
+    password: 'doctor',
+    first_name: 'doctor',
+    position: 'doctor',
+    role_id: null,
+    role: 'doctor'
+  }
+]
+
+for (const user of users) {
+  const role = roles.find(_r=> _r.name === user.role)
+  delete user.role
+  user.role_id = role['id']
+  const exists = await User.findOne({
+    where: {
+      username: user.username
+    }
+  })
+}
+
+as for the roles
+
+const permissions = [
+  {
+    module: '<module_name>',
+    access: '<module_access_name>',
+    roles: ['role']
+  }
+]
+
+const roles = [
+  {
+    name: 'role'
+  }
+]
+
+for (const role of roles) {
+  const exists = await Role.findOne({
+    where: {
+      name: role.name
+    }
+  })
+  let _role = exists
+  if(exists){
+    await Role.update(role, { where: { name: role.name }})
+    role['id'] = exists.dataValues.id
+  } else {
+    _role = await Role.create(role)
+    role['id'] = _role.dataValues.id
+  }
+}
+
+for (const permission of permissions) {
+  const _roles = permission.roles
+
+  delete permission.roles
+
+  const exists = await Permission.findOne({
+    where: {
+      access: permission.access
+    }
+  })
+  let _permission = exists
+  if(exists){
+    await Permission.update(permission, { where: { access: permission.access }})
+    permission['id'] = exists.dataValues.id
+  } else {
+    _permission = await Permission.create(permission)
+    permission['id'] = _permission.dataValues.id
+  }
+
+  const __p = await Permission.findOne({
+    where: {
+      id: permission['id']
+    }
+  })
+
+  for (const role of _roles) {
+    const _role = roles.find(_r=>_r.name === role)
+    const __r = await Role.findOne({
+      where: {
+        id: _role['id']
+      }
+    })
+
+    await __r['addPermission'](__p, { through: { selfGranted: false } })
+  }
+
+  const users = [
+    {
+      username: 'admin',
+      password: 'admin',
+      first_name: 'admin',
+      position: 'admin',
+      role_id: null,
+      role: 'admin'
+    },
+    {
+      username: 'doctor',
+      password: 'doctor',
+      first_name: 'doctor',
+      position: 'doctor',
+      role_id: null,
+      role: 'doctor'
+    },
+    {
+      username: 'nurse',
+      password: 'nurse',
+      first_name: 'nurse',
+      position: 'nurse',
+      role_id: null,
+      role: 'nurse'
+    }
+  ]
+
+  for (const user of users) {
+    const role = roles.find(_r=> _r.name === user.role)
+    delete user.role
+    user.role_id = role['id']
+    const exists = await User.findOne({
+      where: {
+        username: user.username
+      }
+    })
+
+    const salt = await bcrypt.genSalt(10)
+    const hash = await bcrypt.hash(user.password, salt)
+
+    user.password = hash
+
+    let _user = exists
+
+    if(exists){
+      await User.update(user, { where: { username: user.username }})
+      user['id'] = exists.dataValues.id
+    } else {
+      _user = await User.create(user)
+      user['id'] = _user.dataValues.id
+    }
+  }
+}
+
+after testing and validating you must run
+
+npm run cli -- --seeder <name-for-the-seeder>
+
+Parallel, as was mention before you can add entities via POST request to the endpoint 
+
+{{URL}}/api/users/create - POST
+
+Request Headers
+
+Content-Type: application/json
+User-Agent: PostmanRuntime/7.36.0
+Accept: */*
+Cache-Control: no-cache
+Postman-Token: b094dd76-3330-442b-aa60-e41ecc20221e
+Host: localhost:5001
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Authorization: <TOKEN>
+
+Request Body
+
+{
+    "username": "admin",
+    "password": "admin",
+    "first_name": "admin",
+    "position": "admin",
+    "role_id": null,
+    "role": "admin"
+}
+
+this work exactly the same for all entities and you can find more about the process on the seeder initSeeder
 
 ## Technologies 
 
@@ -85,6 +283,18 @@ JWTs allow for stateless authentication, meaning that the server does not need t
 Therefore, it was implemented via authMiddleware, where you would see its validation and management
 
 it is important to include JWT_SECRET on your .env file to change the default secret
+
+A JSON Web Token (JWT) is a compact, URL-safe means of representing claims to be transferred between two parties. It's commonly used for authentication and authorization purposes in web development. JWTs consist of three parts: a header, a payload, and a signature. These three parts are concatenated with dots (.) to form the complete JWT.
+
+The header typically consists of two parts: the type of the token, which is JWT, and the signing algorithm being used, such as SHA256 or RSA. The header is then Base64Url encoded.
+
+The second part of the token is the payload, which contains the claims. Claims are statements about an entity (typically, the user) and additional data.
+
+In this case we used the library method for creating the toking call sign
+
+return jwt.sign({ user: user.id }, config.jwt, {
+  expiresIn: '30d'
+})
 
 ### sequelize
 
@@ -105,7 +315,7 @@ As for the storing of passwords it was decided to go with bcryptjs to hash the p
 
 ### chalk
 
-It is use to gif color to some consoles, mainly on cli script
+It is use to give color to some consoles, mainly on cli script
 
 ### cors
 
@@ -139,9 +349,19 @@ npm run cli -- --factory -d? -r? -c? -s? -m? --seeder? -n <name>
 -d is the same than sending  -r? -c? -s? it would create the files for route, controller and service for the -n (name) given
 
 -r it would create a route for the -n (name) given and change the index.ts for routes import
--c it would create a controller for the -n (name) given
--s it would create a service for the -n (name) given 
+on the folder would be created:
+AI-Epilepsy/bkAIEp/src/app/routes/<name>Route.ts
+and in the index file of the very same folder, it would import and add to the server the new file created
+
+-c it would create a controller for the -n (name) given on the folder as shown bellow
+AI-Epilepsy/bkAIEp/src/app/controllers/<name>/<name>Controller.ts
+
+-s it would create a service for the -n (name) given on the folder as shown bellow
+AI-Epilepsy/bkAIEp/src/app/controllers/<name>/<name>Controller.ts
 -m it would create a model for the -n (name) given and change the index.ts for models import
+AI-Epilepsy/bkAIEp/src/app/models/<name>Route.ts
+and in the index file of the very same folder, it would import and add  the model easy import to the application
+
 --seeder it would create a seeder on bkAIEp/src/seeders
 
 Example
@@ -151,6 +371,8 @@ npm run cli -- --factory -d -m -n message
 this would create route, controller, service and model call messages
 
 #### --seeder
+
+In the context of database development or testing, a "seeder" is a script that populates the database with initial data or new data. Seeders are used to create a consistent and known dataset for application testing or when setting up a new environment or even adding either fixing data on production environment.
 
 --seeder <name>? -x? -d? -f?
 
@@ -163,5 +385,5 @@ Example
 
 npm run cli -- --seeder initSeeder -f
 
-this would run the seeder name initSeeder located in bkAIEp/src/seeders/initSeeder.ts and it is going to run forced, therefor, even if this was run before it would be rerun
+this would run the seeder name initSeeder located in bkAIEp/src/seeders/initSeeder.ts and it is going to run forced, therefore, even if this was run before it would be rerun
 
