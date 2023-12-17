@@ -296,11 +296,39 @@ return jwt.sign({ user: user.id }, config.jwt, {
   expiresIn: '30d'
 })
 
+For the creation of the secret 
+
+- Use a Cryptographically Secure Random Number Generator (CSPRNG):
+
+Use a secure source of randomness to generate your secret. This ensures that the secret is unpredictable and resistant to guessing attacks.
+
+- Length of the Secret:
+
+A longer secret generally provides more security. It is recommended to use a secret with a length of at least 256 bits (32 bytes). Many libraries and frameworks recommend 512 bits (64 bytes) or more.
+
+- Use a Key Management System:
+
+If possible, leverage a key management system to handle key generation and storage. Key management systems help to securely store and distribute keys, reducing the risk of exposure.
+
+- Avoid Hardcoding Secrets in Source Code:
+
+Never hardcode secrets directly into your source code or configuration files. Instead, use environment variables or a secure configuration mechanism to keep secrets separate from your codebase.
+
+- Regularly Rotate Secrets:
+
+Periodically change your JWT secret. This practice limits the exposure time if a secret is compromised. Rotate secrets based on your security policy.
+
+- Consider Encryption:
+
+If confidentiality is a concern, consider using an encrypted key or a key derived from a password using a secure key derivation function (KDF).
+
+- Protect Against Information Leakage:
+
+Ensure that your secret is not accidentally leaked through error messages, logs, or other information disclosure mechanisms.
+
 ### sequelize
 
 Sequelize is a popular Object-Relational Mapping (ORM) library for Node.js, designed to work with relational databases such as PostgreSQL, MySQL, SQLite, and MSSQL. ORM libraries provide a higher-level abstraction over databases, allowing developers to interact with databases using JavaScript or TypeScript code instead of raw SQL queries. Sequelize facilitates database operations by providing an easy-to-use API and a set of features for defining models, relationships, and performing CRUD (Create, Read, Update, Delete) operations.
-
-As part of the actualization it was opted to use a ORM and due to its popularity and maintainability sequelize was the go to
 
 as for the .env
 
