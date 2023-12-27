@@ -6,7 +6,7 @@ import { PredictionController } from "@app/controllers/prediction/predictionCont
 
 //@IMPORT: Utils
 import { RouterUtility, IRouteParams } from "@core/routerUtility"
-
+import { request as auth } from "@app/middleware/authMiddleware"
 
 class PredictionRoute {
 
@@ -23,12 +23,12 @@ class PredictionRoute {
   private prefix: string = '/predictions'
   
   private routes: Array<IRouteParams> = [
-    { method: 'post', path: '/create', handler: this.controller.create , middleware: [] },
-    { method: 'post', path: '/update/:id', handler: this.controller.update , middleware: [] },
-    { method: 'post', path: '/delete/:id', handler: this.controller.delete , middleware: [] },
-    { method: 'get', path: '/', handler: this.controller.list , middleware: [] },
-    { method: 'get', path: '/:id', handler: this.controller.get , middleware: [] },
-    { method: 'post', path: '/test', handler: this.controller.test , middleware: [] }
+    { method: 'post', path: '/create', handler: this.controller.create , middleware: [auth] },
+    { method: 'post', path: '/update/:id', handler: this.controller.update , middleware: [auth] },
+    { method: 'post', path: '/delete/:id', handler: this.controller.delete , middleware: [auth] },
+    { method: 'get', path: '/', handler: this.controller.list , middleware: [auth] },
+    { method: 'get', path: '/:id', handler: this.controller.get , middleware: [auth] },
+    { method: 'post', path: '/test', handler: this.controller.test , middleware: [auth] }
   ] 
 
   public init () {

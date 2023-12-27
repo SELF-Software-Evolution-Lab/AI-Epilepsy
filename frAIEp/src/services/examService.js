@@ -1,21 +1,5 @@
-import axios from 'axios'
-import { config } from '../config/env'
+import { post, get } from "../util/http"
 
+export const  createExam = async(exam) =>  await post(`/exams/create`, { ...exam }) 
 
-export const  createExam = async(exam) => {
-  try{
-    const response = await axios.post(`${config.bkAPEp}/exams/create`, {
-      ...exam
-    })
-    return response?.data
-    
-  } catch (error) {
-    console.log('error', error)
-  }
-}
-export const  listExamsByPatient = async(patient_id) => {
-  const response = await axios.get(`${config.bkAPEp}/exams/`, {
-    patient_id
-  })
-  return response?.data
-}
+export const  listExamsByPatient = async(patient_id) => await get(`/exams/`, { patient_id }) 

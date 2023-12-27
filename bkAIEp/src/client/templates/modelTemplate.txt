@@ -1,0 +1,14 @@
+import { DataTypes } from 'sequelize';
+import  db  from "@app/database/connection";
+
+const <Model>Model = db.define('<Model>', {
+
+  //model schema goes here
+
+}, {
+  tableName: '<model>',
+  createdAt: 'created_at',
+  updatedAt: 'updated_at'
+})
+
+export { <Model>Model }

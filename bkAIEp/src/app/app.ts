@@ -109,7 +109,7 @@ class App {
     this.app.use('/temp/mri', express.static('temp/mri'))
 
     // Obtain the port number from the environment or use a default value (5001)
-    const PORT = global.env.PORT || 5001
+    const PORT = global.env.PORT || 8089
     
     // Start the server and log the port number
     this.app.listen(PORT, console.log(chalk.blue(`Server running on port ${PORT}`)))

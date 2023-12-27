@@ -28,6 +28,11 @@ export default function MainContext(props:MainContextProps) {
 
   const set = (_params)=>{
     const aux = Object.assign(state, _params)
+    if(aux?.auth?.token){
+      localStorage.setItem("TOKEN", aux?.auth?.token)
+    } else {
+      localStorage.removeItem("TOKEN")
+    }
     localStorage.setItem("SESSION", JSON.stringify(aux))
     setState(aux)
   }
@@ -56,6 +61,8 @@ export default function MainContext(props:MainContextProps) {
   }
 
   const logout = () => {
+    localStorage.removeItem("SESSION")
+    localStorage.removeItem("TOKEN")
     setState({})
   }
 

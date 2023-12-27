@@ -1,11 +1,3 @@
-import axios from 'axios'
-import { config } from '../config/env'
+import { get } from 'http'
 
-
-
-export const  listEventsByPatient = async(patient_id) => {
-  const response = await axios.get(`${config.bkAPEp}/events/`, {
-    patient_id
-  })
-  return response?.data
-}
+export const  listEventsByPatient = async(patient_id) => await get(`/events/`, { patient_id }) 

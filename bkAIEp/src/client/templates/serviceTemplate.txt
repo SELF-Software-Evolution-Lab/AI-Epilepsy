@@ -1,0 +1,31 @@
+// @import_dependencies
+
+// @import_services
+
+// @import_models
+import {  } from "@app/models"
+
+// @import_utilities
+import { responseUtility } from "@core/responseUtility"
+
+// @import_types
+
+
+class <Service>Service {
+  
+  
+  constructor () {}
+  
+  
+  
+  public async test (_params) {
+    try{
+      
+    } catch (error) {
+      console.log('error', error)
+    }
+  }
+}
+
+export const <service>Service = new <Service>Service()
+export { <Service>Service }

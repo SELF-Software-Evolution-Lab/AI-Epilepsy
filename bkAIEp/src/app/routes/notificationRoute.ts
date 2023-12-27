@@ -6,7 +6,7 @@ import { NotificationController } from "@app/controllers/notification/notificati
 
 //@IMPORT: Utils
 import { RouterUtility, IRouteParams } from "@core/routerUtility"
-
+import { request as auth } from "@app/middleware/authMiddleware"
 
 class NotificationRoute {
 
@@ -14,6 +14,8 @@ class NotificationRoute {
   private app: Application
   private routerUtility: RouterUtility
   private controller: NotificationController = new NotificationController()
+
+  
   
   constructor (app: Application, prefix: string) {
     this.app = app
@@ -23,12 +25,12 @@ class NotificationRoute {
   private prefix: string = '/notifications'
   
   private routes: Array<IRouteParams> = [
-    { method: 'post', path: '/create', handler: this.controller.create , middleware: [] },
-    { method: 'post', path: '/update/:id', handler: this.controller.update , middleware: [] },
-    { method: 'post', path: '/delete/:id', handler: this.controller.delete , middleware: [] },
-    { method: 'get', path: '/', handler: this.controller.list , middleware: [] },
-    { method: 'get', path: '/:id', handler: this.controller.get , middleware: [] },
-    { method: 'post', path: '/test', handler: this.controller.test , middleware: [] }
+    { method: 'post', path: '/create', handler: this.controller.create , middleware: [auth] },
+    { method: 'post', path: '/update/:id', handler: this.controller.update , middleware: [auth] },
+    { method: 'post', path: '/delete/:id', handler: this.controller.delete , middleware: [auth] },
+    { method: 'get', path: '/', handler: this.controller.list , middleware: [auth] },
+    { method: 'get', path: '/:id', handler: this.controller.get , middleware: [auth] },
+    { method: 'post', path: '/test', handler: this.controller.test , middleware: [auth] }
   ] 
 
   public init () {

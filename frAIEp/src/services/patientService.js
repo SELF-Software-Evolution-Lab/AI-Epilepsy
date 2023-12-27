@@ -1,13 +1,5 @@
-import axios from 'axios'
-import { config } from '../config/env'
+
+import { get } from '../util/http'
 
 
-export const  findPatients = async(search) => {
-  const response = await axios.get(`${config.bkAPEp}/patients`, {
-    params: {
-      search
-    }
-  })
-
-  return response?.data
-}
+export const  findPatients = async(search) =>   await  get(`/patients`, { params: { search } })

@@ -1,10 +1,18 @@
 //import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom"
 import "./NavBarV2.css"
+import { useContext } from "react"
+import { BaseContext } from "../context/baseContext";
 export default function NavBarV2() {
+  const context = useContext(BaseContext)
   const navigation = useNavigate()
   function handleClick(to) {
     navigation(`/${to}`)
+  }
+
+  const handleLogout = () =>{
+    context.logout()
+    handleClick('auth')
   }
   return (
     <>    
@@ -12,12 +20,21 @@ export default function NavBarV2() {
         <div className="container w-100">
           <div className="row align-items-center w-100">
             <div className="col">
-              <img src="/banner.png" onClick={()=> handleClick('v2')} style={{height:"45px", cursor:'pointer'}} />
+              <img src="/banner.png" onClick={()=> handleClick('')} style={{height:"45px", cursor:'pointer'}} />
             </div>
             <div className="col text-center">
-              <a href="#" onClick={()=> handleClick('v2')} className="btn btn-link text-info text-decoration-none mx-2 fs-5">Inicio</a>
+              {
+                context.logged() ? 
+                  <a href="#" onClick={()=> handleClick('')} className="btn btn-link text-info text-decoration-none mx-2 fs-5">Inicio</a>
+                : null
+              }
               <a href="#" onClick={()=> handleClick('about')} className="btn btn-link text-info text-decoration-none mx-2 fs-5">Nosotros</a>
-              <a href="#" onClick={()=> handleClick('auth')} className="btn btn-link text-info text-decoration-none mx-2 fs-5">Login</a>
+              {
+                context.logged() ? 
+                <a href="#" onClick={()=> handleLogout()} className="btn btn-link text-info text-decoration-none mx-2 fs-5">Logout</a>
+                : 
+                  <a href="#" onClick={()=> handleClick('auth')} className="btn btn-link text-info text-decoration-none mx-2 fs-5">Login</a>
+              }
             </div>
             <div className="col text-end">
               {/* <Button variant="outline-info">
