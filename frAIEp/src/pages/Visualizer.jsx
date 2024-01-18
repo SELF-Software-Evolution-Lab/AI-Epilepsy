@@ -9,6 +9,7 @@ import MasterLayout from "../layouts/MasterLayout.jsx";
 import {Button, ToggleButton, ToggleButtonGroup} from "@mui/material";
 import {BiLeftArrow, BiRightArrow} from "react-icons/bi";
 import "./Visualizer.css";
+import {headers} from "../util/authorization.js";
 
 
 function MockImageLister({examid, seriesId}) {
@@ -17,8 +18,13 @@ function MockImageLister({examid, seriesId}) {
      */
     const [images, setImages] = useState([]);
     useEffect(() => {
+        let options = {
+            headers: {}
+        }
+        options.headers['authorization'] = headers()
+
         axios
-            .get(`${config.bkAPEp}/exams/mri/${examid}/${seriesId}/file_list.dcm`)
+            .get(`${config.bkAPEp}/exams/mri/${examid}/${seriesId}/file_list.dcm`, options)
             .then((res) => {
                 const imageNames = res.data.split("\n")
                 setImages(imageNames);
@@ -102,8 +108,13 @@ export default function Visualizer() {
     useEffect(() => {
         console.log("Loading exam: ", `${config.bkAPEp}/exams/request-mri/${examid}`)
         // Get the list of series for this exam and select the first series if it exists
+        let options = {
+            headers: {}
+        }
+        options.headers['authorization'] = headers()
+
         axios
-            .get(`${config.bkAPEp}/exams/request-mri/${examid}`)
+            .get(`${config.bkAPEp}/exams/request-mri/${examid}`, options)
             .then((res) => {
                 setSeries(res.data.files);
                 if (res.data.files.length > 0) {
