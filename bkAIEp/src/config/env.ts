@@ -49,5 +49,6 @@ export const config = {
                 secure: false
             }
         ]
-    }
+    },
+    PORT: getEnv("PORT", "5001")
 }
