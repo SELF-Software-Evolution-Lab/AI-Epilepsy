@@ -1,6 +1,7 @@
 import "dotenv/config"
 import {config} from "@config/env";
 import * as ftp from "basic-ftp"
+import * as process from "process";
 
 const seedFTP = async () => {
     const relative = '/seed_data/'
@@ -27,4 +28,10 @@ const seedFTP = async () => {
 
 }
 
-seedFTP().then(()=> console.log("Successfully seeded FTP!"))
+seedFTP().then(()=>{
+    console.log("Successfully seeded FTP!")
+    process.exit(0)
+}).catch(()=>{
+    console.error("An unexpected error occurred while seeding the FTP server. Try again")
+    process.exit(1)
+})
