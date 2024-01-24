@@ -59,8 +59,6 @@ class App {
         global.env[_k] = env[_k]
       }
     }
-    console.log(global.env)
-
     // Freeze the global.env object to prevent further modifications
     Object.freeze(global.env)
 
