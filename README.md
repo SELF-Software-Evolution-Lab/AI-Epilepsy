@@ -27,7 +27,17 @@ Download the repository
 
 - git clone https://github.com/SELF-Software-Evolution-Lab/AI-Epilepsy.git
 
-### Step 3: Run the Docker Compose file
+### Step 3: Prepare the .env file
+
+First, navigate to the root folder of the project. It should be called "AI-Epilepsy".
+
+Then navigate to the `bkAIEp/` folder.
+
+Copy the `.env.template` file found there, and paste it in the same folder (`bkAIEp/`) with the name `.env`. The full path of the file is `AI-Epilepsy/bkAIEp/.env`. 
+
+Then navigate back to the `AI-Epilepsy/` folder and continue with Step 4.
+
+### Step 4: Run the Docker Compose file
 
 Within the user's terminal that has access to `docker compose`, the user should run the following command:
 
@@ -37,22 +47,22 @@ Within the user's terminal that has access to `docker compose`, the user should 
 
 [optional] If the user wants to leave the services running in the background, and not have them terminate upon closing the active terminal window, they must add a `-d` flag to the end of the command.
 
-### Step 4: Creating fake initial data
+### Step 5: Creating fake initial data
 
 This step is **optional**. To populate the database with example data, follow these instructions:
 
 1) Install Node.js on your machine. LTS versions are recommended (20.10.0 at the time of writing). [Download links can be found here](https://nodejs.org/en/download).
 2) Navigate to the backend folder using the command `cd bkAIEp/` and run the following terminal command: `npm i` to install all required dependencies.
-3) Copy the `.env.template` file and paste it in the same folder (`bkAIEp/`) with the name `.env`
-4) Run the following command: `npm run cli -- --seeder -d`
-5) Run the following command: `npm run ftp`
-### Step 5: accessing the AI-Epilepsy service
+3) Run the following command: `npm run cli -- --seeder -d`
+4) Run the following command: `npm run ftp`
+
+### Step 6: accessing the AI-Epilepsy service
 
 Using a web browser, navigate to http://localhost:5002
 
 Congrats, you finally made it 🎉
 
-### Step 6: turning off all services
+### Step 7: turning off all services
 
 In the root folder of the project, run the following command:
 
