@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
     "dev": "nodemon -r tsconfig-paths/register --watch src src/app/server.ts",
-    "cli": "ts-node -r tsconfig-paths/register src/client/client.ts"
+    "cli": "ts-node -r tsconfig-paths/register src/client/client.ts",
+    "ftp": "ts-node -r tsconfig-paths/register src/config/ftpSeeder.ts"
   },
   "keywords": [],
   "author": "@zadiaz",

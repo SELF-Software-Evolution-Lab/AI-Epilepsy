@@ -1,5 +1,5 @@
-import { Event, Exam, Patient, Permission, Prediction, Role, User } from '@app/models'
-import { IConsole } from '@client/client'
+import {Event, Exam, Patient, Permission, Prediction, Role, User} from '@app/models'
+import {IConsole} from '@client/client'
 import bcrypt from 'bcryptjs'
 import moment from 'moment'
 

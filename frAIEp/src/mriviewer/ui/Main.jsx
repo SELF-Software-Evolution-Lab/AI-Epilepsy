@@ -30,6 +30,7 @@ import StartScreen from './StartScreen/StartScreen.jsx';
 import css from './Main.module.css';
 import cx from 'classnames';
 import '../nouislider-custom.css';
+import "../MRIViewer.css"
 
 export const Main = () => {
     const dispatch = useDispatch();

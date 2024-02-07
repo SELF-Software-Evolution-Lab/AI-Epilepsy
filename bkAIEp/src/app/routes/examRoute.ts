@@ -27,8 +27,8 @@ class ExamRoute {
     { method: 'post', path: '/update/:id', handler: this.controller.update , middleware: [auth]  },
     { method: 'post', path: '/delete/:id', handler: this.controller.delete , middleware: [auth]  },
     { method: 'get', path: '/request-mri/:id', handler: this.controller.requestMRITest, middleware: [auth] },
-    { method: 'get', path: '/mri/:examID/:seriesID/file_list.*', handler: this.controller.requestMRIFileList, middleware: [auth] },
-    { method: 'get', path: '/mri/:examID/:seriesID/:filename', handler: this.controller.requestMRIFile, middleware: [auth] },
+    { method: 'get', path: '/mri/:examID/:seriesID/file_list.*', handler: this.controller.requestMRIFileList, middleware: [] }, //TODO fix authentication in these endpoints
+    { method: 'get', path: '/mri/:examID/:seriesID/:filename', handler: this.controller.requestMRIFile, middleware: [] }, //TODO fix authentication in these endpoints
     { method: 'get', path: '/', handler: this.controller.list , middleware: [auth]  },
     { method: 'get', path: '/:id', handler: this.controller.get , middleware: [auth]  },
     { method: 'post', path: '/test', handler: this.controller.test , middleware: [auth]  }

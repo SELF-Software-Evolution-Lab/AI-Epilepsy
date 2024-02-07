@@ -9,6 +9,7 @@ import MasterLayout from "../layouts/MasterLayout.jsx";
 import {Button, ToggleButton, ToggleButtonGroup} from "@mui/material";
 import {BiLeftArrow, BiRightArrow} from "react-icons/bi";
 import "./Visualizer.css";
+import {headers} from "../util/authorization.js";
 
 
 function MockImageLister({examid, seriesId}) {
@@ -17,8 +18,13 @@ function MockImageLister({examid, seriesId}) {
      */
     const [images, setImages] = useState([]);
     useEffect(() => {
+        let options = {
+            headers: {}
+        }
+        options.headers['authorization'] = headers()
+
         axios
-            .get(`${config.bkAPEp}/exams/mri/${examid}/${seriesId}/file_list.dcm`)
+            .get(`${config.bkAPEp}/exams/mri/${examid}/${seriesId}/file_list.dcm`, options)
             .then((res) => {
                 const imageNames = res.data.split("\n")
                 setImages(imageNames);
@@ -44,6 +50,7 @@ const selectDicomURL = (state) => state.dicomURL;
 
 function ScanSelection({series, selectedSeries, changeSeries, enableSelection = true}) {
     const handleSelect = (event, newSelection) => {
+        if (newSelection === null) changeSeries(selectedSeries);
         changeSeries(newSelection);
     }
 
@@ -84,10 +91,12 @@ export default function Visualizer() {
     let {examid, patientid} = useParams();
     const [series, setSeries] = useState([]);
     const [selectedSeries, setSelectedSeries] = useState(null)
+    const [error, setError] = useState();
     const dispatch = useDispatch();
     const dicomURL = useSelector(selectDicomURL);
 
     const changeSeries = (newSeries) => {
+        console.log("Changing series to: ", newSeries)
         setSelectedSeries(newSeries);
         dispatch({
             type: StoreActionType.SET_DICOM_URL,
@@ -97,24 +106,47 @@ export default function Visualizer() {
     }
 
     useEffect(() => {
+        console.log("Loading exam: ", `${config.bkAPEp}/exams/request-mri/${examid}`)
         // Get the list of series for this exam and select the first series if it exists
+        let options = {
+            headers: {}
+        }
+        options.headers['authorization'] = headers()
+
         axios
-            .get(`${config.bkAPEp}/exams/request-mri/${examid}`)
+            .get(`${config.bkAPEp}/exams/request-mri/${examid}`, options)
             .then((res) => {
                 setSeries(res.data.files);
                 if (res.data.files.length > 0) {
-                    changeSeries(res.data.files[0])
+                    const delay = t => new Promise(resolve => setTimeout(resolve, t));
+                    delay(1000).then(() => { //TODO improve method to avoid asking for the first series to load before the visualizer is loaded
+                        changeSeries(res.data.files[0])
+                    })
                 }
-            });
+            }).catch(err => {
+                setError(err)
+            }
+        );
     }, []);
+
+    const renderError = (error) => {
+        if (!error.response.data || !error.response.data.message) return <p>There was an error loading the exam</p>
+
+        switch(error.response.data.message){
+            case "exam.mri.get.not_found":
+                return <p>Exam not found!</p>
+            default:
+                return<p>There was an error loading the exam</p>
+        }
+    }
     return (
         <MasterLayout useContainer={false}>
             <div className="text-white">
                 <h1>MRI exam visualizer</h1>
-                {series.length <= 0 &&
+                {!error && series.length <= 0 &&
                     <p>Loading scans...</p>
                 }
-                {series.length > 0 &&
+                {!error && series.length > 0 &&
                     <>
                         <ScanSelection
                             selectedSeries={selectedSeries}
@@ -129,6 +161,7 @@ export default function Visualizer() {
                         />
                     </>
                 }
+                {error && renderError(error)}
             </div>
         </MasterLayout>
     )

@@ -1,5 +1,5 @@
 import * as process from "process";
-
+import "dotenv/config"
 /**
 * Finds value of environment variable, and returns it. If it is not present, returns the defaultValue
 * Empty strings or strings with only whitespace are considered null
@@ -49,5 +49,6 @@ export const config = {
                 secure: false
             }
         ]
-    }
+    },
+    PORT: getEnv("PORT", "5001")
 }

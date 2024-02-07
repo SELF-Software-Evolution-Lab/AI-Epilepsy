@@ -1,5 +1,5 @@
 
-#mriviewer-root {
+#mriviewer-root, #mriviewer-root * {
     /* Primary colors */
     --red: #dc5e47;
     --green: #438f56;
@@ -15,6 +15,10 @@
     --white: #fff;
     --light-orange: #e7675191;
     --extreme-black: #000000;
+
+}
+
+#mriviewer-root {
 
     --opacity: 0.95;
 
