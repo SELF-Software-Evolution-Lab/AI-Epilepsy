@@ -82,6 +82,20 @@ Edit the desired values within the `.env` file using a text editor
 
 Finally, you can continue running the `docker-compose.yml` file as demonstrated in Step 3
 
+### Accessing the project from remote locations
+
+By default, the project is configured for local use. If you wish to run the Docker compose stack on a server and access it remotely, you will have to follow a couple of steps.
+
+1) Ensure that both port 5001 and 5002 are open on the machine hosting the docker compose stack.
+2) Modify the backend's address to match the IP address where the stack will be hosted. If the stack is running in the IP 123.456.789.10 (for example), you must modify the file found in `AI-Epilepsy/frAIEp/src/config/env.js` accordingly:
+2a)  
+```
+export const config = {
+  bkAPEp: 'http://123.456.789.10:5001/api',
+  mockMRIServer: 'http://localhost:3000',
+}
+```
+3) If the stack was already running, bring it down and run the following command: `docker compose up -d --build`
 
 ## Entities and CRUD
 
