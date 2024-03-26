@@ -1,9 +1,10 @@
 import json
 import pika
+from ftp_helper import *
 from sys import path
 from os import environ
 
-rabbit_host = '172.16.238.13'
+rabbit_host = environ.get("RABBITMQ_DEFAULT_HOST")
 rabbit_user = environ.get("RABBITMQ_DEFAULT_USER")
 rabbit_password = environ.get("RABBITMQ_DEFAULT_PASS")
 rabbit_queue_name_read = 'my-predictions'
@@ -20,12 +21,16 @@ print('> Declared queue for new prediction responses')
 
 def callback(ch, method, properties, body):
     print(f" [x] Received {body}")
-    answer_pred = predict(body)
+    payload = json.loads(body.decode('utf8').replace("'", '"'))
+    answer_pred = predict(payload)
     ch.basic_publish(exchange='', routing_key=rabbit_queue_name_write, body=answer_pred)
     print(" [x] Sent 'Hello World!'")
 
-def predict(body):
-    return 'Hello World!'
+def predict(payload):
+    mri_file = payload['mri']
+    print("Predicting from "+mri_file)
+    fetch_file("mri",mri_file,"mri.dat")
+    return 'Predicted from '+mri_file
 
 channel.basic_consume(queue=rabbit_queue_name_read, on_message_callback=callback, auto_ack=True)
 

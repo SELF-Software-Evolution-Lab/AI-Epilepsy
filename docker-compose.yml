@@ -52,6 +52,10 @@ services:
     build: mlAIEp/
     container_name: prediction
     environment:
+      - FTP_DEFAULT_HOST=172.16.238.12
+      - FTP_DEFAULT_USER=ftpuser
+      - FTP_DEFAULT_PASS=ai_epilepsy10*
+      - RABBITMQ_DEFAULT_HOST=172.16.238.13
       - RABBITMQ_DEFAULT_USER=amqpuser
       - RABBITMQ_DEFAULT_PASS=ai_epilepsy10*
     depends_on:
