@@ -29,7 +29,8 @@ def callback(ch, method, properties, body):
 def predict(payload):
     mri_file = payload['mri']
     print("Predicting from "+mri_file)
-    fetch_file("mri",mri_file,"mri.dat")
+    #fetch_file("/home/user/mri-exams/",mri_file,"mri.dat")
+    fetch_file("/home/user/mri-exams/","user-1-exam-1.zip","mriPred.zip")
     return 'Predicted from '+mri_file
 
 channel.basic_consume(queue=rabbit_queue_name_read, on_message_callback=callback, auto_ack=True)
