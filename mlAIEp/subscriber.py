@@ -6,7 +6,7 @@ from os import environ
 rabbit_host = '172.16.238.13'
 rabbit_user = 'amqpuser'
 rabbit_password = 'ai_epilepsy10*'
-rabbit_queue_name = 'my-predictions'
+rabbit_queue_name = 'my-predictions-anws'
 
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(host=rabbit_host, credentials=pika.PlainCredentials(rabbit_user, rabbit_password)))

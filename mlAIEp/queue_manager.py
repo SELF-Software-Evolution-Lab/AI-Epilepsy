@@ -2,11 +2,10 @@ import json
 import pika
 from sys import path
 from os import environ
-#import django
 
 rabbit_host = '172.16.238.13'
-rabbit_user = 'amqpuser'
-rabbit_password = 'ai_epilepsy10*'
+rabbit_user = environ.get("RABBITMQ_DEFAULT_USER")
+rabbit_password = environ.get("RABBITMQ_DEFAULT_PASS")
 rabbit_queue_name_read = 'my-predictions'
 rabbit_queue_name_write = 'my-predictions-anws'
 

@@ -51,6 +51,9 @@ services:
   prediction:
     build: mlAIEp/
     container_name: prediction
+    environment:
+      - RABBITMQ_DEFAULT_USER=amqpuser
+      - RABBITMQ_DEFAULT_PASS=ai_epilepsy10*
     depends_on:
       rabbitmq:
         condition: service_healthy
