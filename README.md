@@ -41,9 +41,9 @@ Then navigate back to the `AI-Epilepsy/` folder and continue with Step 4.
 
 Within the user's terminal that has access to `docker compose`, the user should run the following command:
 
-- `docker-compose up`
+- `sudo docker-compose up`
 
-[optional] If a specific docker compose .yml file should be used instead of the existing `docker-compose.yml`, the command should instead be `docker compose -f {CUSTOM_DOCKER_COMPOSE}.yml up`
+[optional] If a specific docker compose .yml file should be used instead of the existing `docker-compose.yml`, the command should instead be `sudo docker compose -f {CUSTOM_DOCKER_COMPOSE}.yml up`
 
 [optional] If the user wants to leave the services running in the background, and not have them terminate upon closing the active terminal window, they must add a `-d` flag to the end of the command.
 
@@ -66,7 +66,7 @@ Congrats, you finally made it 🎉
 
 In the root folder of the project, run the following command:
 
-`docker-compose down`
+`sudo docker-compose down`
 
 ## Optional configuration
 

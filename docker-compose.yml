@@ -48,6 +48,15 @@ services:
       interval: 2s
       timeout: 5s
       retries: 10
+  prediction:
+    build: mlAIEp/
+    container_name: prediction
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      AIEp-net:
+        ipv4_address: 172.16.238.14
   backend:
     build: bkAIEp/
     container_name: backend
