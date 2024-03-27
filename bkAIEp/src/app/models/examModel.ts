@@ -8,7 +8,7 @@ interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttri
   file: string;
   path: string;
   type: string;
-  patient_id: string;
+  patient_id: number;
 }
 
 const ExamModel = db.define<UserModel>('Exam', {

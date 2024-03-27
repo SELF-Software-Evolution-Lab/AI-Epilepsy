@@ -29,38 +29,33 @@ export const run = async(_params, console:IConsole) => {
         "emergency_contact_phone": "4128548536",
       }
     ]
-    const events = [
-      {
-        datetime: moment.utc().toISOString(),
-        person: "Zadiaz",
-        type: "Consulta General",
-        file: "patientes/{{1}}/file.mri"
-      },
-      {
-        datetime: moment.utc().toISOString(),
-        person: "Zadiaz",
-        type: "Control",
-        file: "patientes/{{1}}/file.eeg"
-      }
-    ]
 
     const exams = [
       {
         datetime: moment.utc().toISOString(),
-        detail: "Detail del examen MRI",
+        detail: "Primer examen MRI Christos",
         type: "MRI",
-        file: "mri-exams/user-{{1}}-exam-{{EXAMID}}.zip",
-        path: "mri/{{1}}/{{EXAMID}}"
+        patient_id: 1,
+        file: "patient-1-exam-1-mri.zip",
+        path: "mri/"
       },
       {
         datetime: moment.utc().toISOString(),
-        detail: "Detail del examen EEG",
+        detail: "Primer examen EEG Christos",
         type: "EEG",
-        file: "patientes/{{1}}/file.eeg",
-        path: "patientes/{{1}}/file.eeg"
+        patient_id: 1,
+        file: "patient-1-exam-2-eeg.zip",
+        path: "eeg/"
+      },
+      {
+        datetime: moment.utc().toISOString(),
+        detail: "Primer examen MRI Pedro",
+        type: "MRI",
+        patient_id: 2,
+        file: "patient-2-exam-3-mri.zip",
+        path: "mri/"
       }
     ]
-    const examsCopy = exams.map(obj => ({...obj}));
 
 
     const predictions = [
@@ -86,35 +81,14 @@ export const run = async(_params, console:IConsole) => {
       } else {
         _patient = await Patient.create(patient)
       }
-
-      for (const event of events) {
-        event.file = event.file.replace('{{1}}', _patient['id'])
-        event['patient_id'] = _patient['id']
-        await Event.create(event)
-      }
-      for (const exam of examsCopy) {
-        exam.file = exam.file.replace('{{1}}', _patient['id'])
-        exam.path = exam.path.replace('{{1}}', _patient['id'])
-        exam['patient_id'] = _patient['id']
-        // await Exam.create(exam)
-        await Exam.create(
-
-            {
-                // @ts-ignore
-                "datetime": moment.utc().toISOString(),
-                detail: "Detail del examen MRI",
-                type: "MRI",
-                file: "user-{{1}}-exam-{{EXAMID}}.zip".replace('{{1}}', _patient['id']),
-                path: "mri/{{1}}/{{EXAMID}}".replace('{{1}}', _patient['id']),
-                patient_id: _patient['id']
-            }
-        )
-      }
-
       for (const prediction of predictions) {
         prediction['patient_id'] = _patient['id']
         await Prediction.create(prediction)
       }
+    }
+    for (const exam of exams) {
+    	console.info(`Adding exam ${console.paint.blue(exam.file)}`)
+        await Exam.create(exam)  
     }
 
     const permissions = [
