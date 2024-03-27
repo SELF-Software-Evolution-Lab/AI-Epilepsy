@@ -23,15 +23,33 @@ def callback(ch, method, properties, body):
     print(f" [x] Received {body}")
     payload = json.loads(body.decode('utf8').replace("'", '"'))
     answer_pred = predict(payload)
-    ch.basic_publish(exchange='', routing_key=rabbit_queue_name_write, body=answer_pred)
-    print(" [x] Sent 'Hello World!'")
+    answer_json = json.dumps(answer_pred)
+    ch.basic_publish(exchange='', routing_key=rabbit_queue_name_write, body=answer_json)
+    print(" [x] Sent "+answer_json)
 
 def predict(payload):
-    mri_file = payload['mri']
-    print("Predicting from "+mri_file)
-    #fetch_file("/home/user/mri-exams/",mri_file,"mri.dat")
-    fetch_file("/home/user/mri-exams/","user-1-exam-1.zip","mriPred.zip")
-    return 'Predicted from '+mri_file
+    answer = {}
+    mri_dir = payload['mridir']
+    mri_file = payload['mrifile']
+    print("Predicting from mri file "+mri_file+" at "+mri_dir)
+    if (mri_file.len()>0):
+       fetch_file(mri_dir,mri_file,"mriPred.zip")
+       answer.update(predict_mri("mriPred.zip"))
+    eeg_dir = payload['eegdir']
+    eeg_file = payload['eegfile']
+    print("Predicting from eeg file "+eeg_file+" at "+eeg_dir)
+    if (eeg_file.len()>0):
+       fetch_file(eeg_dir,eeg_file,"eegPred.zip")
+       answer.update(predict_eeg("eegPred.zip"))
+    return answer
+
+def predict_mri(local_file):
+    answer = {'mriPred': "Negative"}
+    return answer
+
+def predict_eeg(local_file):
+    answer = {'eegPred': "Negative"}
+    return answer
 
 channel.basic_consume(queue=rabbit_queue_name_read, on_message_callback=callback, auto_ack=True)
 

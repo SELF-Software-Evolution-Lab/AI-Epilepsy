@@ -1,6 +1,6 @@
 
-import { get, post } from '../util/http'
+import { post } from '../util/http'
 
-export const  listPredictionByPatient = async(patient_id) => await get(`/predictions/`, { patient_id }) 
+export const  listPredictionByPatient = async(patient_id_map) => await post(`/predictions/`, { ...patient_id_map }) 
 
 export const  createPrediction = async(exam) => await post(`/predictions/create`, { ...exam })

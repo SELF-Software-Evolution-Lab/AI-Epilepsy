@@ -142,7 +142,7 @@ export default function Patient() {
   },[])
 
   const getExams = async() =>{
-    const response_exams = await listExamsByPatient()
+    const response_exams = await listExamsByPatient({patient_id: patient.id})
     if(response_exams.code === 200){
       response_exams.exams.sort((a,b)=> moment.utc(b.created_at).diff(moment.utc(b)))
       setExams(response_exams.exams)
@@ -156,13 +156,13 @@ export default function Patient() {
     }
   }
   const getEvents = async() =>{
-    const response_events = await listEventsByPatient()
+    const response_events = await listEventsByPatient({patient_id: patient.id})
     if(response_events.code === 200){
       setEvents(response_events.events)
     }
   }
   const getPredictions = async() =>{
-    const response_predictions = await listPredictionByPatient()
+    const response_predictions = await listPredictionByPatient({patient_id: patient.id})
     if(response_predictions.code === 200){
       setPredictions(response_predictions.predictions)
     }

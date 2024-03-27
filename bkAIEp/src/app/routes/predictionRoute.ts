@@ -26,7 +26,7 @@ class PredictionRoute {
     { method: 'post', path: '/create', handler: this.controller.create , middleware: [auth] },
     { method: 'post', path: '/update/:id', handler: this.controller.update , middleware: [auth] },
     { method: 'post', path: '/delete/:id', handler: this.controller.delete , middleware: [auth] },
-    { method: 'get', path: '/', handler: this.controller.list , middleware: [auth] },
+    { method: 'post', path: '/', handler: this.controller.list , middleware: [auth] },
     { method: 'get', path: '/:id', handler: this.controller.get , middleware: [auth] },
     { method: 'post', path: '/test', handler: this.controller.test , middleware: [auth] }
   ] 

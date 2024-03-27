@@ -29,7 +29,7 @@ class ExamRoute {
     { method: 'get', path: '/request-mri/:id', handler: this.controller.requestMRITest, middleware: [auth] },
     { method: 'get', path: '/mri/:examID/:seriesID/file_list.*', handler: this.controller.requestMRIFileList, middleware: [] }, //TODO fix authentication in these endpoints
     { method: 'get', path: '/mri/:examID/:seriesID/:filename', handler: this.controller.requestMRIFile, middleware: [] }, //TODO fix authentication in these endpoints
-    { method: 'get', path: '/', handler: this.controller.list , middleware: [auth]  },
+    { method: 'post', path: '/', handler: this.controller.list , middleware: [auth]  },
     { method: 'get', path: '/:id', handler: this.controller.get , middleware: [auth]  },
     { method: 'post', path: '/test', handler: this.controller.test , middleware: [auth]  }
   ] 
