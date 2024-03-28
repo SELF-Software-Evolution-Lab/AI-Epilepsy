@@ -184,29 +184,29 @@ class ExamService {
 
             const patientID = exam.patient_id
             const examID = exam.id
+			const fileName = exam.file;
+            const filePath = exam.path;
+            const tempPath = `temp/mri/${patientID}/${examID}`;
 
-
-            const tempPath = exam.path.replace("{{EXAMID}}", exam.id.toString()) // mri/{patientID}/{examID} with values filled out
-            const directory_exists = fs.existsSync(`temp/${tempPath}`)
+            const directory_exists = fs.existsSync(tempPath)
             if (directory_exists) {
                 // get a list of all folders in the directory
-                const files = fs.readdirSync(`temp/${tempPath}`)
+                const files = fs.readdirSync(tempPath)
                 return responseUtility.success({"files": files, "status": "returned list of files"}, 200)
             } else {
                 // Get zip from FTP
                 console.log("zip file not found, downloading from FTP")
-                let zipFileName = `user-${patientID}-exam-${examID}.zip`;
-                if (!fs.existsSync(`temp/mri-download/${zipFileName}`)) {
+                if (!fs.existsSync(`temp/mri-download/${fileName}`)) {
                     // If the zip file doesn't exist, download it from the FTP server
                     const connection = _params.connection || unique()
                     try {
                         // Search for the zip file in the FTP server
                         await ftpUtility.connect(connection)
-                        await ftpUtility.cd(connection, "/home/user/mri-exams", true)
+                        await ftpUtility.cd(connection, filePath, false)
                         const lsResponse = await ftpUtility.ls(connection)
                         const files = lsResponse.files
 
-                        if (!files.find(e => e.name === zipFileName)) {
+                        if (!files.find(e => e.name === fileName)) {
                             // Return error if zip file is not found
                             return responseUtility.error('exam.mri.get.not_found')
                         } else {
@@ -214,7 +214,7 @@ class ExamService {
                             if (!fs.existsSync(`temp/mri-download`)) {
                                 fs.mkdirSync(`temp/mri-download`, {recursive: true})
                             }
-                            await ftpUtility.downloadTo(connection, `temp/mri-download/${zipFileName}`, `/home/user/mri-exams/${zipFileName}`)
+                            await ftpUtility.downloadTo(connection, `temp/mri-download/${fileName}`, `${filePath}/${fileName}`)
                         }
                     } catch (e) {
                         console.log('error while connecting to FTP and downloading zip file', e)
@@ -222,7 +222,7 @@ class ExamService {
                     }
                 }
                 // Once we know the zip is in our server, we unzip it
-                const zipPath = `temp/mri-download/${zipFileName}`
+                const zipPath = `temp/mri-download/${fileName}`
                 let zipfile = new AdmZip(zipPath)
 
                 try {
@@ -232,14 +232,14 @@ class ExamService {
                     console.log('error while unzipping', e)
                     return responseUtility.error('exam.mri.unzip_failure')
                 }
-                const directory_exists = fs.existsSync(`temp/${tempPath}`)
+                const directory_exists = fs.existsSync(tempPath)
                 if (directory_exists) {
                     // get a list of all folders in the directory
-                    const files = fs.readdirSync(`temp/${tempPath}`)
+                    const files = fs.readdirSync(tempPath)
                     return responseUtility.success({
                         "files": files,
                         "status": "returned list of series",
-                        "path": `temp/${tempPath}`
+                        "path": tempPath
                     }, 200)
                 } else {
                     console.log(`error while unzipping, the completed folder ${tempPath} was not found`)
@@ -266,18 +266,18 @@ class ExamService {
 
             const patientID = exam.patient_id
             const examID = exam.id
+            const tempPath = `temp/mri/${patientID}/${examID}`;
             const seriesID = _params['seriesID'];
 
-            const tempPath = exam.path.replace("{{EXAMID}}", exam.id.toString()) // mri/{patientID}/{examID} with values filled out
-            const directory_exists = fs.existsSync(`temp/${tempPath}`)
+            const directory_exists = fs.existsSync(tempPath)
             if (directory_exists) {
-                if (!fs.existsSync(`temp/${tempPath}/${seriesID}`)) {
+                if (!fs.existsSync(`${tempPath}/${seriesID}`)) {
                     console.log(`the series folder ${seriesID} was not found`)
                     return responseUtility.error('exam.mri.series_folder_not_found')
                 }
 
                 // get a list of all folders in the directory
-                const files = fs.readdirSync(`temp/${tempPath}/${seriesID}/`)
+                const files = fs.readdirSync(`${tempPath}/${seriesID}/`)
 
                 return responseUtility.success({"files": files, "deliver_list": true}, 200)
             } else {
@@ -302,14 +302,14 @@ class ExamService {
 
             const patientID = exam.patient_id
             const examID = exam.id
+            const tempPath = `temp/mri/${patientID}/${examID}`;
             const seriesID = _params['seriesID'];
             const filename = _params['filename'];
 
-            const tempPath = exam.path.replace("{{EXAMID}}", exam.id.toString()) // mri/{patientID}/{examID} with values filled out
-            const fullImagePath = `temp/${tempPath}/${seriesID}/${filename}`;
+            const fullImagePath = `${tempPath}/${seriesID}/${filename}`;
             const directory_exists = fs.existsSync(fullImagePath)
             if (directory_exists) {
-                return responseUtility.success({"file": `temp/${tempPath}/${seriesID}/${filename}`, "deliver_file": true}, 200)
+                return responseUtility.success({"file": `${tempPath}/${seriesID}/${filename}`, "deliver_file": true}, 200)
             } else {
                 console.log(`the image ${fullImagePath} was not found`)
                 return responseUtility.error('exam.mri.mri_file_not_found')
@@ -318,9 +318,7 @@ class ExamService {
             console.log('error', error)
             return responseUtility.error('exam.get.fail_action')
         }
-
     }
-
 }
 
 export const examService = new ExamService()
