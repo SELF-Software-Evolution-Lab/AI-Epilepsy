@@ -202,18 +202,21 @@ class ExamService {
                     try {
                         // Search for the zip file in the FTP server
                         await ftpUtility.connect(connection)
+                        console.log(`FTP directory ${filePath}`)
                         await ftpUtility.cd(connection, filePath, false)
                         const lsResponse = await ftpUtility.ls(connection)
+                        console.log(`FTP ls response ${lsResponse}`)
                         const files = lsResponse.files
 
                         if (!files.find(e => e.name === fileName)) {
                             // Return error if zip file is not found
                             return responseUtility.error('exam.mri.get.not_found')
                         } else {
-                            // Download the zip file if the desired zip file is found
+                           // Download the zip file if the desired zip file is found
                             if (!fs.existsSync(`temp/mri-download`)) {
                                 fs.mkdirSync(`temp/mri-download`, {recursive: true})
                             }
+                            console.log(`Downloading path ${filePath}/${fileName} to temp/mri-download/${fileName}`)
                             await ftpUtility.downloadTo(connection, `temp/mri-download/${fileName}`, `${filePath}/${fileName}`)
                         }
                     } catch (e) {
