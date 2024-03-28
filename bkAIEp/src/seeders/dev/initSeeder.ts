@@ -37,7 +37,7 @@ export const run = async(_params, console:IConsole) => {
         type: "MRI",
         patient_id: 1,
         file: "patient-1-exam-1-mri.zip",
-        path: "exams-dev"
+        path: "/home/user/exams-dev/"
       },
       {
         datetime: moment.utc().toISOString(),
@@ -45,7 +45,7 @@ export const run = async(_params, console:IConsole) => {
         type: "EEG",
         patient_id: 1,
         file: "patient-1-exam-2-eeg.zip",
-        path: "exams-dev"
+        path: "/home/user/exams-dev/"
       },
       {
         datetime: moment.utc().toISOString(),
@@ -53,7 +53,7 @@ export const run = async(_params, console:IConsole) => {
         type: "MRI",
         patient_id: 2,
         file: "patient-2-exam-3-mri.zip",
-        path: "exams-dev"
+        path: "/home/user/exams-dev/"
       }
     ]
 

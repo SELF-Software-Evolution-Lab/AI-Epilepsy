@@ -29,17 +29,17 @@ def callback(ch, method, properties, body):
 
 def predict(payload):
     answer = {}
-    mri_dir = payload['mridir']
+    mri_path = payload['mripath']
     mri_file = payload['mrifile']
-    print("Predicting from mri file "+mri_file+" at "+mri_dir)
-    if (mri_file.len()>0):
-       fetch_file(mri_dir,mri_file,"mriPred.zip")
+    print("Predicting from mri file "+mri_file+" at "+mri_path)
+    if (len(mri_file)>0):
+       fetch_file(mri_path,mri_file,"mriPred.zip")
        answer.update(predict_mri("mriPred.zip"))
-    eeg_dir = payload['eegdir']
+    eeg_path = payload['eegpath']
     eeg_file = payload['eegfile']
-    print("Predicting from eeg file "+eeg_file+" at "+eeg_dir)
-    if (eeg_file.len()>0):
-       fetch_file(eeg_dir,eeg_file,"eegPred.zip")
+    print("Predicting from eeg file "+eeg_file+" at "+eeg_path)
+    if (len(eeg_file)>0):
+       fetch_file(eeg_path,eeg_file,"eegPred.zip")
        answer.update(predict_eeg("eegPred.zip"))
     return answer
 

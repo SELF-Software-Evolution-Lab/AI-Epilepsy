@@ -15,7 +15,9 @@ import { pipeline } from "node:stream";
 import AdmZip from "adm-zip";
 
 
-const PATH = '/home/ftpuser/public_html'
+const PATH_BASE = '/home/user'
+const PATH_OUT = '/home/user/exams-test'
+
 class ExamService {
 
   constructor () {}
@@ -51,10 +53,10 @@ class ExamService {
           const _r = randomstring.generate(7)
           const _n = _params.file.split('.')
           const new_name = `${_r}.${_n[_n.length -1]}`
-          const path = `${PATH}/patient/${_params.patient_id}/${_params.type}`
+          const path = `${PATH_OUT}/${_params.patient_id}/${_params.type}/`
 
           // Update file path and name in the exam parameters
-          _params.path = `${path}/${new_name}`
+          _params.path = `${path}`
           _params.file = new_name
 
           // Transfer the file to the specified path

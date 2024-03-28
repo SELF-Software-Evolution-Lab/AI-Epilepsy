@@ -36,18 +36,21 @@ class PredictionService {
         const _data:any = {}
         
         // Add MRI file to data if provided
-        if(_params.mri && _params.mri.file){
-          _data.mri = _params.mri.file
+        if(_params.mri && _params.mri.file && _params.mri.path){
+          _data.mrifile = _params.mri.file
+          _data.mripath = _params.mri.path
         }
         
         // Add ARN file to data if provided
-        if(_params.arn && _params.arn.file){
-          _data.arn = _params.arn.file
+        if(_params.arn && _params.arn.file && _params.arn.path){
+          _data.arnfile = _params.arn.file
+          _data.arnpath = _params.arn.path
         }
         
         // Add EEG file to data if provided
-        if(_params.eeg && _params.eeg.file){
-          _data.eeg = _params.eeg.file
+        if(_params.eeg && _params.eeg.file && _params.eeg.path){
+          _data.eegfile = _params.eeg.file
+          _data.eegpath = _params.eeg.path
         }
         
         // Create a new prediction with the provided data
