@@ -28,7 +28,7 @@ const ModalSelectFile = ({selected, setSelected, selectedName, setSelectedName})
   },[])
 
   const init = async() =>{
-    const get = await handleGet()
+    const get = await handleGet("/home/user/examsToAssociate")
     if(get?.code === 200){
       if(get?.ftp?.files){
         setExplorerData(get?.ftp?.files)

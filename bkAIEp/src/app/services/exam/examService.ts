@@ -181,12 +181,11 @@ class ExamService {
         try {
             const exam = await ExamModel.findOne({where: {id: _params.id}})
             if (!exam) return responseUtility.error('exam.not_found')
-
-            const patientID = exam.patient_id
             const examID = exam.id
 			const fileName = exam.file;
             const filePath = exam.path;
-            const tempPath = `temp/mri/${patientID}/${examID}`;
+            const zipPath = `temp/mri-download/${examID}/${fileName}`
+            const tempPath = `temp/mri/${examID}`;
 
             const directory_exists = fs.existsSync(tempPath)
             if (directory_exists) {
@@ -194,10 +193,9 @@ class ExamService {
                 const files = fs.readdirSync(tempPath)
                 return responseUtility.success({"files": files, "status": "returned list of files"}, 200)
             } else {
-                // Get zip from FTP
-                console.log("zip file not found, downloading from FTP")
-                if (!fs.existsSync(`temp/mri-download/${fileName}`)) {
+                if (!fs.existsSync(zipPath)) {
                     // If the zip file doesn't exist, download it from the FTP server
+                    console.log("zip file not found, downloading from FTP")
                     const connection = _params.connection || unique()
                     try {
                         // Search for the zip file in the FTP server
@@ -216,8 +214,11 @@ class ExamService {
                             if (!fs.existsSync(`temp/mri-download`)) {
                                 fs.mkdirSync(`temp/mri-download`, {recursive: true})
                             }
-                            console.log(`Downloading path ${filePath}/${fileName} to temp/mri-download/${fileName}`)
-                            await ftpUtility.downloadTo(connection, `temp/mri-download/${fileName}`, `${filePath}/${fileName}`)
+                            if (!fs.existsSync(`temp/mri-download/${examID}`)) {
+                                fs.mkdirSync(`temp/mri-download/${examID}`, {recursive: true})
+                            }
+                            console.log(`Downloading path ${filePath}/${fileName} to ${zipPath}`)
+                            await ftpUtility.downloadTo(connection, zipPath, `${filePath}/${fileName}`)
                         }
                     } catch (e) {
                         console.log('error while connecting to FTP and downloading zip file', e)
@@ -225,12 +226,12 @@ class ExamService {
                     }
                 }
                 // Once we know the zip is in our server, we unzip it
-                const zipPath = `temp/mri-download/${fileName}`
+                
                 let zipfile = new AdmZip(zipPath)
 
                 try {
-                    console.log("unzipping file at ", zipPath)
-                    zipfile.extractAllTo(`temp/mri/`, true)
+                    console.log("unzipping file ", zipPath," at ",tempPath)
+                    zipfile.extractAllTo(tempPath, true)
                 } catch (e) {
                     console.log('error while unzipping', e)
                     return responseUtility.error('exam.mri.unzip_failure')
@@ -248,8 +249,6 @@ class ExamService {
                     console.log(`error while unzipping, the completed folder ${tempPath} was not found`)
                     return responseUtility.error('exam.mri.unzip_failure')
                 }
-
-
             }
         } catch (error) {
             console.log('error', error)
@@ -266,10 +265,8 @@ class ExamService {
         try{
             const exam = await ExamModel.findOne({where: {id: _params['examID']}})
             if (!exam) return responseUtility.error('exam.not_found')
-
-            const patientID = exam.patient_id
             const examID = exam.id
-            const tempPath = `temp/mri/${patientID}/${examID}`;
+            const tempPath = `temp/mri/${examID}`;
             const seriesID = _params['seriesID'];
 
             const directory_exists = fs.existsSync(tempPath)
@@ -302,10 +299,8 @@ class ExamService {
         try{
             const exam = await ExamModel.findOne({where: {id: _params['examID']}})
             if (!exam) return responseUtility.error('exam.not_found')
-
-            const patientID = exam.patient_id
             const examID = exam.id
-            const tempPath = `temp/mri/${patientID}/${examID}`;
+            const tempPath = `temp/mri/${examID}`;
             const seriesID = _params['seriesID'];
             const filename = _params['filename'];
 
