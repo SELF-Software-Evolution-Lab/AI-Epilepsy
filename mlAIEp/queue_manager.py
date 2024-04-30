@@ -48,6 +48,13 @@ def predict_mri(local_file):
     return answer
 
 def predict_eeg(local_file):
+    from analyzeEEGFile import analyzeEEGFile
+    result = analyzeEEGFile(local_file)
+    # Input: zip file with multiple .edf files
+    # Output: Dictionary where keys are the EDF file name. And the respective value is a list of 0s and 1s.
+    # Each item on the list represents 5 seconds of the exam from the edf file. 
+    # The list is organized chronologically, meaning the first element represents time from 0s to 5s. Second one, from 5s to 10s and so on.
+    # 1 means that the 5 second fragament is from a seizure and 0 that is seizure-free.
     answer = {'eegPred': "Negative"}
     return answer
 
