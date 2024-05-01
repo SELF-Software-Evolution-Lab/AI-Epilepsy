@@ -469,12 +469,10 @@ export default function Patient() {
               RH: <span className="fw-medium"> {patient.blood_type}</span> <br/>
               Genero: <span className="fw-medium"> {patient.gender === 'male' ? 'Masculino': 'Femenino'}</span> <br/>
               Email: <span className="fw-medium"> {patient.email}</span> <br/>
-            </p>
-            <p>
-              Predicción general: 
-              El modelo predictivo sugiere que, basado en los tres exámenes suministrados 
-              ( MRI, EEG y micro ARNs), el paciente Christos Tingcomb es &nbsp; 
-              {result?.result? 'POSITIVO': 'NEGATIVO'}
+              Resultado: <span className="fw-medium"> {result?.result? 'POSITIVO': 'NEGATIVO'}</span> <br/>
+              Archivos utilizados: <span className="fw-medium"> {result?.prediction_data}</span> <br/> 
+		      Predicciones EEG: <span className="fw-medium"> {(result?.eeg_data)===null?"Ninguno":JSON.stringify(result?.eeg_data)}</span> <br/>
+              Predicciones MRI: <span className="fw-medium"> {(result?.mri_data)===null?"Ninguno":JSON.stringify(result?.mri_data)}</span> <br/>
             </p>
           </Modal.Body>
           <Modal.Footer className="bg-dark text-white">
