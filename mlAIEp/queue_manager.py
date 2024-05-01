@@ -53,8 +53,8 @@ def predict_mri(local_file):
     return answer
 
 def predict_eeg(local_file):
-    #answer = {'eeg_data': analyzeEEGFile(local_file)}
-    answer = {'eeg_data': {"File1": ",5,10,30,40","File2": ",20,50"}}
+    answer = {'eeg_data': analyzeEEGFile(local_file)}
+    #answer = {'eeg_data': {"File1": ",5,10,30,40","File2": ",20,50"}}
     return answer
 
 channel.basic_consume(queue=rabbit_queue_name_read, on_message_callback=callback, auto_ack=True)
