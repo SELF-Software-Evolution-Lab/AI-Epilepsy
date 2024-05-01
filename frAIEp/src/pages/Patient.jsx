@@ -227,7 +227,7 @@ export default function Patient() {
                                   <td>{_p.label}</td>
                                   <td className="text-end">
                                     {
-                                      _p.label === 'Stopped' ? 
+                                      _p.label === 'Finished' ? 
                                         <Button onClick={()=>{setResult(_p); setModalResult(true)}} variant="outline-info" size="sm">Ver</Button>
                                       : null
                                     }
@@ -445,7 +445,7 @@ export default function Patient() {
           </Modal.Body>
           <Modal.Footer className="bg-dark text-white">
             {
-              ["MRI", "EEG"].includes(detailExam?.type) ?
+              ["MRI"].includes(detailExam?.type) ?
                 <>
                   <Button variant="info"  onClick={()=>{navigation(`/patients/${detailExam?.patient_id}/exams/mri/${detailExam?.id}/`)}}>Visualizador <GiMagicPortal></GiMagicPortal></Button>
                 </>
