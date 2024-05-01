@@ -68,7 +68,7 @@ class PredictionService {
         
         // Update data with patient ID and prediction ID
         _data.patient_id = _params.patient_id,
-        _data.prediction = prediction.id
+        _data.prediction_id = prediction.id
         
         // If the prediction is created, send a message to the queue
         if(_prediction){

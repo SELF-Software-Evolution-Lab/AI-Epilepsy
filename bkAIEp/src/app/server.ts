@@ -12,5 +12,5 @@ app.init()
 // Set a timeout to connect to the inbound queue service after 1000 milliseconds (1 second)
 setTimeout(()=>{
   // Call the 'connect_inbound' method of the 'queueService'
-  //queueService.connect_inbound()
+  queueService.connect_inbound()
 }, 1000)

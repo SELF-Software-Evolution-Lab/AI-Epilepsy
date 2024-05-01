@@ -61,11 +61,11 @@ export const run = async(_params, console:IConsole) => {
     const predictions = [
       {
         date_requested:moment.utc().toISOString(),
-        label:"Going"
+        label:"Requested"
       },
       {
         date_requested:moment.utc().toISOString(),
-        label:"Stopped"
+        label:"Finished"
       }
     ]
 

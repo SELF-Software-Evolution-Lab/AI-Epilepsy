@@ -65,7 +65,7 @@ class QueueService {
       // Parse the content of the message
       const content = JSON.parse(Buffer.from(message.content, "utf-8").toString()) 
       // Get prediction details based on the content
-      const _prediction = await predictionService.get({id: content.prediction})
+      const _prediction = await predictionService.get({id: content.prediction_id})
       // If the prediction retrieval fails, return the error response
       if(_prediction.code !== 200) return _prediction
       // Extract prediction details
@@ -74,7 +74,9 @@ class QueueService {
       const update = predictionService.insertOrUpdate({
         id: prediction.id,
         result: content.result,
-        label: 'Stopped'
+        eeg_data: content.eeg_data,
+        mri_data: content.mri_data,
+        label: 'Finished'
       })
       
       // Return a success response
