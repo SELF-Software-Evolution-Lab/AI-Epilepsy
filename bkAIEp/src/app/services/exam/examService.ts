@@ -47,7 +47,7 @@ class ExamService {
           if(!_params.patient_id) return responseUtility.error('exam.insert_update.no_patient_id')
 
           // Convert exam type to lowercase
-          _params.type = _params.type.toLowerCase()
+          _params.type = _params.type.toUpperCase()
 
           // Generate a random string for the file name
           const _r = randomstring.generate(7)
