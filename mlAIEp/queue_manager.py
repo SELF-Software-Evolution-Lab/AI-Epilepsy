@@ -2,6 +2,7 @@ import json
 import pika
 from ftp_helper import *
 from analyzeEEGFile import *
+from analyzeRNAFile import *
 from sys import path
 from os import environ
 
@@ -45,6 +46,12 @@ def predict(payload):
         print("Predicting from eeg file "+eeg_file+" at "+eeg_path)
         fetch_file(eeg_path,eeg_file,"eegPred.zip")
         answer.update(predict_eeg("eegPred.zip"))
+    rna_path = payload.get('rnapath',None)
+    rna_file = payload.get('rnafile',None)
+    if (rna_path is not None):
+        print("Predicting from rna file "+rna_file+" at "+rna_path)
+        fetch_file(rna_path,rna_file,"rnaPred.zip")
+        answer.update(predict_rna("rnaPred.zip"))
     answer['result'] = 0
     return answer
 
@@ -55,6 +62,10 @@ def predict_mri(local_file):
 def predict_eeg(local_file):
     answer = {'eeg_data': analyzeEEGFile(local_file)}
     #answer = {'eeg_data': {"File1": ",5,10,30,40","File2": ",20,50"}}
+    return answer
+    
+def predict_rna(local_file):
+    answer = {'rna_data': analyzeRNAFile(local_file)}
     return answer
 
 channel.basic_consume(queue=rabbit_queue_name_read, on_message_callback=callback, auto_ack=True)
