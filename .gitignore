@@ -7,3 +7,7 @@ frAIEp/node_modules
 frAIEp/package-lock.json
 */node_modules
 /bkAIEp/temp/
+/mlAIEp/Datos
+/mlAIEp/__pycache__
+
+.conda
