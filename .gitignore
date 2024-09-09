@@ -11,3 +11,4 @@ frAIEp/package-lock.json
 /mlAIEp/__pycache__
 
 .conda
+.venv 
