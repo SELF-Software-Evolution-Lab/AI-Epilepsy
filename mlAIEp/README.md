@@ -15,6 +15,12 @@ The dataset used for this project can be accessed from [OpenNeuro](https://openn
 | pipeline_creation.py          | Import PCA and Classifier models<br />Build each pipeline workflow<br />Export pipelines                                                                                                                                                                                                                                                                     |
 | prediction_pipeline.py        | Import individual pipelines (Sagittal, Coronal, Axial, and Viewpoint classification)<br />Predict lesions for all dicom files inside a zip given by a path<br />The result follows the structure defined in [this file](https://github.com/SELF-Software-Evolution-Lab/AI-Epilepsy/blob/6aef6a666aecac0669770035d63b31091f546b23/bkAIEp/doc/mri_results.json)) |
 
+You can set up the system requirements on a Debian-based machine by running the command:
+
+```
+sudo bash prepare_installation.sh
+```
+
 To install the required dependencies run `pip install -r requirements.txt`
 
 To run the preprocessing script you must download the dataset and place it inside a folder that can be specified in the variable `data_dir`.

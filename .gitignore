@@ -12,3 +12,4 @@ frAIEp/package-lock.json
 
 .conda
 .venv 
+/mlAIEp/venv
