@@ -20,7 +20,7 @@ hem_labels = []
 # Extracted FLAIR files that meet size criteria
 flair_files = []
 
-data_dir = './ds004199/'
+data_dir = './Datos/'
 
 # Read metadata to extract labels
 metadata = pd.read_csv(data_dir + 'participants.tsv', delimiter='\t')
