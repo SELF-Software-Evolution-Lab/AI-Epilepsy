@@ -21,6 +21,12 @@ You can set up the system requirements on a Debian-based machine by running the 
 sudo bash prepare_installation.sh
 ```
 
+You can get the EEG dataset via the following command:
+
+```
+wget -r -N -c -np https://physionet.org/files/siena-scalp-eeg/1.0.0/
+```
+
 To install the required dependencies run `pip install -r requirements.txt`
 
 To run the preprocessing script you must download the dataset and place it inside a folder that can be specified in the variable `data_dir`.

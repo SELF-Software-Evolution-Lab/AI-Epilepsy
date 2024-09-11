@@ -9,6 +9,7 @@ frAIEp/package-lock.json
 /bkAIEp/temp/
 /mlAIEp/Datos
 /mlAIEp/__pycache__
+/mlAIEp/physionet.org
 
 .conda
 .venv 
