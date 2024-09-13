@@ -6,6 +6,8 @@ The main goal from this module is to predict lesion localization regarding lobe 
 
 The dataset used for this project can be accessed from [OpenNeuro](https://openneuro.org/datasets/ds004199/versions/1.0.5)*.
 
+For EEG-based algorithms, we can resort to [The Siena EEG dataset](https://physionet.org/content/siena-scalp-eeg/1.0.0/PN05/#files-panel) for verification and [The MIT EEG dataset](https://physionet.org/content/chbmit/1.0.0/) for training such algorithms. Verification of such algorithms can be done through the eeg-verification notebook.
+
 | File                          | Content                                                                                                                                                                                                                                                                                                                                                      |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | preprocessing.py              | Initial data load including labels<br />Relabeling using ROI annotation from the dataset<br />Feature extraction: HOG and PCA<br />Export labels, features and PCA models                                                                                                                                                                                   |
