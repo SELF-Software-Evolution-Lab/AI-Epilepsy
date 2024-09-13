@@ -5,7 +5,7 @@ def analyzeRNAFile(text_file):
     with open(text_file, 'r') as f:
         reader = csv.reader(f, delimiter=',')
         for row in reader:
-            if row[0] in knwonRNAIds
+            if row[0] in knwonRNAIds:
                 result[row[0]] = row[1]
     return result
     
