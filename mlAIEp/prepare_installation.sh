@@ -15,6 +15,6 @@ mv ./ds004199 ./Datos
 echo "generating Venv environment..."
 conda init
 conda create -n .conda
-conda install --file requirementsAll.txt
+pip install -r requirementsAll.txt
 
 echo "Done!"
