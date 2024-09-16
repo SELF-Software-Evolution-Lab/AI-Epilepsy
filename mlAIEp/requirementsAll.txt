@@ -10,3 +10,5 @@ matplotlib==3.8.2
 seaborn==0.13.0
 pydicom==2.4.4
 xgboost==2.0.2
+tensorflow
+mne

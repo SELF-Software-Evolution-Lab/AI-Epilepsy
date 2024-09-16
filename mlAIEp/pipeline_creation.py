@@ -3,13 +3,13 @@ from pipeline_utilities import *
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer
 
-pca_sag = joblib.load('pca_model_sag.joblib')
-pca_cor = joblib.load('pca_model_cor.joblib')
-pca_ax = joblib.load('pca_model_ax.joblib')
+pca_sag = joblib.load('./pipelines/pca_model_sag.joblib')
+pca_cor = joblib.load('./pipelines/pca_model_cor.joblib')
+pca_ax = joblib.load('./pipelines/pca_model_ax.joblib')
 
-model_sag = joblib.load('classifier_sag.joblib')
-model_cor = joblib.load('classifier_cor.joblib')
-model_ax = joblib.load('classifier_ax.joblib')
+model_sag = joblib.load('./pipelines/classifier_sag.joblib')
+model_cor = joblib.load('./pipelines/classifier_cor.joblib')
+model_ax = joblib.load('./pipelines/classifier_ax.joblib')
 
 pipeline_sag = Pipeline([
     ('reshape', FunctionTransformer(image_processor, kw_args={'desired_height':256,'desired_width':256})),

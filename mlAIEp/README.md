@@ -6,6 +6,8 @@ The main goal from this module is to predict lesion localization regarding lobe 
 
 The dataset used for this project can be accessed from [OpenNeuro](https://openneuro.org/datasets/ds004199/versions/1.0.5)*.
 
+For EEG-based algorithms, we can resort to [The Siena EEG dataset](https://physionet.org/content/siena-scalp-eeg/1.0.0/PN05/#files-panel) for verification and [The MIT EEG dataset](https://physionet.org/content/chbmit/1.0.0/) for training such algorithms. Verification of such algorithms can be done through the eeg-verification notebook.
+
 | File                          | Content                                                                                                                                                                                                                                                                                                                                                      |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | preprocessing.py              | Initial data load including labels<br />Relabeling using ROI annotation from the dataset<br />Feature extraction: HOG and PCA<br />Export labels, features and PCA models                                                                                                                                                                                   |
@@ -14,6 +16,18 @@ The dataset used for this project can be accessed from [OpenNeuro](https://openn
 | pipeline_utilities.py         | Functions used to build the pipelines<br />Includes image loading and preprocessing                                                                                                                                                                                                                                                                          |
 | pipeline_creation.py          | Import PCA and Classifier models<br />Build each pipeline workflow<br />Export pipelines                                                                                                                                                                                                                                                                     |
 | prediction_pipeline.py        | Import individual pipelines (Sagittal, Coronal, Axial, and Viewpoint classification)<br />Predict lesions for all dicom files inside a zip given by a path<br />The result follows the structure defined in [this file](https://github.com/SELF-Software-Evolution-Lab/AI-Epilepsy/blob/6aef6a666aecac0669770035d63b31091f546b23/bkAIEp/doc/mri_results.json)) |
+
+You can set up the system requirements on a Debian-based machine by running the command:
+
+```
+sudo bash prepare_installation.sh
+```
+
+You can get the EEG dataset via the following command:
+
+```
+wget -r -N -c -np https://physionet.org/files/siena-scalp-eeg/1.0.0/
+```
 
 To install the required dependencies run `pip install -r requirements.txt`
 
