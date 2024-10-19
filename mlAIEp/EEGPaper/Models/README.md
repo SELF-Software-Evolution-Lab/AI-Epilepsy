@@ -9,7 +9,7 @@ has a seizure and 0 tha is seizure free.
 ## Deep learning models (CNN1, CNN3, DCNN)
 
 Input for 3 models is a list with linearized EEG data after preprocessing. 
-List size is 23058 elemnts corresponding to 5 seconds, 18 channels and 256 sampling frequency + 1 element per channel.
+List size is 23058 elemnts corresponding to 5 seconds, 18 channels and 256 sampling frequency + 1 element per channel (Ceiling in subsampling).
 
 Code to run detection:
 
@@ -27,5 +27,6 @@ print(pred)
 
 ## Machine leraning models (RFC+All, RFC+PBand, RFC+Wavelets)
 
-*For preprocessing documentation go to publication or EEGPaper/Scripts/Others directory.
-To do detction on whole .edf files go to EEGPaper/NewData*
+**For preprocessing documentation go to publication or EEGPaper/Scripts/Others directory.**
+
+**To do detction on whole *.edf* files go to EEGPaper/NewData**
