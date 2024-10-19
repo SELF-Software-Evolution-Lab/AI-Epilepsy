@@ -8,4 +8,5 @@ In this repository you will find additional information, the scpits used and the
   * Feature calculation: Scripts for feature extraction for later classical machine learning models training.
   * Others: Contains script for data preprocessing, and ROc curve calculation.
 * NewData: Scripts for Seizure detection in new .edf files using best performance model (CNN1).
+  
 **Futher information inside each directory**
