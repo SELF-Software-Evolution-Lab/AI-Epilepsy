@@ -1,0 +1,6 @@
+# Scripts
+
+*DLModels: Scripts for the trainig and testing of Deep Learning models.
+*MLModels: Scripts for the trainig and testing of classical machine Learning models
+*Feature calculation: Scripts for feature extraction for later classical machine learning models training.
+*Others: Contains script for data preprocessing, ROC curve calculation and dependencies used for all scripts.
