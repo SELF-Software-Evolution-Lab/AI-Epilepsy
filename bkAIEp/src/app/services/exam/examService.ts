@@ -23,7 +23,7 @@ class ExamService {
   constructor () {}
 
   /**
-  * Inserts or updates an exam record based on the presence of 'id' in _params.
+  * Inserts or updates an exam record based on the presence of the field 'id' in _params.
   * @param _params - Exam parameters.
   * @returns Promise<{exam: Exam}> - Promise containing the exam object.
   */
