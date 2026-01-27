@@ -41,7 +41,7 @@ Then navigate back to the `AI-Epilepsy/` folder and continue with Step 4.
 
 Within the user's terminal that has access to `docker compose`, the user should run the following command:
 
-- `sudo docker-compose up`
+- `sudo docker compose up`
 
 [optional] If a specific docker compose .yml file should be used instead of the existing `docker-compose.yml`, the command should instead be `sudo docker compose -f {CUSTOM_DOCKER_COMPOSE}.yml up`
 
