@@ -68,6 +68,6 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.16.238.0/16
+        - subnet: 172.16.238.0/24
 volumes:
   db_data:
