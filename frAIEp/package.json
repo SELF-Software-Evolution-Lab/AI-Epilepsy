@@ -44,8 +44,7 @@
     "three": "0.101.1",
     "vite": "^4.4.9",
     "vite-plugin-svgr": "^4.0.0",
-    "vite-tsconfig-paths": "^4.2.1",
-    "zlib": "1.x.x"
+    "vite-tsconfig-paths": "^4.2.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

@@ -13,4 +13,4 @@ RUN npm install
 
 EXPOSE 5173
 
-cmd ["npm", "run" , "dev"]
+CMD ["npm", "run" , "dev"]
