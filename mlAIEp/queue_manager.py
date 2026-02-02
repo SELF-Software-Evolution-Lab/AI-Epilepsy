@@ -1,5 +1,6 @@
 import json
 import pika
+import traceback
 from ftp_helper import *
 from analyzeEEGFile import *
 from analyzeRNAFile import *
@@ -30,8 +31,9 @@ def callback(ch, method, properties, body):
         answer_json = json.dumps(answer_pred, sort_keys=True, indent=4)
         ch.basic_publish(exchange='', routing_key=rabbit_queue_name_write, body=answer_json)
         print(" [x] Sent "+answer_json)
-    except :
+    except Exception as e :
         print ("Prediction error")
+        traceback.print_exc()
         
 def predict(payload):
     answer = {}

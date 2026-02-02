@@ -7,7 +7,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY *py ./
 
-COPY pipelines/*pkl ./pipelines/
+COPY pipelines/*pkl ./
 
 CMD [ "python","-u", "./queue_manager.py" ]
 
