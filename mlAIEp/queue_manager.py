@@ -24,12 +24,15 @@ print('> Declared queue for new prediction responses')
 
 def callback(ch, method, properties, body):
     print(f" [x] Received {body}")
-    payload = json.loads(body.decode('utf8').replace("'", '"'))
-    answer_pred = predict(payload)
-    answer_json = json.dumps(answer_pred, sort_keys=True, indent=4)
-    ch.basic_publish(exchange='', routing_key=rabbit_queue_name_write, body=answer_json)
-    print(" [x] Sent "+answer_json)
-
+    try :
+        payload = json.loads(body.decode('utf8').replace("'", '"'))
+        answer_pred = predict(payload)
+        answer_json = json.dumps(answer_pred, sort_keys=True, indent=4)
+        ch.basic_publish(exchange='', routing_key=rabbit_queue_name_write, body=answer_json)
+        print(" [x] Sent "+answer_json)
+    except :
+        print ("Prediction error")
+        
 def predict(payload):
     answer = {}
     answer['patient_id'] = payload.get('patient_id',-1)
