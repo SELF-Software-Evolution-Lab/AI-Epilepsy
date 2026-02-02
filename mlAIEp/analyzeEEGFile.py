@@ -11,6 +11,7 @@ def analyzeEEGFile(zip_file):
             file_path = os.path.join("extracted_files", filename)
             if os.path.isfile(file_path):
                 filename2 = os.path.basename(filename)
+                print("Starting prediction for "+file_path)
                 filePrediction = filePredict(file_path)
                 print("Finished prediction for "+file_path)
                 result[filename2] = encodeEEGAnswer(filePrediction,5)
