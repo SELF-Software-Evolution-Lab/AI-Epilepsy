@@ -7,7 +7,7 @@ COPY public /root/public
 COPY src /root/src
 COPY .eslintrc.cjs /code/.eslintrc.cjs
 COPY index.html /root/index.html
-copy vite.config.js /root/vite.config.js
+COPY vite.config.js /root/vite.config.js
 
 RUN npm install
 
