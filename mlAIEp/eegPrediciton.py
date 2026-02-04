@@ -3,10 +3,12 @@ def eegPrediciton(feature):
     import joblib
     import pandas as pd
     import os
+    from sklearn.preprocessing import StandardScaler
     current_dir = os.getcwd()
     pipelinesLocation=os.path.join(current_dir)
-    model_path=os.path.join(pipelinesLocation, pipelines, 'ModelAI.pkl')     # Model Location
-    scaler_path=os.path.join(pipelinesLocation, pipelines, 'ScalerAI.pkl')   # Scaler Location
+    model_path=os.path.join(pipelinesLocation, 'CNN1.h5')     # Model Location
+    scaler_path=os.path.join(pipelinesLocation, 'CNN1Scaler.pkl')   # Scaler Location
+    #sc=StandardScaler()
     sc=joblib.load(scaler_path)
     model=joblib.load(model_path)
     value=pd.DataFrame(feature)

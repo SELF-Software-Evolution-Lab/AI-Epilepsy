@@ -10,3 +10,4 @@ hsa-miR-199a-5p
 hsa-miR‐301a‐3p
 hsa-miR‐3613‐5p
 hsa-miR‐8071
+hsa-miR-150-5p

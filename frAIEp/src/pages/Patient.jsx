@@ -473,6 +473,7 @@ export default function Patient() {
               Archivos utilizados: <span className="fw-medium"> {result?.prediction_data}</span> <br/> 
 		      Predicciones EEG: <span className="fw-medium"> {(result?.eeg_data)===null?"Ninguno":JSON.stringify(result?.eeg_data)}</span> <br/>
               Predicciones MRI: <span className="fw-medium"> {(result?.mri_data)===null?"Ninguno":JSON.stringify(result?.mri_data)}</span> <br/>
+			  Predicciones ARN: <span className="fw-medium"> {(result?.arn_data)===null?"Ninguno":JSON.stringify(result?.arn_data)}</span> <br/>
             </p>
           </Modal.Body>
           <Modal.Footer className="bg-dark text-white">

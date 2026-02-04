@@ -1,4 +1,4 @@
-FROM python:3.11
+FROM python:3.9.16
 
 WORKDIR /usr/src/app
 
@@ -7,7 +7,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY *py ./
 
+COPY pipelines/*txt ./
 COPY pipelines/*pkl ./
+
 
 CMD [ "python","-u", "./queue_manager.py" ]
 

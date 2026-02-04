@@ -76,6 +76,7 @@ class QueueService {
         result: content.result,
         eeg_data: content.eeg_data,
         mri_data: content.mri_data,
+		arn_data: content.arn_data,
         label: 'Finished'
       })
       

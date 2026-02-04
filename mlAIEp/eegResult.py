@@ -9,12 +9,16 @@ def eegResult(Array):
     elements = (array.size/(FreqSampleo*5*18)) // 1
     length = elements*5*FreqSampleo
     for j in range(0, int(length), int(5*FreqSampleo)):
-        prediction=[]
-        for k in range (0,len(Names)):
-            channel=array[k]
-            subset = channel[j:j+(5*FreqSampleo)]
-            feature = featureCalculation(subset)
-            pred = eegPrediciton(feature)
-            info.append(Feature)
-            prediction.append(pred[0])
+        #prediction=[]
+        #for k in range (0,len(Names)):
+        #    channel=array[k]
+        #    subset = channel[j:j+(5*FreqSampleo)]
+        #    feature = featureCalculation(subset)
+        #    pred = eegPrediciton(feature)
+        #    info.append(Feature)
+        #    prediction.append(pred[0])
+        subset = array[:,j:j+(5*FreqSampleo)]
+        feature = featureCalculation(subset)
+        pred = eegPrediciton(feature)
+        prediction.append(pred[0])
     return prediction
