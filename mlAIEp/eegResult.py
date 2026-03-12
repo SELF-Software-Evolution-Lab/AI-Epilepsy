@@ -10,7 +10,9 @@ def eegResult(Array):
     length = elements*5*FreqSampleo
     for j in range(0, int(length), int(5*FreqSampleo)):
         subset = array[:,j:j+(5*FreqSampleo)]
-        feature = featureCalculation(subset)
+        zeros = np.zeros((subset.shape[0],1))
+        subsetF = np.hstack((subset, zeros)) 
+        feature = featureCalculation(subsetF)
         pred = eegPrediciton(feature)
         prediction.append(pred[0])
     return prediction
