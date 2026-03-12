@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
+# Script For ML trainning. 
+# Args:
+# [1] SeizureFile.txt
+# [2] NoSeizureFile.txt
 
+# Function to calculate model metrics
 def display_metrics(y_true, y_pred, name):
     import matplotlib.pyplot as plt
     from sklearn.metrics import recall_score, precision_score, accuracy_score, confusion_matrix, ConfusionMatrixDisplay, f1_score, classification_report
@@ -21,6 +26,7 @@ def display_metrics(y_true, y_pred, name):
     plt.savefig(figname, dpi=300, bbox_inches='tight')
 
 
+# Trinning Function
 def mlTrainning(SeizureFile, NoSeizureFile, name):
     import pandas as pd
     from sklearn.model_selection import train_test_split
@@ -64,6 +70,8 @@ def mlTrainning(SeizureFile, NoSeizureFile, name):
   
     y = df['Label']
     X= df.drop('Label', inplace=False, axis=1)
+
+    # Dataset Division
   
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=2)
   
@@ -210,8 +218,6 @@ import sys
 SeizureFile = sys.argv[1]
 NoSeizureFile = sys.argv[2]
 name = sys.argv[3]
-
-print("Hola, Mundo")
 
 mlTrainning(SeizureFile, NoSeizureFile, name)
   
