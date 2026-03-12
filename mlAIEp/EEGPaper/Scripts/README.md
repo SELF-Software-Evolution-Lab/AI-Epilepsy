@@ -15,5 +15,5 @@ Script in MLModels directory
 
 * SeizureFile: .txt file with features from 5s windows labeled with seizure presence. Examples in TrainData directory.
 * NoSeizureFile: .txt file with features from 5s windows labeled seizure-free. Examples in TrainData directory.
-* Name: String. Prefix to identify output files from script.
+* Name: String. Prefix to identify output files from script. ex: "Wavelets"
 
