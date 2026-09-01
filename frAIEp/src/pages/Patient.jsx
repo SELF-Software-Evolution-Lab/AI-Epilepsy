@@ -301,7 +301,7 @@ export default function Patient() {
                       {
                         context.userCan('exams', 'exams:mri') ? 
                           <li className="nav-item">
-                            <a onClick={()=> handleExam('mri')} className={`btn mx-2 btn${exam === 'mri' ?'-outline' : ''}-info btn-sm`} >MRI</a>
+                            <a onClick={()=> handleExam('mri')} className={`btn mx-2 btn${exam === 'mri' ?'' : '-outline'}-info btn-sm`} >MRI</a>
                           </li>
 
                         : null
@@ -310,7 +310,7 @@ export default function Patient() {
                         context.userCan('exams', 'exams:eeg') ? 
                           
                           <li className="nav-item">
-                            <a onClick={()=> handleExam('eeg')} className={`btn mx-2 btn${exam === 'eeg' ?'-outline' : ''}-info btn-sm`} >EEG</a>
+                            <a onClick={()=> handleExam('eeg')} className={`btn mx-2 btn${exam === 'eeg' ?'' : '-outline'}-info btn-sm`} >EEG</a>
                           </li>
                         : null
                       }
@@ -318,7 +318,7 @@ export default function Patient() {
                         context.userCan('exams', 'exams:arn') ? 
                           
                           <li className="nav-item">
-                            <a onClick={()=> handleExam('arn')} className={`btn mx-2 btn${exam === 'arn' ?'-outline' : ''}-info btn-sm`} >ARN</a>
+                            <a onClick={()=> handleExam('arn')} className={`btn mx-2 btn${exam === 'arn' ?'' : '-outline'}-info btn-sm`} >ARN</a>
                           </li>
                         : null
                       }
@@ -326,7 +326,7 @@ export default function Patient() {
                         context.userCan('exams', 'exams:nes') ? 
                           
                           <li className="nav-item">
-                            <a onClick={()=> handleExam('nes')} className={`btn mx-2 btn${exam === 'nes' ?'-outline' : ''}-info btn-sm`} >Neurosicologico</a>
+                            <a onClick={()=> handleExam('nes')} className={`btn mx-2 btn${exam === 'nes' ?'' : '-outline'}-info btn-sm`} >Neurosicologico</a>
                           </li>
                         : null
                       }
@@ -334,14 +334,14 @@ export default function Patient() {
                         context.userCan('exams', 'exams:fis') ? 
                           
                           <li className="nav-item">
-                            <a onClick={()=> handleExam('fis')} className={`btn mx-2 btn${exam === 'fis' ?'-outline' : ''}-info btn-sm`} >Fisico</a>
+                            <a onClick={()=> handleExam('fis')} className={`btn mx-2 btn${exam === 'fis' ?'' : '-outline'}-info btn-sm`} >Fisico</a>
                           </li>
                         : null
                       }
                       {
                         context.userCan('exams', 'exams:med') ? 
                           <li className="nav-item">
-                            <a onClick={()=> handleExam('med')} className={`btn mx-2 btn${exam === 'med' ?'-outline' : ''}-info btn-sm`} >Medicamentos</a>
+                            <a onClick={()=> handleExam('med')} className={`btn mx-2 btn${exam === 'med' ?'' : '-outline'}-info btn-sm`} >Medicamentos</a>
                           </li>
                           
                         : null
@@ -548,24 +548,24 @@ export default function Patient() {
           <Modal.Body className="bg-dark text-white">
             MRI: { 
               exams.filter(_e=> _e.type.toLowerCase() === 'mri').slice(0,3).map(_e=>{return(
-                <Button onClick={()=> setSelectedMRI(_e)} key={_e.id} variant={`${selectedMRI?.id === _e.id? 'outline-' : '' }info`} size="sm" className="mx-1 my-1">{_e.id} - {moment.utc(_e.created_at).format('MM-DD')}</Button>
+                <Button onClick={()=> setSelectedMRI(_e)} key={_e.id} variant={`${selectedMRI?.id === _e.id? '' : 'outline-' }info`} size="sm" className="mx-1 my-1">{_e.id} - {moment.utc(_e.created_at).format('MM-DD')}</Button>
               )})
             }
-            <Button onClick={()=> setSelectedMRI(null)} variant={`${selectedMRI === null? 'outline-' : '' }info`} size="sm" className="mx-1 my-1">N/A</Button>
+            <Button onClick={()=> setSelectedMRI(null)} variant={`${selectedMRI === null? '' : 'outline-' }info`} size="sm" className="mx-1 my-1">N/A</Button>
             <br/>
             ARN: { 
               exams.filter(_e=> _e.type.toLowerCase() === 'arn').slice(0,3).map(_e=>{return(
                 <Button onClick={()=> setSelectedARN(_e)} key={_e.id} variant={`${selectedARN?.id === _e.id? 'outline-' : '' }info`} size="sm" className="mx-1 my-1">{_e.id} - {moment.utc(_e.created_at).format('MM-DD')}</Button>
               )})
             }
-            <Button onClick={()=> setSelectedARN(null)} variant={`${selectedARN === null? 'outline-' : '' }info`} size="sm" className="mx-1 my-1">N/A</Button>
+            <Button onClick={()=> setSelectedARN(null)} variant={`${selectedARN === null? '' : 'outline-' }info`} size="sm" className="mx-1 my-1">N/A</Button>
             <br/>
             EEG: { 
               exams.filter(_e=> _e.type.toLowerCase() === 'eeg').slice(0,3).map(_e=>{return(
-                <Button onClick={()=> setSelectedEEG(_e)} key={_e.id} variant={`${selectedEEG?.id === _e.id? 'outline-' : '' }info`} size="sm" className="mx-1 my-1">{_e.id} - {moment.utc(_e.created_at).format('MM-DD')}</Button>
+                <Button onClick={()=> setSelectedEEG(_e)} key={_e.id} variant={`${selectedEEG?.id === _e.id? '' : 'outline-' }info`} size="sm" className="mx-1 my-1">{_e.id} - {moment.utc(_e.created_at).format('MM-DD')}</Button>
               )})
             }
-            <Button onClick={()=> setSelectedEEG(null)} variant={`${selectedEEG === null? 'outline-' : '' }info`} size="sm" className="mx-1 my-1">N/A</Button>
+            <Button onClick={()=> setSelectedEEG(null)} variant={`${selectedEEG === null? '' : 'outline-' }info`} size="sm" className="mx-1 my-1">N/A</Button>
             <br/>
           </Modal.Body>
           <Modal.Footer className="bg-dark text-white">
