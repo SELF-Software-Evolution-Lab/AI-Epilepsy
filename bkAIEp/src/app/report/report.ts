@@ -24,7 +24,7 @@ export default function generarPDFPrueba() {
     /* Aquí se definen los elementos del documento */
     var docDefinition = {
         content: [
-            { text: "Este es el primer .pdf", fontsize: 16, bold: true }
+            { text: "Este es el segundo .pdf", fontsize: 16, bold: true }
         ]
     };
 

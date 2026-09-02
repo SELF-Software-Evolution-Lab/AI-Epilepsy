@@ -68,6 +68,10 @@ services:
     container_name: backend
     ports:
       - "5001:5001"
+    volumes:
+      - ./bkAIEp/src/:/code/src
+      - ./bkAIEp/package.json:/code/package.json
+      - ./bkAIEp/tsconfig.json:/code/tsconfig.json
     depends_on:
       sql:
         condition: service_healthy
