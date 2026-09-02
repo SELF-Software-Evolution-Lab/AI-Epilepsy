@@ -6,6 +6,9 @@ import cors from "cors"
 import { config as env } from "@config/env"
 import morgan from 'morgan'
 import chalk from 'chalk'
+import generarPDFPrueba from './report/report'
+
+
 
 // Import the 'Routes' class from the '@app/routes' module
 import { Routes } from "@app/routes"
@@ -51,6 +54,10 @@ class App {
   * @returns {Promise<void>} A Promise that resolves when the initialization is complete.
   */
   public async init() {
+    generarPDFPrueba()
+      .then(() => console.log('PDF de prueba generado correctamente'))
+      .catch(err => console.error('Error generando PDF de prueba:', err));
+
     // Ensure global.env is initialized
     if(!global.env) global.env = {}
     // Copy environment variables to global.env
@@ -118,3 +125,4 @@ class App {
   }
 }
 export  { App }
+
