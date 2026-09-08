@@ -6,7 +6,8 @@ import cors from "cors"
 import { config as env } from "@config/env"
 import morgan from 'morgan'
 import chalk from 'chalk'
-import generarPDFPrueba from './report/report'
+import {ClinicalReport} from './clinical_report/report'
+
 
 
 
@@ -54,9 +55,9 @@ class App {
   * @returns {Promise<void>} A Promise that resolves when the initialization is complete.
   */
   public async init() {
-    generarPDFPrueba()
-      .then(() => console.log('PDF de prueba generado correctamente'))
-      .catch(err => console.error('Error generando PDF de prueba:', err));
+    ClinicalReport.generate_test_PDF()
+      .then(() => console.log('[REPORT]: PDF test generated succesfully'))
+      .catch((err: any) => console.error('[REPORT]: Error generating the PDF', err));
 
     // Ensure global.env is initialized
     if(!global.env) global.env = {}
@@ -121,7 +122,7 @@ class App {
     const PORT = global.env.PORT || 8089
 
     // Start the server and log the port number
-    this.app.listen(PORT, console.log(chalk.blue(`Server running on port ${PORT}`)))
+    this.app.listen(PORT, () => console.log(chalk.blue(`Server running on port ${PORT}`)))
   }
 }
 export  { App }

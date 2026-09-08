@@ -68,10 +68,10 @@ services:
     container_name: backend
     ports:
       - "5001:5001"
-    volumes:
-      - ./bkAIEp/src/:/code/src
-      - ./bkAIEp/package.json:/code/package.json
-      - ./bkAIEp/tsconfig.json:/code/tsconfig.json
+    volumes:   
+      - ./bkAIEp/src/:/code/src                                       # Necessary for back-end hot-reload dev
+      - ./bkAIEp/package.json:/code/package.json                      # Necessary for back-end hot-reload dev
+      - ./bkAIEp/tsconfig.json:/code/tsconfig.json                    # Necessary for back-end hot-reload dev
     depends_on:
       sql:
         condition: service_healthy

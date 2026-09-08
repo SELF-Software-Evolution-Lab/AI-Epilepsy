@@ -1,6 +1,7 @@
 import {  OUTBOUND_QUEUE, rabbitUtility } from "@core/rabbitUtility";
 import { responseUtility } from "@core/responseUtility";
 import { predictionService } from "@app/services/prediction/predictionService";
+import { ClinicalReport } from "@app/clinical_report/report";
 
 /**
 * Service for managing queue.
@@ -71,14 +72,16 @@ class QueueService {
       // Extract prediction details
       const prediction = _prediction.prediction
       //Updates prediction information
-      const update = predictionService.insertOrUpdate({
+      predictionService.insertOrUpdate({
         id: prediction.id,
         result: content.result,
         eeg_data: content.eeg_data,
         mri_data: content.mri_data,
-		arn_data: content.arn_data,
+		    arn_data: content.arn_data,
         label: 'Finished'
       })
+
+      ClinicalReport.generate_clinical_report(content)
       
       // Return a success response
       return responseUtility.success()

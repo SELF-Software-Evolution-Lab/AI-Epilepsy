@@ -22,14 +22,15 @@ class PredictionService {
         // If the prediction doesn't exist, return an error response
         if(!exists) return responseUtility.error('prediction.not_found')
         // Update the existing prediction
-        const _prediction = await Prediction.update(_params, { where: { id: _params.id } })
+        await Prediction.update(_params, { where: { id: _params.id } })
         // Retrieve the updated prediction
         const prediction = await Prediction.findOne({ where: { id: _params.id } })
         // Return a success response with the updated prediction
         return responseUtility.success({prediction: prediction})
+
       } else {
         // If no ID is provided, create a new prediction
-		console.log('Starting new prediction')
+		  console.log('Starting new prediction')
         // Check if at least one exam type is provided
         if(!_params.mri && !_params.arn && !_params.eeg) return responseUtility.error('prediction.insert_update.need_at_least_a_exam')
         
