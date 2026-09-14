@@ -26,7 +26,7 @@ const PredictionModel = db.define('Prediction', {
   },
   arn_data:{
     type: DataTypes.JSON,
-  }
+  },
 }, {
   tableName: 'predictions',
   createdAt: 'created_at',

@@ -30,7 +30,7 @@ class PredictionService {
 
       } else {
         // If no ID is provided, create a new prediction
-		  console.log('Starting new prediction')
+		    console.log('Starting new prediction')
         // Check if at least one exam type is provided
         if(!_params.mri && !_params.arn && !_params.eeg) return responseUtility.error('prediction.insert_update.need_at_least_a_exam')
         
@@ -41,24 +41,24 @@ class PredictionService {
         if(_params.mri && _params.mri.file && _params.mri.path){
           _data.mrifile = _params.mri.file
           _data.mripath = _params.mri.path
-		  console.log('Added MRI')
+		    console.log('Added MRI')
         }
 		
         // Add ARN file to data if provided
         if(_params.arn && _params.arn.file && _params.arn.path){
           _data.arnfile = _params.arn.file
           _data.arnpath = _params.arn.path
-		  console.log('Added RNA')
+		    console.log('Added RNA')
         }
         
         // Add EEG file to data if provided
         if(_params.eeg && _params.eeg.file && _params.eeg.path){
           _data.eegfile = _params.eeg.file
           _data.eegpath = _params.eeg.path
-		  console.log('Added EEG')
+		    console.log('Added EEG')
         }
         
-		console.log('Data ready')
+		    console.log('Data ready')
 		
         // Create a new prediction with the provided data
         const _p:any = {
@@ -70,7 +70,7 @@ class PredictionService {
         
         // Insert the new prediction
         const _prediction = await Prediction.create(_p)
-		console.log('Created prediction')
+		    console.log('Created prediction')
 		
         // Retrieve the created prediction
         const prediction = _prediction.toJSON()
@@ -82,7 +82,7 @@ class PredictionService {
         // If the prediction is created, send a message to the queue
         if(_prediction){
           await queueService.sendMessage(JSON.stringify(_data))
-		  console.log('Sent message to queue')
+		    console.log('Sent message to queue')
         }
         
         // Return a success response with the created prediction

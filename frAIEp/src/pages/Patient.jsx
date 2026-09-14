@@ -228,7 +228,10 @@ export default function Patient() {
                                   <td className="text-end">
                                     {
                                       _p.label === 'Finished' ? 
+                                      <>
                                         <Button onClick={()=>{setResult(_p); setModalResult(true)}} variant="outline-info" size="sm">Ver</Button>
+                                        <Button variant="outline-info" size="sm">Report</Button>
+                                      </>
                                       : null
                                     }
                                   </td>
