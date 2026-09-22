@@ -132,6 +132,21 @@ export default function Patient() {
     }
 
   }
+  /* Necesario para la visualización del reporte.pdf */
+  const downloadPDF = (bufferData, fileName = 'reporte.pdf') =>{
+    const byteArray = new Uint8Array(bufferData.data)
+    const blob = new Blob([byteArray], {type: 'application/pdf'});
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+  }
 
   useEffect(()=>{
     if(!patient) navigation('/')
@@ -230,7 +245,7 @@ export default function Patient() {
                                       _p.label === 'Finished' ? 
                                       <>
                                         <Button onClick={()=>{setResult(_p); setModalResult(true)}} variant="outline-info" size="sm">Ver</Button>
-                                        <Button variant="outline-info" size="sm">Report</Button>
+                                        <Button onClick={()=>downloadPDF(result, 'reporte_clinico.pdf')}variant="outline-info" size="sm">Report</Button>
                                       </>
                                       : null
                                     }
@@ -477,6 +492,7 @@ export default function Patient() {
 		          Predicciones EEG: <span className="fw-medium"> {(result?.eeg_data)===null?"Ninguno":JSON.stringify(result?.eeg_data)}</span> <br/>
               Predicciones MRI: <span className="fw-medium"> {(result?.mri_data)===null?"Ninguno":JSON.stringify(result?.mri_data)}</span> <br/>
 			        Predicciones ARN: <span className="fw-medium"> {(result?.arn_data)===null?"Ninguno":JSON.stringify(result?.arn_data)}</span> <br/>
+              Reporte: <span className="fw-medium"> {(result?.report)===null?"Ninguno":JSON.stringify(result?.report)}</span> <br/>
             </p>
           </Modal.Body>
           <Modal.Footer className="bg-dark text-white">

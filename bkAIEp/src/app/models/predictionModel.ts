@@ -27,6 +27,9 @@ const PredictionModel = db.define('Prediction', {
   arn_data:{
     type: DataTypes.JSON,
   },
+  report:{
+    type: DataTypes.BLOB('long'),
+  },
 }, {
   tableName: 'predictions',
   createdAt: 'created_at',
@@ -34,7 +37,7 @@ const PredictionModel = db.define('Prediction', {
 });
 
 (async () => {
-  //await PredictionModel.sync();
+  await PredictionModel.sync();
 })();
 
 export { PredictionModel }

@@ -6,6 +6,7 @@
     "rootDir": "src",
     "outDir": "dist",
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports":true,
     "sourceMap": true,
     "baseUrl": "./src",  
     "paths": {

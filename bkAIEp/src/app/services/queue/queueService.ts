@@ -71,6 +71,8 @@ class QueueService {
       if(_prediction.code !== 200) return _prediction
       // Extract prediction details
       const prediction = _prediction.prediction
+      // Generate the report
+      let clinical_report_buffer = await ClinicalReport.generate_clinical_report(content)
       //Updates prediction information
       predictionService.insertOrUpdate({
         id: prediction.id,
@@ -78,10 +80,9 @@ class QueueService {
         eeg_data: content.eeg_data,
         mri_data: content.mri_data,
 		    arn_data: content.arn_data,
-        label: 'Finished'
+        label: 'Finished',
+        report: clinical_report_buffer
       })
-
-      ClinicalReport.generate_clinical_report(content)
       
       // Return a success response
       return responseUtility.success()
@@ -112,3 +113,7 @@ class QueueService {
 // Create and export the singleton instance of the QueueService
 export const queueService =  QueueService.getInstance()
 export { QueueService }
+
+function onfulfilled(value: any) {
+  throw new Error("Function not implemented.");
+}

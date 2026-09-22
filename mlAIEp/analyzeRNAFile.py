@@ -7,7 +7,7 @@ def analyzeRNAFile(text_file):
         for row in reader:
             if row[0] in knownRNAIds :
                 print ("Found id "+row[0]+" in known ids. Value: "+row[1])
-                result[row[0]] = row[1]
+                result[row[0]] = row[1]  
     return result
     
 def loadKnownRNAIds() :

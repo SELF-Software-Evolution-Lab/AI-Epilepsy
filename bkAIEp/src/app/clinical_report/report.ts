@@ -1,4 +1,5 @@
 import { patientService } from "@app/services/patient/patientService";
+import { TDocumentDefinitions } from "pdfmake/interfaces";
 
 /**
  * Esta clase estática se encarga de la creación del reporte .pdf utilizando PDFmaker como dependencia.
@@ -8,7 +9,24 @@ import { patientService } from "@app/services/patient/patientService";
 const path = require('path');
 const pdfmake = require('pdfmake');
 
-export class ClinicalReport {
+
+
+
+export class ClinicalReport {  
+
+  /**
+   * Definición de las fuentes (o tipo de letra) que se pueden usar en la generación
+   * de PDFs. Se dejan como atributo estático y constante para poder reusarlos en los 
+   * diferentes métodos pertenecientes a esta clase.
+   */
+  private static readonly fonts = {
+      Roboto: {
+        normal: path.join(__dirname, 'fonts', 'Roboto-Regular.ttf'),
+        bold: path.join(__dirname, 'fonts', 'Roboto-Bold.ttf'),
+        italics: path.join(__dirname, 'fonts', 'Roboto-Italic.ttf'),
+        bolditalics: path.join(__dirname, 'fonts', 'Roboto-MediumItalic.ttf'),
+      }
+  };
 
   /**
    * Esta función genera un .pdf para probar la funcionalidad de PDFmaker. También sirve para desarrollar con hot reload
@@ -16,15 +34,8 @@ export class ClinicalReport {
    * @return void
    */
   public static generate_test_PDF(){
-    var fonts = {
-      Roboto: {
-        normal: path.join(__dirname, 'fonts', 'Roboto-Regular.ttf'),
-        bold: path.join(__dirname, 'fonts', 'Roboto-Bold.ttf'),
-        italics: path.join(__dirname, 'fonts', 'Roboto-Italic.ttf'),
-        bolditalics: path.join(__dirname, 'fonts', 'Roboto-MediumItalic.ttf'),
-      }
-    };
-    pdfmake.addFonts(fonts);
+
+    pdfmake.addFonts(ClinicalReport.fonts);
     // Contenido básico para probar la generación del PDF con datos dummy.
     const patient_data = { "id": 1, "first_name": "Pepito Andrés", "last_name": "Pérez González", "age": 20, "gender": "male", "blood_type": "A+", "email": "email@gmail.com", "emergency_contact_name": "Pedro González", "emergency_contact_phone": "123434", "document_id": "10000000" }
     const prediction_content = { "patient_id":1, "prediction_id": 43, "result":0, "eeg_data": { "File1": ",5,10,30,40", "File2": ",20,50" }, "mri_data":{"Lesion":"None"}, "arn_data":{}}
@@ -33,10 +44,24 @@ export class ClinicalReport {
     /* Aquí se definen los elementos del documento */
     var docDefinition = {
 
-      // 'info' es opcional
       info: {
         language: 'es-es',
+        creationDate: new Date(),
+        modDate: new Date()
       },
+      /* 
+      background: { //línea en las márgenes del documento
+        canvas: [
+          {
+            type: "rect",
+            x: 36, y:36,
+            w: 540, h:702,
+            r: 3,
+            lineColor: "#212121"
+          }
+        ]
+      }, */
+
       // 'watermark' es opcional
       watermark: { text: 'Documento no oficial', color: 'gray', opacity: 0.2 },
 
@@ -114,7 +139,7 @@ export class ClinicalReport {
   }
 
   /**
-   * Genera el reporte clínico .pdf y lo guarda en la tabla 'prediction'
+   * Genera el reporte clínico .pdf y lo guarda en la tabla 'prediction' de la base de datos
    * @param prediction_content: el contenido de la predicción del modelo de ML
    * @returns Void
    */
@@ -124,16 +149,7 @@ export class ClinicalReport {
     let db_response = await patientService.get({ id: prediction_content["patient_id"] })
     let patient_data = db_response["patient"]
 
-
-    var fonts = {
-      Roboto: {
-        normal: path.join(__dirname, 'fonts', 'Roboto-Regular.ttf'),
-        bold: path.join(__dirname, 'fonts', 'Roboto-Bold.ttf'),
-        italics: path.join(__dirname, 'fonts', 'Roboto-Italic.ttf'),
-        bolditalics: path.join(__dirname, 'fonts', 'Roboto-MediumItalic.ttf'),
-      }
-    };
-    pdfmake.addFonts(fonts);
+    pdfmake.addFonts(ClinicalReport.fonts);
 
     /* Aquí se definen los elementos del documento */
     var docDefinition = {
@@ -214,10 +230,18 @@ export class ClinicalReport {
       }
     };
 
-    var pdf = pdfmake.createPdf(docDefinition);
-    return pdf.write(path.join(__dirname, 'PDF_Prueba.pdf'));
+    pdfmake.addFonts(ClinicalReport.fonts);
+    const pdfDoc = pdfmake.createPdf(docDefinition);
+    const buffer = await pdfDoc.getBuffer();
+    return buffer;
   }
 
+  /**
+   * Método helper para procesar el mensaje proveniente de la cola Rabbit de la predicción.
+   * En particular, ayuda a que todos los mensajes tengan los campos de 'eeg_data', 'mri-data' y 'arn_data' 
+   * pues el mensaje puede no contener estos campos si no se adjuntaron los datos correspondientes.
+   * @param prediction_content 
+   */
   private static process_prediction_message(prediction_content: Record<string, any>): void{
     if (!prediction_content.hasOwnProperty("eeg_data")) { prediction_content["eeg_data"] = "No se adjuntaron datos de EEG" }
     if (!prediction_content.hasOwnProperty("mri_data")) { prediction_content["mri_data"] = "No se adjuntaron datos de MRI" }
