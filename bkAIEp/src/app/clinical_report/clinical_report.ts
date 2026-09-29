@@ -1,5 +1,4 @@
 import { patientService } from "@app/services/patient/patientService";
-import { TDocumentDefinitions } from "pdfmake/interfaces";
 
 /**
  * Esta clase estática se encarga de la creación del reporte .pdf utilizando PDFmaker como dependencia.
@@ -9,13 +8,10 @@ import { TDocumentDefinitions } from "pdfmake/interfaces";
 const path = require('path');
 const pdfmake = require('pdfmake');
 
-
-
-
 export class ClinicalReport {  
 
   /**
-   * Definición de las fuentes (o tipo de letra) que se pueden usar en la generación
+   * Definición de las fuentes de letra que se pueden usar en la generación
    * de PDFs. Se dejan como atributo estático y constante para poder reusarlos en los 
    * diferentes métodos pertenecientes a esta clase.
    */
@@ -39,7 +35,6 @@ export class ClinicalReport {
     // Contenido básico para probar la generación del PDF con datos dummy.
     const patient_data = { "id": 1, "first_name": "Pepito Andrés", "last_name": "Pérez González", "age": 20, "gender": "male", "blood_type": "A+", "email": "email@gmail.com", "emergency_contact_name": "Pedro González", "emergency_contact_phone": "123434", "document_id": "10000000" }
     const prediction_content = { "patient_id":1, "prediction_id": 43, "result":0, "eeg_data": { "File1": ",5,10,30,40", "File2": ",20,50" }, "mri_data":{"Lesion":"None"}, "arn_data":{}}
-    ClinicalReport.process_prediction_message(prediction_content)
 
     /* Aquí se definen los elementos del documento */
     var docDefinition = {
@@ -49,18 +44,6 @@ export class ClinicalReport {
         creationDate: new Date(),
         modDate: new Date()
       },
-      /* 
-      background: { //línea en las márgenes del documento
-        canvas: [
-          {
-            type: "rect",
-            x: 36, y:36,
-            w: 540, h:702,
-            r: 3,
-            lineColor: "#212121"
-          }
-        ]
-      }, */
 
       // 'watermark' es opcional
       watermark: { text: 'Documento no oficial', color: 'gray', opacity: 0.2 },
@@ -73,6 +56,7 @@ export class ClinicalReport {
         /* Sección datos básicos del paciente */ 
         { text: "Datos básicos del paciente", style: "section_starter" },
         { columns: [
+
           /* Columna 1 */
           {
             stack: [
@@ -90,7 +74,7 @@ export class ClinicalReport {
             ]
           }
         ], 
-          columnGap: 10 // espacio entre columnas
+          columnGap: 10
         },
 
 
@@ -99,11 +83,11 @@ export class ClinicalReport {
         { text: "Sección EEG", style: "section_starter" },
         { text: JSON.stringify(prediction_content["eeg_data"]) },
         { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }] },
-        /* Sección de EEG */
+        /* Sección de MRI */
         { text: "Sección MRI", style: "section_starter" },
         { text: JSON.stringify(prediction_content["mri_data"]) },
         { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }] },
-        /* Sección de EEG */
+        /* Sección de miARN */
         { text: "Sección microARN", style: "section_starter" },
         { text: JSON.stringify(prediction_content["arn_data"]) },
       ],
@@ -138,6 +122,7 @@ export class ClinicalReport {
     return pdf.write(path.join(__dirname, 'PDF_Prueba.pdf'));
   }
 
+
   /**
    * Genera el reporte clínico .pdf y lo guarda en la tabla 'prediction' de la base de datos
    * @param prediction_content: el contenido de la predicción del modelo de ML
@@ -145,7 +130,10 @@ export class ClinicalReport {
    */
   public static async generate_clinical_report(prediction_content: Record<string, any>) {
 
-    ClinicalReport.process_prediction_message(prediction_content)
+    if (!prediction_content.hasOwnProperty("eeg_data")) { prediction_content["eeg_data"] = "No se adjuntaron datos de EEG" }
+    if (!prediction_content.hasOwnProperty("mri_data")) { prediction_content["mri_data"] = "No se adjuntaron datos de MRI" }
+    if (!prediction_content.hasOwnProperty("arn_data")) { prediction_content["arn_data"] = "No se adjuntaron datos de miARN" }
+
     let db_response = await patientService.get({ id: prediction_content["patient_id"] })
     let patient_data = db_response["patient"]
 
@@ -157,6 +145,8 @@ export class ClinicalReport {
       // 'info' es opcional
       info: {
         language: 'es-es',
+        creationDate: new Date(),
+        modDate: new Date()
       },
       // 'watermark' es opcional
       watermark: { text: 'Documento no oficial', color: 'gray', opacity: 0.2 },
@@ -186,27 +176,34 @@ export class ClinicalReport {
             ]
           }
         ], 
-          columnGap: 10 // espacio entre columnas
+          columnGap: 10 
         },
 
 
         { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }] },
+        
         /* Sección de EEG */
         { text: "Sección EEG", style: "section_starter" },
         { text: JSON.stringify(prediction_content["eeg_data"]) },
         { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }] },
-        /* Sección de EEG */
+        
+        /* Sección de MRI */
         { text: "Sección MRI", style: "section_starter" },
         { text: JSON.stringify(prediction_content["mri_data"]) },
         { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }] },
-        /* Sección de EEG */
+        
+        /* Sección de miARN */
         { text: "Sección microARN", style: "section_starter" },
-        { text: JSON.stringify(prediction_content["arn_data"]) },
+        {  
+          table: {
+            headerRows: 1,
+            widths: ['*','*','*','*'],
+            body: ClinicalReport.generateRNATableRows(prediction_content["arn_data"])
+          },
+          layout: 'lightHorizontalLines',
+          margin: [15,10,15,10] // izquierda, arriba, derecha, abajo
+        }
       ],
-
-      footer: {
-        content: function (currentPage: number, pageCount: number) { return currentPage.toString() + ' of ' + pageCount; }
-      },
 
       styles: {
         "header": {
@@ -224,6 +221,13 @@ export class ClinicalReport {
           bold: true,
           margin: [0,10,0,0] // izquierda, arriba, derecha, abajo
         },
+        "tableHeader": {
+          fontSize: 12,
+          bold:true
+        },
+        "tableContent":{
+          fontSize: 11,
+        }
       },
       defaultStyle: {
         fontSize: 11,
@@ -237,16 +241,25 @@ export class ClinicalReport {
   }
 
   /**
-   * Método helper para procesar el mensaje proveniente de la cola Rabbit de la predicción.
-   * En particular, ayuda a que todos los mensajes tengan los campos de 'eeg_data', 'mri-data' y 'arn_data' 
-   * pues el mensaje puede no contener estos campos si no se adjuntaron los datos correspondientes.
-   * @param prediction_content 
+   * Este método helper crea la estructura de la tabla de ARN en el formato de 
+   * pdfmake para insertar en el documento
+   * @param message_arn_data, el mensaje enviado sobre la predicción de los datos de miARN
    */
-  private static process_prediction_message(prediction_content: Record<string, any>): void{
-    if (!prediction_content.hasOwnProperty("eeg_data")) { prediction_content["eeg_data"] = "No se adjuntaron datos de EEG" }
-    if (!prediction_content.hasOwnProperty("mri_data")) { prediction_content["mri_data"] = "No se adjuntaron datos de MRI" }
-    if (!prediction_content.hasOwnProperty("arn_data")) { prediction_content["arn_data"] = "No se adjuntaron datos de miARN" }
+  private static generateRNATableRows(message_arn_data){
+    const headerRow = [
+      { text: 'ARN ID',          style: 'tableHeader' },
+      { text: 'Conteo',          style: 'tableHeader' },
+      { text: 'Límite Superior', style: 'tableHeader' },
+      { text: 'Límite Inferior', style: 'tableHeader' },
+    ];
+    
+    const dynamicRows = Object.entries(message_arn_data).map(([rnaID, stats]) => [
+      { text: rnaID,             style: 'tableContent'},
+      { text: stats['count'],    style: 'tableContent'},
+      { text: stats['lim_inf'],  style: 'tableContent'},
+      { text: stats['lim_sup'],  style: 'tableContent'}
+    ])
+    return [headerRow, ...dynamicRows];
   }
-
 }
 

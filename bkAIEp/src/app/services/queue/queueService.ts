@@ -1,7 +1,7 @@
 import {  OUTBOUND_QUEUE, rabbitUtility } from "@core/rabbitUtility";
 import { responseUtility } from "@core/responseUtility";
 import { predictionService } from "@app/services/prediction/predictionService";
-import { ClinicalReport } from "@app/clinical_report/report";
+import { ClinicalReport } from "@app/clinical_report/clinical_report";
 
 /**
 * Service for managing queue.

@@ -6,7 +6,7 @@ import cors from "cors"
 import { config as env } from "@config/env"
 import morgan from 'morgan'
 import chalk from 'chalk'
-import {ClinicalReport} from './clinical_report/report'
+import {ClinicalReport} from './clinical_report/clinical_report'
 
 
 

@@ -1,13 +1,7 @@
 import MasterLayout from "./../layouts/MasterLayout";
 
-
-
-
-
 export default function About() {
 
-
-  
   return (
     <>
       <MasterLayout>
@@ -26,8 +20,6 @@ export default function About() {
         <p>Si tiene alguna pregunta o comentario sobre AI Epilepsy o la Fundación Hospitalaria La Misericordia, no dude en contactarnos. Puede comunicarse con nosotros por correo electrónico a <a href="mailto:info@fhlm.org">info@fhlm.org</a> o por teléfono al <a href="tel:+15551234">+1-555-1234</a>. Nos encantaría saber de usted y darle la bienvenida a cualquier comentario que pueda tener.</p>
 
       </div>
-
-        
       </MasterLayout>
     </>
   )
