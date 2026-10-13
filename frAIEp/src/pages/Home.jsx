@@ -1,50 +1,42 @@
-import {useState} from 'react';
+import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import MasterLayout from "../layouts/MasterLayout";
+import { Button } from "react-bootstrap";
+import { TbUserSearch} from "react-icons/tb"
 
-const Home = () => {
+export default function Home() {
+  const [search, setSearch] = useState('')
+  const navigation = useNavigate()
+  function handleSubmit() {
+    if(search==='') return 
+    navigation('/patients',{ state:search})
+  }
 
-    const [error, setError] = useState(null);
-    const [search, setSearch] = useState('');
-
-    const handleChange = (e) => {
-        const inputString = e.target.value;
-        setSearch(inputString);
-        if (inputString) {
-          if (!inputString.trim().length) {
-            setError('No es posible enviar un campo vacío.');
-          } else if (inputString.trim().length < 6) {
-            setError('No se permite ingresar texto con menos de 6 caracteres.');
-          } else {
-            setError(null);
-          }
-        }
-      };
-    const navigation = useNavigate();
-
-    function handleSubmit(event) {
-        event.preventDefault()
-        if(search===''){
-            setError('Por favor ingrese una búsqueda')
-        }
-        navigation('/patients',{ state:search})
+  function handleKey(e) {
+    if(e.key === 'Enter'){
+      handleSubmit()
     }
-
-    return (
-        <div className='logo-search-container'>
-            <img className="logo-image" src="icons/plogo.png"></img>
-            <form className='search-bar-container' onSubmit={handleSubmit} >
-            <input
-                className='search-bar'
-                type="text"
-                placeholder="Buscar paciente"
-                onChange={handleChange}
-                value={search} />
-            <button className='search-button' disabled={!!error||search===''}>Buscar</button>
-            </form>
-            {error ? <p className='search-bar-error'>{error}</p>: <></>}
-            
+  }
+  return (
+    <>
+      <MasterLayout>
+        <div className="row justify-content-center">
+          <div className="col-6 text-center">
+            <br /><br /><br /><br />
+            <img src="/banner.png" className="w-100"></img>
+          </div>
         </div>
-    );
-}
+        <br /><br />
+        <div className="row justify-content-center">
+          <div className="col-8">
+            <input type="text" onKeyDown={handleKey} onChange={(e)=> setSearch(e.target.value)} placeholder="Buscar pacientes" className="form-control text-white bg-dark shadow" />
+          </div>
+          <div className="col-1">
+            <Button onClick={handleSubmit} variant="outline-info"><TbUserSearch /></Button>
+          </div>
+        </div>
 
-export default Home;
+      </MasterLayout>
+    </>
+  )
+}

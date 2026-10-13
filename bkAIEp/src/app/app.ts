@@ -6,6 +6,11 @@ import cors from "cors"
 import { config as env } from "@config/env"
 import morgan from 'morgan'
 import chalk from 'chalk'
+import {ClinicalReport} from './clinical_report/clinical_report'
+import { EEG_manager } from './clinical_report/eeg_manager'
+
+
+
 
 // Import the 'Routes' class from the '@app/routes' module
 import { Routes } from "@app/routes"
@@ -51,6 +56,10 @@ class App {
   * @returns {Promise<void>} A Promise that resolves when the initialization is complete.
   */
   public async init() {
+    ClinicalReport.generate_test_PDF()
+      .then(() => console.log('[REPORT]: PDF test generated succesfully'))
+      .catch((err: any) => console.error('[REPORT]: Error generating the PDF', err));
+
     // Ensure global.env is initialized
     if(!global.env) global.env = {}
     // Copy environment variables to global.env
@@ -114,7 +123,8 @@ class App {
     const PORT = global.env.PORT || 8089
 
     // Start the server and log the port number
-    this.app.listen(PORT, console.log(chalk.blue(`Server running on port ${PORT}`)))
+    this.app.listen(PORT, () => console.log(chalk.blue(`Server running on port ${PORT}`)))
   }
 }
 export  { App }
+

@@ -1,6 +1,7 @@
 import {  OUTBOUND_QUEUE, rabbitUtility } from "@core/rabbitUtility";
 import { responseUtility } from "@core/responseUtility";
 import { predictionService } from "@app/services/prediction/predictionService";
+import { ClinicalReport } from "@app/clinical_report/clinical_report";
 
 /**
 * Service for managing queue.
@@ -70,14 +71,17 @@ class QueueService {
       if(_prediction.code !== 200) return _prediction
       // Extract prediction details
       const prediction = _prediction.prediction
+      // Generate the report
+      let clinical_report_buffer = await ClinicalReport.generate_clinical_report(content)
       //Updates prediction information
-      const update = predictionService.insertOrUpdate({
+      predictionService.insertOrUpdate({
         id: prediction.id,
         result: content.result,
         eeg_data: content.eeg_data,
         mri_data: content.mri_data,
-		arn_data: content.arn_data,
-        label: 'Finished'
+		    arn_data: content.arn_data,
+        label: 'Finished',
+        report: clinical_report_buffer
       })
       
       // Return a success response
@@ -109,3 +113,7 @@ class QueueService {
 // Create and export the singleton instance of the QueueService
 export const queueService =  QueueService.getInstance()
 export { QueueService }
+
+function onfulfilled(value: any) {
+  throw new Error("Function not implemented.");
+}

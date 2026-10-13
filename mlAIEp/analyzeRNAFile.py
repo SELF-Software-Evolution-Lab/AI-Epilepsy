@@ -1,18 +1,22 @@
 def analyzeRNAFile(text_file):
     import csv
-    result={}
-    knownRNAIds = loadKnownRNAIds()
+    knownRNAIds, dict_ARNcount = loadKnownRNAIds()
+
     with open(text_file, 'r') as f:
         reader = csv.reader(f, delimiter=',')
         for row in reader:
-            if row[0] in knownRNAIds :
-                print ("Found id "+row[0]+" in known ids. Value: "+row[1])
-                result[row[0]] = row[1]
-    return result
+            miARN_id = row[0]
+            if miARN_id in knownRNAIds:
+                dict_ARNcount[miARN_id]["count"] = row[1]
+
+    return dict_ARNcount
     
-def loadKnownRNAIds() :
-    result=[]
+def loadKnownRNAIds():
+    list_knownARN_IDs = []
+    dict_ARNcount = {}
     with open("knownMiRNA.txt", 'r') as f:
         for line in f:
-            result.append(line)
-    return result
+            [miARN_id, lim_inf, lim_sup] = line.strip().split(",")
+            list_knownARN_IDs.append(miARN_id)
+            dict_ARNcount[miARN_id] = {"count":0, "lim_inf":lim_inf, "lim_sup":lim_sup}
+    return (list_knownARN_IDs, dict_ARNcount)

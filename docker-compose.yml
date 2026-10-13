@@ -68,6 +68,11 @@ services:
     container_name: backend
     ports:
       - "5001:5001"
+    volumes:   
+      - ./bkAIEp/src/:/code/src                          # Necessary for backend hot-reload development
+      - ./bkAIEp/package.json:/code/package.json         # Necessary for backend hot-reload development
+      - ./bkAIEp/tsconfig.json:/code/tsconfig.json       # Necessary for backend hot-reload development
+      - ./bkAIEp/seed_data:/code/seed_data               # Mecessary for backend hot-reload development
     depends_on:
       sql:
         condition: service_healthy
@@ -83,6 +88,11 @@ services:
     container_name: frontend
     ports:
       - "5002:5173"
+    volumes:
+      - ./frAIEp:/root                                   # Necessary for frontend hot-reload development
+      - /root/node_modules                               # Necessary for frontend hot-reload development
+    environment:
+      - WATCHPACK_POLLING=true
     networks:
       AIEp-net:
 networks:
