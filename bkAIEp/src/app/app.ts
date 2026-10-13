@@ -7,6 +7,7 @@ import { config as env } from "@config/env"
 import morgan from 'morgan'
 import chalk from 'chalk'
 import {ClinicalReport} from './clinical_report/clinical_report'
+import { EEG_manager } from './clinical_report/eeg_manager'
 
 
 
@@ -58,6 +59,10 @@ class App {
     ClinicalReport.generate_test_PDF()
       .then(() => console.log('[REPORT]: PDF test generated succesfully'))
       .catch((err: any) => console.error('[REPORT]: Error generating the PDF', err));
+
+    // EEG_manager.loadEDF_file()
+    //  .then(() => console.log('[EEG]: EDF file loaded properly'))
+    //  .catch((err: any) => console.error('[EEG]: Error loading EGG', err))
 
     // Ensure global.env is initialized
     if(!global.env) global.env = {}

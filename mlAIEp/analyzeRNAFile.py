@@ -8,6 +8,7 @@ def analyzeRNAFile(text_file):
             miARN_id = row[0]
             if miARN_id in knownRNAIds:
                 dict_ARNcount[miARN_id]["count"] = row[1]
+
     return dict_ARNcount
     
 def loadKnownRNAIds():

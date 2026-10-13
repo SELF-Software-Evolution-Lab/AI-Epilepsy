@@ -60,7 +60,6 @@ export default function Patient() {
   const [selectedName, setSelectedName] = useState('');
   const [observation, setObservation] = useState('');
 
-  // Controlan el comportamiento de la UI de predicciones con paginación
   const [currentPredictionPage, setCurrentPredictionPage] = useState(1);
   const itemsPerPredictionPage = 10;
 
@@ -166,10 +165,32 @@ export default function Patient() {
     previewPDF en un solo click
   */
   useEffect(() => {
-    if(result && result.report){
+    if (result && result.report) {
       previewPDF(result.report, "Reporte Clínico AI-Epilepsy")
     }
   }, [result]);
+
+  const handleTxtUpload = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (file.type !== "text/plain" && !file.name.endsWith('.txt')) {
+      alert("Por favor selecciona un archivo .txt válido.");
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const textContent = e.target.result;
+      console.log("Contenido del archivo:", textContent);
+    };
+
+    reader.onerror = (error) => {
+      console.error("Error al leer el archivo:", error);
+    };
+    reader.readAsText(file);
+  };
 
   useEffect(() => {
     if (!patient) navigation('/')
@@ -577,11 +598,28 @@ export default function Patient() {
           </Modal.Header>
           <Modal.Body className="bg-dark text-white">
             {
-              getDataExam().has_file ?
+              getDataExam().has_file ? (
                 <>
-                  <div className="text-center">
-                    <Button onClick={() => setModalExamFilesCreate(!modalExamFilesCreate)} size="sm" variant={`${modalExamFilesCreate ? 'outline-' : ''}info`}>{modalExamFilesCreate ? 'Ocultar' : 'Mostrar'} selector de archivos</Button>
+                  {/* Contenedor flexible para alinear el botón y el input de archivo */}
+                  <div className="text-center d-flex justify-content-center align-items-center gap-3 mb-2">
+                    <Button
+                      onClick={() => setModalExamFilesCreate(!modalExamFilesCreate)}
+                      size="sm"
+                      variant={`${modalExamFilesCreate ? 'outline-' : ''}info`}
+                    >
+                      {modalExamFilesCreate ? 'Ocultar' : 'Mostrar'} selector de archivos
+                    </Button>
+
+                    {/* Input para subir archivo .txt */}
+                    <input
+                      type="file"
+                      accept=".txt"
+                      onChange={handleTxtUpload}
+                      className="form-control form-control-sm w-auto bg-dark text-light border-secondary"
+                    />
                   </div>
+
+                  {/* Selector de árbol de archivos existente */}
                   {
                     modalExamFilesCreate && tree && Array.isArray(tree) ?
                       tree.map(_f => {
@@ -593,23 +631,20 @@ export default function Patient() {
                       })
                       : null
                   }
+
                   <div>
                     {
                       selectedName !== '' ?
-                        <>
-                          <p>Archivo selecciona: {selectedName}</p>
-                        </>
+                        <p>Archivo seleccionado: {selectedName}</p>
                         : null
                     }
                   </div>
                 </>
-                : null
+              ) : null
             }
             <br />
             <span className="mt-3">Observaciones: </span>
-            <textarea onChange={(e) => setObservation(e.target.value)} className="bg-dark text-white mt-1 w-100">
-
-            </textarea>
+            <textarea onChange={(e) => setObservation(e.target.value)} className="bg-dark text-white mt-1 w-100"/>
           </Modal.Body>
           <Modal.Footer className="bg-dark text-white">
             <Button variant="secondary" onClick={() => setModalExamCreate(false)}>
