@@ -7,6 +7,7 @@ import { patientService } from "@app/services/patient/patientService";
  */
 const path = require('path');
 const pdfmake = require('pdfmake');
+import { EEG_manager } from './eeg_manager';
 
 export class ClinicalReport {  
 
@@ -139,7 +140,10 @@ export class ClinicalReport {
 
     pdfmake.addFonts(ClinicalReport.fonts);
 
-    /* Aquí se definen los elementos del documento */
+    const eeg1 = await ClinicalReport.generateEEGGraph(5,10);
+    const eeg2 = await ClinicalReport.generateEEGGraph(30,10);
+
+
     var docDefinition = {
 
       // 'info' es opcional
@@ -185,6 +189,8 @@ export class ClinicalReport {
         /* Sección de EEG */
         { text: "Sección EEG", style: "section_starter" },
         { text: JSON.stringify(prediction_content["eeg_data"]) },
+        ( eeg1 ),
+        ( eeg2 ),
         { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }] },
         
         /* Sección de MRI */
@@ -260,6 +266,14 @@ export class ClinicalReport {
       { text: stats['lim_sup'],  style: 'tableContent'}
     ])
     return [headerRow, ...dynamicRows];
+  }
+
+  private static async generateEEGGraph(startSeconds, durationSeconds){
+    const eegData = await EEG_manager.loadEDF_file(startSeconds, durationSeconds);
+      if (!eegData) {
+        throw new Error("No se pudieron extraer los datos del archivo EDF");
+      }
+      return await EEG_manager.generateEEG_chart(eegData);
   }
 }
 

@@ -72,6 +72,7 @@ services:
       - ./bkAIEp/src/:/code/src                          # Necessary for backend hot-reload development
       - ./bkAIEp/package.json:/code/package.json         # Necessary for backend hot-reload development
       - ./bkAIEp/tsconfig.json:/code/tsconfig.json       # Necessary for backend hot-reload development
+      - ./bkAIEp/seed_data:/code/seed_data               # Mecessary for backend hot-reload development
     depends_on:
       sql:
         condition: service_healthy

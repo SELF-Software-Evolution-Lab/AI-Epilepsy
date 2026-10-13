@@ -60,10 +60,6 @@ class App {
       .then(() => console.log('[REPORT]: PDF test generated succesfully'))
       .catch((err: any) => console.error('[REPORT]: Error generating the PDF', err));
 
-    // EEG_manager.loadEDF_file()
-    //  .then(() => console.log('[EEG]: EDF file loaded properly'))
-    //  .catch((err: any) => console.error('[EEG]: Error loading EGG', err))
-
     // Ensure global.env is initialized
     if(!global.env) global.env = {}
     // Copy environment variables to global.env

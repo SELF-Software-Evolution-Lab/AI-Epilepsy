@@ -39,6 +39,7 @@
     "chalk": "^4.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
+    "echarts": "^6.1.0",
     "edfcore": "^0.6.294",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.1",
@@ -65,5 +66,8 @@
     "^@config/(.+)$": "<rootDir>/src/config/$1",
     "^@core/(.+)$": "<rootDir>/src/core/$1",
     "^@resources/(.+)$": "<rootDir>/src/resources/$1"
+  },
+  "allowScripts": {
+    "canvas@3.2.3": true
   }
 }
