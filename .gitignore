@@ -1,8 +1,7 @@
+.idea/
 bkAIEp/node_modules
 bkAIEp/package-lock.json
 bkAIEp/.env
 frAIEp/node_modules
 frAIEp/package-lock.json
 frAIEp/.npm
-*/node_modules
-/bkAIEp/temp/
