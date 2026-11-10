@@ -72,7 +72,7 @@ class QueueService {
       // Extract prediction details
       const prediction = _prediction.prediction
       // Generate the report
-      let clinical_report_buffer = await ClinicalReport.generate_clinical_report(content)
+      let clinical_report_buffer = await ClinicalReport.create_clinical_report(content)
       //Updates prediction information
       predictionService.insertOrUpdate({
         id: prediction.id,

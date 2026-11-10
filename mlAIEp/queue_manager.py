@@ -2,7 +2,7 @@ import json
 import pika
 import traceback
 from ftp_helper import *
-from eegFileProcessing import *
+# from eegFileProcessing import *
 from analyzeRNAFile import *
 from sys import path
 from os import environ
@@ -23,15 +23,16 @@ print('> Declared queue for new prediction requests')
 channel.queue_declare(rabbit_queue_name_write, durable=True)
 print('> Declared queue for new prediction responses')
 
+# This method executes each time a request comes in
 def callback(ch, method, properties, body):
-    print(f" [x] Received {body}")
+    print(f"Received {body}")
     try:
         payload = json.loads(body.decode('utf8').replace("'", '"'))
         print(payload)
         answer_pred = predict(payload)
         answer_json = json.dumps(answer_pred, sort_keys=True, indent=4)
         ch.basic_publish(exchange='', routing_key=rabbit_queue_name_write, body=answer_json)
-        print(" [x] Sent "+answer_json)
+        print("Sent "+answer_json)
 
     except Exception as e :
         print ("Prediction error")
@@ -70,7 +71,7 @@ def predict_mri(local_file):
 
 def predict_eeg(local_file):
     #answer = {'eeg_data': analyzeEEGFile(local_file)}
-    answer = {'eeg_data': {"File1": ",5,10,30,40","File2": ",20,50"}}
+    answer = {'eeg_data': {"uHOQi4E.edf": "7,13,15,20,30,33,35,40,41,44,46,52"}}
     return answer
     
 def predict_rna(local_file):
@@ -78,7 +79,7 @@ def predict_rna(local_file):
     return answer
 
 channel.basic_consume(queue=rabbit_queue_name_read, on_message_callback=callback, auto_ack=True)
-
-print('> Waiting requests. To exit press CTRL+C')
-
+print('> Waiting requests')
 channel.start_consuming()
+
+

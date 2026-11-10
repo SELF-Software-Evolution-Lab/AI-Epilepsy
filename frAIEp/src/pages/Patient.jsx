@@ -609,14 +609,6 @@ export default function Patient() {
                     >
                       {modalExamFilesCreate ? 'Ocultar' : 'Mostrar'} selector de archivos
                     </Button>
-
-                    {/* Input para subir archivo .txt */}
-                    <input
-                      type="file"
-                      accept=".txt"
-                      onChange={handleTxtUpload}
-                      className="form-control form-control-sm w-auto bg-dark text-light border-secondary"
-                    />
                   </div>
 
                   {/* Selector de árbol de archivos existente */}

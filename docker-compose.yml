@@ -20,7 +20,7 @@ services:
     image: delfer/alpine-ftp-server
     container_name: ftp
     environment:
-      USERS: "ftpuser|ai_epilepsy10*|/home/user"
+      USERS: "ftpuser|ai_epilepsy10*|/home/user backend_sys|ai_epilepsy10*|/home/user"
     ports:
       - "5021:21"
       - "21000-21010:21000-21010"
@@ -52,7 +52,7 @@ services:
     container_name: prediction
     environment:
       - FTP_DEFAULT_HOST=172.16.238.12
-      - FTP_DEFAULT_USER=ftpuser
+      - FTP_DEFAULT_USER=backend_sys
       - FTP_DEFAULT_PASS=ai_epilepsy10*
       - RABBITMQ_DEFAULT_HOST=172.16.238.13
       - RABBITMQ_DEFAULT_USER=amqpuser

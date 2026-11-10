@@ -7,7 +7,7 @@ import { Modal, Button } from "react-bootstrap";
 const ModalSelectFile = ({selected, setSelected, selectedName, setSelectedName}) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const [explorerData, setExplorerData] = useState(explorer);
+  const [explorerData, setExplorerData] = useState([]);
 
   const openModal = () => {
     setIsOpen(true);
@@ -16,7 +16,7 @@ const ModalSelectFile = ({selected, setSelected, selectedName, setSelectedName})
 
   const handleGet = async (path =undefined) => {
     try{
-      const response = goTo(path)
+      const response = await goTo(path)
       return response
     } catch (error) {
       console.log('error', error)
@@ -28,7 +28,7 @@ const ModalSelectFile = ({selected, setSelected, selectedName, setSelectedName})
   },[])
 
   const init = async() =>{
-    const get = await handleGet("/home/user/examsToAssociate")
+    const get = await handleGet("/home/user/user_inbox/")
     if(get?.code === 200){
       if(get?.ftp?.files){
         setExplorerData(get?.ftp?.files)

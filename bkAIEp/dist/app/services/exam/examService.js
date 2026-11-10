@@ -15,7 +15,7 @@ const node_fs_1 = __importDefault(require("node:fs"));
 const examModel_1 = require("../../models/examModel");
 const uuid_1 = require("uuid");
 const adm_zip_1 = __importDefault(require("adm-zip"));
-const PATH = '/home/user/exams-test';
+const PATH = '/home/user/user_inbox/exams-test';
 class ExamService {
     constructor() { }
     /**

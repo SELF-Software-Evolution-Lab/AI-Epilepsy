@@ -1,5 +1,37 @@
 # Proyecto-Epilepsia
 
+## Installation from scratch
+Make sure to install locally in your machine:
+- git
+- Docker Compose / Docker engine
+- Node
+
+If you are not sure what these are, look them up in the internet and follow the latest installation guide available.
+
+Once all of these are installed follow the next steps, in order, in your terminal:
+```
+git clone https://github.com/SELF-Software-Evolution-Lab/AI-Epilepsy.git
+cd AI-Epilepsy/bkAIEp/
+cp .env.template .env
+cd ..
+sudo docker compose up --build
+``` 
+The first Docker compose should take some time, but after that it's time to create the initial fake data. To do this:
+```
+cd bkAIEp
+npm i
+npm run cli -- --seeder -d
+npm run ftp
+``` 
+Note that once this is done, the app permisions and fake data are loaded up to try out the app. 
+
+
+## For developers
+If you are going to develop in VSCode, it is strongly recommended to use a different window for each container (bkAIEp, frontAIEp, mlAIEp)
+so that the automatic version of TypeScript is used. 
+
+
+
 ## Installation and initial configuration
 
 The project uses a Docker Compose file to orchestrate all its necessary components. Docker Compose will initialize and configure containers for each necessary service with minimal user intervention.

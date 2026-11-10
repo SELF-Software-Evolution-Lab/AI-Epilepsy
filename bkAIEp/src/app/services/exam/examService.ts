@@ -15,8 +15,8 @@ import { pipeline } from "node:stream";
 import AdmZip from "adm-zip";
 
 
-const PATH_BASE = '/home/user'
-const PATH_OUT = '/home/user/exams-test'
+const PATH_BASE = '/home/user/system_folder/'
+const PATH_OUT = '/home/user/system_folder'
 
 class ExamService {
 

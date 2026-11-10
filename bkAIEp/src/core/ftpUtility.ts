@@ -1,9 +1,7 @@
 import {Client} from 'basic-ftp'
 import {v4 as unique} from 'uuid'
 import moment from 'moment'
-
 import {config} from '@config/env'
-
 import {responseUtility} from '@core/responseUtility'
 
 
@@ -113,7 +111,7 @@ class FtpUtility {
             // Modified date will fall back to the current time if an error occurred during parsing
             let fileModifiedAtDate: string;
             try{
-              fileModifiedAtDate = moment.utc(file.rawModifiedAt).toISOString();
+              fileModifiedAtDate = this.fixDateFormat(file.rawModifiedAt);
             }catch (e) {
               console.log(`An error ocurred in ftpUtility:ls() while parsing the following date: ${file.raw}`)
               fileModifiedAtDate = moment.utc().toISOString();
@@ -279,8 +277,11 @@ class FtpUtility {
   * @param {string} connection - The key identifying the FTP connection.
   * @returns {Promise<any>} A promise that resolves to the success response with the directory tree.
   */
-  public async getTree(connection: string): Promise<any> {
+  public async getTree(connection: string, basePath: string = '/home/user/user_inbox'): Promise<any> {
     try {
+
+      await this.connections[connection].cd(basePath)
+      
       // Get the current working directory (PWD) of the FTP connection
       const pwd = await this.connections[connection].pwd()
 
@@ -310,7 +311,7 @@ class FtpUtility {
                 path: `${folder.path}/${file.name}`,
                 type: file.type === 1 ? 'file' : 'directory',
                 size: file.size,
-                date: file.rawModifiedAt && moment.utc(file.rawModifiedAt).toISOString(),
+                date: this.fixDateFormat(file.rawModifiedAt),
               })
             } else {
               // If it's a directory, create a sub-folder object and recursively get its content
@@ -319,7 +320,7 @@ class FtpUtility {
                 path: `${folder.path}/${file.name}`,
                 type: file.type === 1 ? 'file' : 'directory',
                 size: file.size,
-                date: file.rawModifiedAt && moment.utc(file.rawModifiedAt).toISOString(),
+                date: this.fixDateFormat(file.rawModifiedAt),
                 files: [],
               }
               await getContent(_folder)
@@ -339,7 +340,7 @@ class FtpUtility {
               path: `${pwd}/${file.name}`,
               type: file.type === 1 ? 'file' : 'directory',
               size: file.size,
-              date: file.rawModifiedAt && moment.utc(file.rawModifiedAt).toISOString(),
+              date: this.fixDateFormat(file.rawModifiedAt),
             })
           } else {
             // If it's a directory, create a folder object and recursively get its content
@@ -348,7 +349,7 @@ class FtpUtility {
               path: `${pwd}/${file.name}`,
               type: file.type === 1 ? 'file' : 'directory',
               size: file.size,
-              date: file.rawModifiedAt && moment.utc(file.rawModifiedAt).toISOString(),
+              date: this.fixDateFormat(file.rawModifiedAt),
               files: [],
             }
             await getContent(_folder)
@@ -368,6 +369,16 @@ class FtpUtility {
       // Handle errors and log them
       console.error('Error getting FTP directory tree', error)
     }
+  }
+  /**
+   * Fixes a deprecation related to the dependency moment.js
+   * @param date 
+   * @returns parsedDate, which is the same date but in the correct format and year
+   */
+  private fixDateFormat( date: moment.MomentInput ){
+    const currentYear = new Date().getFullYear();
+    const parsedDate = date ? moment.utc(`${date} ${currentYear}`, "MMM D HH:mm YYYY"): null;
+    return parsedDate && parsedDate.isValid() ? parsedDate.toISOString() : null;
   }
 
 

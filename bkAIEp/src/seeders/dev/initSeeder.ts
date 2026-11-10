@@ -27,7 +27,7 @@ export const run = async(_params, console:IConsole) => {
         "blood_type": "AB+",
         "emergency_contact_name": "Pedro Garcia",
         "emergency_contact_phone": "4128548536",
-      }
+      },
     ]
 
     const exams = [
@@ -37,7 +37,7 @@ export const run = async(_params, console:IConsole) => {
         type: "MRI",
         patient_id: 1,
         file: "patient-1-exam-1-mri.zip",
-        path: "/home/user/exams-dev/"
+        path: "/home/user/user_inbox/exams/"
       },
       {
         datetime: moment.utc().toISOString(),
@@ -45,7 +45,7 @@ export const run = async(_params, console:IConsole) => {
         type: "EEG",
         patient_id: 1,
         file: "patient-1-exam-2-eeg.zip",
-        path: "/home/user/exams-dev/"
+        path: "/home/user/user_inbox/exams/"
       },
       {
         datetime: moment.utc().toISOString(),
@@ -53,8 +53,16 @@ export const run = async(_params, console:IConsole) => {
         type: "MRI",
         patient_id: 2,
         file: "patient-2-exam-3-mri.zip",
-        path: "/home/user/exams-dev/"
-      }
+        path: "/home/user/user_inbox/exams/"
+      },
+/*       {
+        datetime: moment.utc().toISOString(),
+        detail: "Primer examen ARN Christos",
+        type: "ARN",
+        patient_id: 1,
+        file: "patient-1-exam-3-arn.txt",
+        path: "/home/user/user_inbox/"
+      } */
     ]
 
 
