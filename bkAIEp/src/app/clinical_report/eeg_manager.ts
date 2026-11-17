@@ -1,7 +1,6 @@
 import { v4 as unique } from 'uuid';
 import { ftpUtility } from '@core/ftpUtility';
 import path from 'path';
-import AdmZip from 'adm-zip'
 const fs = require('fs');
 
 /**

@@ -2,7 +2,7 @@
 
 ## Installation from scratch
 Make sure to install locally in your machine:
-- git
+- Git
 - Docker Compose / Docker engine
 - Node
 
@@ -16,7 +16,8 @@ cp .env.template .env
 cd ..
 sudo docker compose up --build
 ``` 
-The first Docker compose should take some time, but after that it's time to create the initial fake data. To do this:
+The first Docker compose should take some time, but after that it's time to create the initial fake data. 
+To do this, open up a new terminal in the app folder and execute:
 ```
 cd bkAIEp
 npm i
@@ -26,79 +27,15 @@ npm run ftp
 Note that once this is done, the app permisions and fake data are loaded up to try out the app. 
 
 
+### Access the AI-Epilepsy service
+Access the app via de Network IP printed in console from the frontend container.
+
+### Turning off all services
+Two options are available: (1) use the reliable Cntrl + C in the terminal running the containers or use `sudo docker-compose down`
+
 ## For developers
-If you are going to develop in VSCode, it is strongly recommended to use a different window for each container (bkAIEp, frontAIEp, mlAIEp)
-so that the automatic version of TypeScript is used. 
+If you are going to develop in VSCode, it is strongly recommended to use a different window for each container (bkAIEp, frontAIEp, mlAIEp) so that the automatic version of TypeScript is used. Hot reload has been implemented for the front-end and back-end for a faster developer cycle.
 
-
-
-## Installation and initial configuration
-
-The project uses a Docker Compose file to orchestrate all its necessary components. Docker Compose will initialize and configure containers for each necessary service with minimal user intervention.
-
-### Step 1: Requirements
-
-Downloading the repository will be easier with Git installed. To download Git, go to the following site:
-
-- https://git-scm.com
-
-
-The user must have the **Docker Engine** and **Docker Compose** running on their machine. This can be verified by running `docker compose version`. Should the output not be something similar to `Docker Compose version v2.21.0`, the user must verify that both Docker Engine and Docker Compose are correctly installed in their machine. Docker Engine and Compose is included with typical Docker Desktop installations, or can be installed standalone.
-
-[Instructions to install Docker Desktop \(Recommended for Windows and Mac users\)](https://docs.docker.com/get-docker/)
-
-[Instructions to install Docker Engine (Recommended for Linux and WSL users)](https://docs.docker.com/engine/install/)
-
-[Instructions to install Docker Compose for Docker Engine](https://docs.docker.com/compose/install/)
-
-### Step 2: Clone repository
-
-Download the repository
-
-- Go to the terminal (If you are not acquainted with this term, feel free to look it by yourself)
-
-- git clone https://github.com/SELF-Software-Evolution-Lab/AI-Epilepsy.git
-
-### Step 3: Prepare the .env file
-
-First, navigate to the root folder of the project. It should be called "AI-Epilepsy".
-
-Then navigate to the `bkAIEp/` folder.
-
-Copy the `.env.template` file found there, and paste it in the same folder (`bkAIEp/`) with the name `.env`. The full path of the file is `AI-Epilepsy/bkAIEp/.env`. 
-
-Then navigate back to the `AI-Epilepsy/` folder and continue with Step 4.
-
-### Step 4: Run the Docker Compose file
-
-Within the user's terminal that has access to `docker compose`, the user should run the following command:
-
-- `sudo docker compose up`
-
-[optional] If a specific docker compose .yml file should be used instead of the existing `docker-compose.yml`, the command should instead be `sudo docker compose -f {CUSTOM_DOCKER_COMPOSE}.yml up`
-
-[optional] If the user wants to leave the services running in the background, and not have them terminate upon closing the active terminal window, they must add a `-d` flag to the end of the command.
-
-### Step 5: Creating fake initial data
-
-This step is **optional**. To populate the database with example data, follow these instructions:
-
-1) Install Node.js on your machine. LTS versions are recommended (20.10.0 at the time of writing). [Download links can be found here](https://nodejs.org/en/download).
-2) Navigate to the backend folder using the command `cd bkAIEp/` and run the following terminal command: `npm i` to install all required dependencies.
-3) Run the following command: `npm run cli -- --seeder -d`
-4) Run the following command: `npm run ftp`
-
-### Step 6: accessing the AI-Epilepsy service
-
-Using a web browser, navigate to http://localhost:5002
-
-Congrats, you finally made it 🎉
-
-### Step 7: turning off all services
-
-In the root folder of the project, run the following command:
-
-`sudo docker-compose down`
 
 ## Optional configuration
 

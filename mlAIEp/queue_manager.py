@@ -2,7 +2,7 @@ import json
 import pika
 import traceback
 from ftp_helper import *
-# from eegFileProcessing import *
+#from eegFileProcessing import *
 from analyzeRNAFile import *
 from sys import path
 from os import environ

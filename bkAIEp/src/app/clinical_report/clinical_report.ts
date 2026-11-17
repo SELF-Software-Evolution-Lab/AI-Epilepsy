@@ -1,6 +1,7 @@
 import { patientService } from "@app/services/patient/patientService";
 import { EEG_manager } from './eeg_manager';
 import { predictionService } from "@app/services/prediction/predictionService";
+import { MRI_manager } from "./mri_manager";
 
 const path = require('path');
 const pdfmake = require('pdfmake');
@@ -366,15 +367,42 @@ export class ClinicalReport {
     }
   }
 
-
+  /**
+   * Este método genera el contenido asociado a la sección de MRI. Como hasta la realización de esta 
+   * implementación no hay un modelo de predicción de MRI funcional, simplemente se descarga y se descomprime el archivo
+   * .zip para visualizar el corte de la mitad. Revisar la clase MRI_manager.
+   * 
+   * @param prediction_content, el mensaje enviado desde el modelo de predicción
+   * @param prediction_files_data, la información de donde está almacenada los archivos de predicción en el servidor FTP
+   * @returns El contenido relacionado al MRI **TODO**
+   */
 
   private static async generate_MRI_content(prediction_content, prediction_files_data) {
     if (!prediction_content.hasOwnProperty("mri_data")) { return { text: "No se adjuntaron datos de MRI" } }
     else if (prediction_content["mri_data"] === "") { return { text: "El mensaje de predicción de MRI está vacío" } }
     else {
+      let reportSection: any;
       let filename = prediction_files_data["mrifile"]
       let filepath = prediction_files_data["mripath"]
-      return { text: "Contenido en progreso\n" + `filename: ${filename}, filepath: ${filepath}`}
+      try {
+        await MRI_manager.downloadMRIZip_fromFTP(filename, filepath)
+        const mriImage = await MRI_manager.generate_MRI_image(filename)
+        reportSection = [
+          mriImage, 
+          { 
+            text: `Archivo procesado: ${filename}`, 
+            fontSize: 9, 
+            color: 'gray', 
+            alignment: 'center', 
+            margin: [0, 0, 0, 5] 
+          }
+        ];
+      } catch (error) {
+        console.error("Error procesando el MRI para reporte clínico:", error)
+      } finally {
+        MRI_manager.cleanTemporalFiles(filename)
+      }
+      return reportSection;
     }
   }
 
