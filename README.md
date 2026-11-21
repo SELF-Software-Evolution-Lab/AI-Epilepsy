@@ -1,5 +1,8 @@
 # Proyecto-Epilepsia
 
+## Team
+This project is the result of a joint effort between professors (Jorge Duitama, Kelly Garcés) students of the Department of Systems and Computing Engineering (Uniandes) and physicians of the Hospital de la Misercordia (Bogotá).
+
 ## Installation from scratch
 Make sure to install locally in your machine:
 - Git
